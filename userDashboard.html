@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    #myDiv {
+      width: 200px;
+      height: 100px;
+      background-color: lightblue;
+      transition: width 0.5s;
+    }
+  </style>
+  <title>Open Close Example</title>
+</head>
+<body>
+
+<div id="myDiv"></div>
+<button onclick="toggleWidth()">Toggle Width</button>
+
+<script>
+  function toggleWidth() {
+    var myDiv = document.getElementById('myDiv');
+    var currentWidth = myDiv.offsetHeight;
+
+    // If the current width is 0, set it to 200px, otherwise set it to 0px
+    myDiv.style.height = (currentWidth === 0) ? '200px' : '0';
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+#forBlur.active{
+  filter: blur(2px);
+  pointer-events: none;
+  user-select: none;
+}
+#modal.active{
+  top: 50%;
+  visibility: visible;
+  opacity: 1;
+  transform: 0.5s;
+}
+.card-parent{
+  height: 420px;
+  overflow: scroll;
+  overflow-x: hidden;
+}
+
+@media (min-width: 640px) {
+    #mobile-menu{
+        display: none !important;
+    }
+  }
+
+  @media screen and (max-width: 860px) and (min-width: 640px) {
+    #restaurant_logout_btn{
+      display: none;
+    }
+    #restaurant_addDishes_btn{
+      display: none;
+    }
+    .navBtn-2{
+      display: block;
+    }
+  }   
+
+  
