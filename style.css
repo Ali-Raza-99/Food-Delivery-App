@@ -15,7 +15,7 @@
   opacity: 1;
   transform: 0.5s;
 }
-.card-parent{
+.card-parent,.userCard-parent{
   height: 420px;
   overflow: scroll;
   overflow-x: hidden;
@@ -38,5 +38,3 @@
       display: block;
     }
   }   
-
-  

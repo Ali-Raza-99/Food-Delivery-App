@@ -50,8 +50,11 @@
                 type="text" placeholder="City">
             <input id="restaurantSignupPassword" class="p-2 mt-2 text-gray-600  rounded-md border border-gray-400 focus:outline-none "
                 type="password" placeholder="Password">
-                <input id="restaurantProfileSelect" onchange="getProfileImg(event)" class="p-2 mt-2 rounded-md border bg-white text-sm border-gray-400 focus:outline-none" type="file" 
-                name="img" accept="image/*">
+                <div class="flex items-center">
+                    <label for="restaurantProfileSelect" class="px-3 border border-gray-400 border-r-0 p-2 mt-2">Profile:</label>
+                    <input id="restaurantProfileSelect" onchange="getProfileImg(event)" class="p-2 mt-2 rounded-md border bg-white text-sm border-gray-400 focus:outline-none" type="file" 
+                    name="img" accept="image/*">
+                </div>
             <div class="flex mt-4 justify-between">
 
 

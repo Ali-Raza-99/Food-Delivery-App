@@ -1,32 +1,371 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    #myDiv {
-      width: 200px;
-      height: 100px;
-      background-color: lightblue;
-      transition: width 0.5s;
-    }
-  </style>
-  <title>Open Close Example</title>
+  <title>user Dashboard</title>
+  <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha384-hVEkW3jbYbhz7U5x58lZR5aYXVdFO0Mx7qe3VwoU6k2oY6d7p6Pssf2K1Za9l0eW" crossorigin="anonymous"> -->
+  <link rel="stylesheet" href="style.css">
+
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
+  <script>
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAy8OQcnOJYyC1XnHWlIl8ZjyIisBW9Oj8",
+      authDomain: "fooddeliveryapp99.firebaseapp.com",
+      projectId: "fooddeliveryapp99",
+      storageBucket: "fooddeliveryapp99.appspot.com",
+      messagingSenderId: "601016450735",
+      appId: "1:601016450735:web:28087cb6df1904de771e5a",
+      measurementId: "G-6839CCKRQ1"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+
+  </script>
 </head>
-<body>
 
-<div id="myDiv"></div>
-<button onclick="toggleWidth()">Toggle Width</button>
+<body onload="currentUser()" class="text-gray-600 ">
 
-<script>
-  function toggleWidth() {
-    var myDiv = document.getElementById('myDiv');
-    var currentWidth = myDiv.offsetHeight;
 
-    // If the current width is 0, set it to 200px, otherwise set it to 0px
-    myDiv.style.height = (currentWidth === 0) ? '200px' : '0';
-  }
-</script>
+  <!-- div for opacity  -->
+  <div id="forBlur" class="opac relative">
+    <!-- div for opacity  -->
+    <nav class="bg-gray-200 border">
+      <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+        <div class="relative flex h-16 items-center justify-between">
+          <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+            <!-- Mobile menu button-->
+            <button type="button"
+              class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+              aria-controls="mobile-menu" aria-expanded="false">
+              <span id="navBtn" onclick="collapNav()" class="absolute -inset-0.5"></span>
+              <span class="sr-only">Open main menu</span>
+              <!--
+                Icon when menu is closed.
+    
+                Menu open: "hidden", Menu closed: "block"
+              -->
+              <svg class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+              </svg>
+              <!--
+                Icon when menu is open.
+    
+                Menu open: "block", Menu closed: "hidden"
+              -->
+              <svg class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+          <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+            <div class="flex flex-shrink-0 items-center">
+              <h1 id="userName" class="text-gray-600 font-bold text-xl ">user Name</h1>
+              <!-- <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company"> -->
+            </div>
+            <div class="hidden sm:ml-0 sm:block">
+              <div class="flex items-center space-x-7 lg:pl-40 md:space-x-7 md:pl-12  sm:space-x-1 ">
+                <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
+                <a href="#" class=" text-teal-700  flex items-center rounded-md px-3 py-2 text-sm font-bold"
+                  aria-current="page">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="w-6 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                      d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+                  </svg>
+
+                  <h1>Home</h1>
+                </a>
+
+                <div class="flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
+                    <path fill-rule="evenodd" d="M15 3.75a.75.75 0 0 1 .75-.75h4.5a.75.75 0 0 1 .75.75v4.5a.75.75 0 0 1-1.5 0V5.56l-4.72 4.72a.75.75 0 1 1-1.06-1.06l4.72-4.72h-2.69a.75.75 0 0 1-.75-.75Z" clip-rule="evenodd" />
+                    <path fill-rule="evenodd" d="M1.5 4.5a3 3 0 0 1 3-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 0 1-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 0 0 6.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 0 1 1.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 0 1-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5Z" clip-rule="evenodd" />
+                  </svg> 
+                  
+                  
+                  
+                  <p id="userPhone" class="ml-1"> </p>
+                </div>
+                <!-- <a href="#"
+                  class="text-gray-600  hover:text-teal-700 flex items-center rounded-md px-3 py-2 text-sm font-bold">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="w-6 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <h1>Pending</h1>
+                </a>
+                <a href="#"
+                  class="text-gray-600  hover:text-teal-700 flex items-center rounded-md px-3 py-2 text-sm font-bold">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="w-6 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M6.633 10.5c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 012.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 00.322-1.672V3a.75.75 0 01.75-.75A2.25 2.25 0 0116.5 4.5c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 01-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 00-1.423-.23H5.904M14.25 9h2.25M5.904 18.75c.083.205.173.405.27.602.197.4-.078.898-.523.898h-.908c-.889 0-1.713-.518-1.972-1.368a12 12 0 01-.521-3.507c0-1.553.295-3.036.831-4.398C3.387 10.203 4.167 9.75 5 9.75h1.053c.472 0 .745.556.5.96a8.958 8.958 0 00-1.302 4.665c0 1.194.232 2.333.654 3.375z" />
+                  </svg>
+                  <h1>Accepted</h1>
+                </a>
+                <a href="#"
+                  class="text-gray-600  hover:text-teal-700 flex items-center rounded-md px-3 py-2 text-sm font-bold">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="w-6 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <h1>Delivered</h1>
+                </a> -->
+                <!-- <a href="#" class="text-gray-600  hover:text-teal-700 rounded-md px-24 py-2 text-sm font-bold">Add food</a> -->
+              </div>
+            </div>
+          </div>
+          <div
+            class="absolute inset-y-0 right-0 flex space-x-4 items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+            <!-- <button onclick="toggle()" id="addDishes_btn" type="button"
+              class="relative rounded-full bg-gray-200 p-1 text-gray-600 hover:text-teal-700 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+              <span class="absolute -inset-1.5"></span>
+              <span class="sr-only">addDishes</span>
+
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg> -->
+
+            </button>
+            <!-- log out button **************************************************** -->
+            <button onclick="signOutUser()" class="text-gray-600 hover:text-red-700">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5.636 5.636a9 9 0 1012.728 0M12 3v9" />
+              </svg>
+            </button>
+
+            <!-- profile of user ********************************************************* -->
+            <div id="userProfilePic" class="w-12 h-12 rounded-full overflow-hidden">
+              <!-- <img src="" alt="Firebase Image"> -->
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Mobile menu, show/hide based on menu state. -->
+      <div class=" sm:hidden max-sm:hidden " id="mobile-menu">
+        <div id="mobile-nav-link" class="space-y-1 px-2 pb-3 pt-2 ">
+          <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
+          <a href="#" class=" text-teal-700  flex items-center rounded-md px-3 py-2 text-sm font-bold"
+            aria-current="page">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+              stroke="currentColor" class="w-6 h-5">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+            </svg>
+
+            <h1>Home</h1>
+          </a>
+        </div>
+      </div>
+    </nav>
+
+
+    <!-- finish nav start main -->
+
+
+
+
+    <div class="border bg-slate-100 flex max-sm:justify-center items-center justify-between m-2 p-2 border-slate-200 ">
+
+      <h1 id="user_restaurantsHeading"
+        class="border  flex text-xl max-sm:text-center sm:text-center lg:text-start  font-semibold text-teal-700 underline underline-offset-4 font-sans ">
+        Restaurants</h1>
+      <button>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+          class="w-6 h-6 text-gray-600 navBtn-2 hidden">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      </button>
+
+      <!-- mobile log out button ******************************************************** -->
+      <button onclick="signOutUser()">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+          class="w-6 h-6 hover:text-red-800 text-gray-600 navBtn-2 hidden">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5.636 5.636a9 9 0 1012.728 0M12 3v9" />
+        </svg>
+      </button>
+
+
+    </div>
+
+    <!-- cards *********************************************************************************** -->
+    <div id="user_restaurantsCardParent" class="userCard-parent flex flex-wrap  justify-evenly items-start border w-full bg-gray-50">
+
+      <!-- <div class="user_restaurantCard h-auto w-96 mt-8 mb-5  border border-teal-700 rounded">
+        <div id="user_restaurantImgParent"> <img class="p-1 img w-96 h-44" src="test.jpg" alt=""></div>
+        <div class="flex items-center justify-between px-4 mb-3 text-center">
+          <h1 id="user_restaurantName" class="text-lg font-bold text-center  text-teal-700">ALINA </h1>
+          <span class="flex mt-1">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+              class="w-4 h-5 text-teal-700">
+              <path fill-rule="evenodd"
+                d="M9.293 2.293a1 1 0 011.414 0l7 7A1 1 0 0117 11h-1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-3a1 1 0 00-1-1H9a1 1 0 00-1 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-6H3a1 1 0 01-.707-1.707l7-7z"
+                clip-rule="evenodd" />
+            </svg>
+
+            <h1 id="user_restaurantCity" class="text-teal-700 pl-1 text-sm">Karachi</h1>
+          </span>
+      
+        </div>
+
+        <div class="flex  justify-between px-4 mb-3 text-center">
+          <h1 id="user_restaurantEmail" class="text-sm text-center  text-teal-700">alina@gmail.com </h1>
+          
+            <span class="flex">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                class="w-4 h-5 text-teal-700">
+                <path
+                  d="M3.5 2.75a.75.75 0 00-1.5 0v14.5a.75.75 0 001.5 0v-4.392l1.657-.348a6.449 6.449 0 014.271.572 7.948 7.948 0 005.965.524l2.078-.64A.75.75 0 0018 12.25v-8.5a.75.75 0 00-.904-.734l-2.38.501a7.25 7.25 0 01-4.186-.363l-.502-.2a8.75 8.75 0 00-5.053-.439l-1.475.31V2.75z" />
+              </svg>
+              <h1 id="user_restaurantCountry" class="text-teal-700 pl-1 text-sm">Pakistan</h1>
+            </span>
+          
+            
+        </div>
+
+        <hr class="mx-4">
+
+        <hr class="mx-4">
+        <div class="flex items-center justify-between">
+
+        </div>
+
+      </div> -->
+
+    </div>
+    <!-- cards *********************************************************************************** -->
+
+    <div>
+
+
+      <footer
+        class=" py-2 border-t flex flex-wrap   sm:h-auto max-sm:justify-center items-center justify-between px-20 border-slate-300 bg-gray-200 ">
+        <div class="flex  max-sm:mt-2 ">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-5 text-gray-600">
+            <path d="M3 4a2 2 0 00-2 2v1.161l8.441 4.221a1.25 1.25 0 001.118 0L19 7.162V6a2 2 0 00-2-2H3z" />
+            <path d="M19 8.839l-7.77 3.885a2.75 2.75 0 01-2.46 0L1 8.839V14a2 2 0 002 2h14a2 2 0 002-2V8.839z" />
+          </svg>
+
+          <h1 id="userEmail" class="text-gray-600  pl-1 text-sm"></h1>
+        </div>
+        <div id="userCopyrightLine" class="text-center max-sm:mt-2 ">
+
+          <h1 class="text-gray-600 text-sm pr-24 max-sm:pr-0"> © <span id="user-copyright-year"></span> flavour fleet.
+            All
+            rights
+            reserved.</h1>
+        </div>
+        <div class="mb-2  max-sm:mt-2 ">
+          <span class="flex">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+              class="w-4 h-5 text-gray-600">
+              <path
+                d="M3.5 2.75a.75.75 0 00-1.5 0v14.5a.75.75 0 001.5 0v-4.392l1.657-.348a6.449 6.449 0 014.271.572 7.948 7.948 0 005.965.524l2.078-.64A.75.75 0 0018 12.25v-8.5a.75.75 0 00-.904-.734l-2.38.501a7.25 7.25 0 01-4.186-.363l-.502-.2a8.75 8.75 0 00-5.053-.439l-1.475.31V2.75z" />
+            </svg>
+            <h1 id="userCountry" class="text-gray-600 pl-1 text-sm">Pakistan</h1>
+          </span>
+
+          <span class="flex mt-1">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+              class="w-4 h-5 text-gray-600">
+              <path fill-rule="evenodd"
+                d="M9.293 2.293a1 1 0 011.414 0l7 7A1 1 0 0117 11h-1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-3a1 1 0 00-1-1H9a1 1 0 00-1 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-6H3a1 1 0 01-.707-1.707l7-7z"
+                clip-rule="evenodd" />
+            </svg>
+
+            <h1 id="userCity" class="text-gray-600 pl-1 text-sm">Karachi</h1>
+          </span>
+        </div>
+      </footer>
+
+    </div>
+    <!-- </div> -->
+    <!-- end div for opacity  -->
+  </div>
+  <!-- end div for opacity  -->
+
+  <div id="modal" style="left: 39%;" class="fixed hidden sm:fixed">
+
+    <div
+      class="main  bg-white absolute bottom-32 w-80 flex mt-28 text-center flex-col p-6 px-9 bg-center border border-teal-700 rounded">
+      <h1 class="mb-3 text-teal-700 font-bold text-lg">Add New Dish</h1>
+
+      <input id="dishName" class="p-2 mt-2 rounded-md border text-sm border-gray-500 focus:outline-none " type="text"
+        placeholder="Item Name">
+      <div class="flex ">
+        <select id="currency" class="p-2 w-16 mt-2 text-sm rounded-md border border-gray-500 focus:outline-none"
+          name="currency">
+          <option value="note"> 💵</option>
+          <option value="₨">₨ </option>
+          <option value="€"> € </option>
+          <option value="₤"> ₤ </option>
+          <option value="﷼"> ﷼ </option>
+          <option value="₠"> ₠</option>
+          <option value="₹"> ₹ </option>
+          <option value="$"> $ </option>
+          <option value="元">元</option>
+          <option value="£"> £ </option>
+          <option value="₽"> ₽ </option>
+        </select>
+        <!-- <input id="currency" class="p-2 mt-2 w-16 rounded-md text-sm border border-gray-500 focus:outline-none" type="text" placeholder="$Type"> -->
+        <input id="dishPrice" class="p-2 mt-2 ml-1 rounded-md text-sm border border-gray-500 focus:outline-none "
+          type="text" placeholder="Price">
+      </div>
+
+      <select id="category_dropdown" class="p-2 mt-2 text-sm rounded-md border border-gray-500 focus:outline-none"
+        name="category">
+        <option value="Select Category">Select Category</option>
+        <option value="Chiness">Chiness</option>
+        <option value="Fish and Sea Food">Fish and Sea Food</option>
+        <option value="Fast Food">Fast Food</option>
+        <option value="Meat Dishes">Meat Dishes</option>
+        <option value="Dessert">Dessert</option>
+      </select>
+
+      <!-- <label for="img">Select image:</label> -->
+      <select id="deliveryType" class="p-2 mt-2 rounded-md border text-sm border-gray-500 focus:outline-none"
+        name="delivery">
+        <option value="Select Delivery Type">Select Delivery Type</option>
+        <option value="Free"> Free</option>
+        <option value="Paid">Paid</option>
+      </select>
+
+      <input id="dishImg" onchange="getDishImg(event)"
+        class="p-2 mt-2 rounded-md border text-sm border-gray-500 focus:outline-none" type="file" name="img"
+        accept="image/*">
+      <div class="flex mt-4 justify-between">
+        <button onclick="toggle()" class="text-white mt-4 mb-2 rounded-lg font-bold bg-teal-700 p-2 px-4">Close</button>
+
+        <button id="addDishBtn" onclick="addDish()"
+          class="text-white mt-4 px-5 mb-2 rounded-lg font-bold bg-teal-700 p-2 ">Add</button>
+
+      </div>
+
+
+    </div>
+
+
+
 
 </body>
+<script src="user.js"></script>
+
 </html>
