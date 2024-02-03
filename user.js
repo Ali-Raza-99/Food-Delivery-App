@@ -1,6 +1,8 @@
-let counter = 0 
+let userCounter = 0 
 const db = firebase.firestore();
 var userProfileImg ;
+var restaurantId;
+
 const currentDate = new Date();
 
 // user authentication **************************************************************************************
@@ -131,7 +133,11 @@ const userLogin = () => {
       console.log("Error getting document:", error);
     });
 
-    getRestaurants(uid)
+  
+      
+        getRestaurants(uid)
+      
+    
       
 
 
@@ -176,7 +182,7 @@ const getRestaurants = (uid) => {
 
       querySnapshot.forEach((doc) => {
         user_restaurantCardParent.innerHTML += `
-          <div id="${doc.id}" onclick="visitRestaurant(${doc.id})" class="user_restaurantCard h-auto w-96 mt-8 mb-5  border border-teal-700 rounded">
+          <div id="${doc.id}" onclick="visitRestaurant('${doc.id}','${doc.data().name}')" class="cursor-pointer user_restaurantCard h-auto w-96 mt-8 mb-5  border border-teal-700 rounded">
         <div id="user_restaurantImgParent"> <img class="p-1 img w-96 h-44" src="${doc.data().restaurantprofileUrl}" alt=""></div>
         <div class="flex items-center justify-between px-4 mb-3 text-center">
           <h1 id="user_restaurantName" class="text-lg font-bold text-center  text-teal-700">${doc.data().name}</h1>
@@ -223,14 +229,203 @@ const getRestaurants = (uid) => {
 
 
 
-// visit restaurant while click **************************************************************************
 
-const visitRestaurant = (RestaurantUid)=>{
-    location.href = 'restaurant.html'
+
+// selected restaurant order portal restaurant *******************************************************************************
+
+
+const orderPage = () => {
+  
+  const selectedRestaurantId = new URLSearchParams(window.location.search).get('restaurantId')
+  const selectedRestaurantName = new URLSearchParams(window.location.search).get('restaurantName')
+
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+      
+
+    let uid = user.uid;
+    let email = user.email;
+    let userName = document.getElementById('userName');
+    let userEmail = document.getElementById('userEmail');
+    let userCopyrightYear = document.getElementById('user-copyright-year')
+    let userCountry = document.getElementById('userCountry');
+    let userPhone = document.getElementById('userPhone')
+    let userCity = document.getElementById('userCity');
+    let userProfilePic = document.getElementById('userProfilePic')
+    const currentYear = currentDate.getFullYear();
+    let orderPageRestaurantHeading = document.getElementById('orderPageRestaurantHeading');
+
+    orderPageRestaurantHeading.innerHTML = `${selectedRestaurantName}`
+
+    getDishesFromSelectedRestaurant(selectedRestaurantId)
+    // getting signUp data of user
+    db.collection(`${`Users`}`).doc(`${uid}`).get().then((doc) => {
+      if (doc.exists) {
+      
+        userName.innerHTML = `${doc.data().name}`
+        userCopyrightYear.innerHTML = `${currentYear}`
+        userEmail.innerHTML = `${doc.data().email}`
+        userCountry.innerHTML = `${doc.data().country}`
+        userCity.innerHTML = `${doc.data().city}`
+        userProfilePic.innerHTML = `<img id="${uid}profile" class="" src="${doc.data().userProfileUrl}" alt="Firebase Image">`
+        userPhone.innerHTML = `${doc.data().phone}`
+        
+      }
+      
+      else {
+        // doc.data() will be undefined in this case
+        console.log("No such document!");
+      }
+    }).catch((error) => {
+      console.log("Error getting document:", error);
+    });
+
+
+      // ...
+    } else {
+      console.log('not working yet')
+      // signOutUser()
+      // User is signed out
+      // ...
+    }
+  });
+
+
+  
+}
+
+const getDataSelectedRestaurant = (getRestaurantId,getRestaurantName) =>{
+
+    window.location.href  = `orderPage.html?restaurantId=${getRestaurantId}&restaurantName=${getRestaurantName}`
+
 }
 
 
-// visit restaurant while click **************************************************************************
+const visitRestaurant = (getRestaurantId,getRestaurantName) => {
+
+  getDataSelectedRestaurant(getRestaurantId,getRestaurantName)
+  
+     
+}  
+let dishes = ['']
+
+
+const getDishesFromSelectedRestaurant = (getRestaurantId)=>{
+
+
+  let selectedRestaurantDishesParent = document.getElementById('selectedRestaurantDishesParent');
+
+    db.collection(`${getRestaurantId}`).get().then((querySnapshot) => {
+
+      querySnapshot.forEach((doc) => {
+        selectedRestaurantDishesParent.innerHTML += `
+          <div id='dish${doc.id}' class="card h-auto w-72 mt-8 mb-5  border border-teal-700 rounded">
+          <div id='dishImageParent${doc.id}'><img id="DynamicDishImg${doc.id}" class="p-1 w-72 h-44"
+              src="${doc.data().imgUrl}" alt=""></div>
+          <div class="flex  px-4 mb-3 text-center">
+  
+            <h1 class="text-lg font-bold  text-teal-700">${doc.data().dishName.toUpperCase()}</h1>
+  
+  
+          </div>
+          <hr>
+          <div class="flex justify-between px-5 mt-3 pb-2">
+            <h1 class="text-sm text-teal-700">${doc.data().currency} : ${doc.data().dishPrice}</h1>
+            <h1 class="text-sm  text-teal-700">${doc.data().category_dropdown}</h1>
+          </div>
+          <hr >
+          <div class="flex items-center  justify-between ">
+            <div class="flex px-4 mt-3 pb-2 text-center ">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="w-5 h-5 text-teal-700">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
+              </svg>
+              <h1 class="text-sm ml-1 text-teal-700">Delivery ${doc.data().deliveryType}</h1>
+            </div>
+            
+          </div>
+          <hr>
+        
+            <div  class="flex justify-between mt-2 " id="addtoCartBtn">
+              <span class="bg-white border pt-3 text-xl border-t-teal-700 border-r-teal-700 text-teal-700 px-3"> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14" />
+              </svg>
+                </span>
+              <span  class="addToCartBtn bg-teal-700 text-white p-2 px-14" id='addToCartBtn${doc.id}' >${doc.data().value}</span>
+              <span onclick="addToCart('dish${doc.id}',${doc.id})" class="bg-white border pt-3 text-xl border-t-teal-700 border-l-teal-700 text-teal-700 px-3"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+              </svg>
+              </span>
+            </div>
+  
+        </div>
+        
+  `
+  db.collection(`${getRestaurantId}`).doc(`${doc.id}`).get().then((doc) => {
+    if (doc.exists) {
+      const currentValue = doc.data().value;
+      quantityCounter(currentValue,`addToCartBtn${doc.id}`);
+    } else {
+      // Document doesn't exist, set an initial value
+      db.collection(`${getRestaurantId}`).doc(`${doc.id}`).set({ value: 0 });
+      quantityCounter(0);
+    }
+  });
+ dishes.push({id:`dish${doc.id}`,dishName:`${doc.data().dishName}`,quantity:0})
+        
+      })
+    })
+    // console.log(dishes)
+}
+
+
+const quantityCounter = (value,dishId)=>{
+
+  let currentDishid = document.getElementById(`${dishId}`)
+  currentDishid.innerHTML = value
+}
+
+
+const addToCart = (id,counter)=>{
+  const selectedRestaurantId = new URLSearchParams(window.location.search).get('restaurantId')
+  let addBtnId = document.getElementById(`addToCartBtn${counter}`)
+  const currentValue = parseInt(addBtnId.innerText);
+  const newValue = currentValue + 1;
+
+  // Update the value in Firestore
+  db.collection(`${selectedRestaurantId}`).doc(`${counter}`).update({ value: newValue });
+
+  // Update the displayed value on the page
+  quantityCounter(newValue,`addToCartBtn${counter}`);
+
+  // db.collection(`${selectedRestaurantId}`).doc(`${counter}`).update({
+  //       quantityOfItems:db,
+      
+  //     }).then(() => {
+  //       console.log('added to cart',)
+  //     });
+  
+}
+
+// add to cart ********************************************************************************
+
+
+const increaseItem = (counter)=>{
+  counter += 1
+  console.log(counter) 
+  
+}
+const decreaseItem = (counter)=>{
+  counter -= 1
+  console.log(counter) 
+}
+
+
+// add to cart*********************************************************************************
+
+
+// selected restaurant *******************************************************************************
 
 
 
@@ -252,3 +447,26 @@ const collapNav = () => {
 
 
 }
+
+
+
+
+
+
+// let addQuantity = dishes[counter].quantity++
+//   let myquantity = []
+//   let addBtn = document.getElementById(`addToCartBtn${counter}`)
+//   addBtn.innerHTML = `${dishes[counter].quantity}`
+  
+//   myquantity.push(`${addQuantity}`)
+//   db.collection(`${selectedRestaurantId}`).doc(`${counter}`).update({
+//     quantityOfItems:dishes[counter].quantity + 1
+
+    // firebase.firestore.FieldValue.arrayUnion(addQuantity)
+  // }).then(() => {
+  //   console.log('added to cart',)
+    
+  // });
+  // console.log(myquantity)
+  
+    // console.log(dishes[counter].quantity)
