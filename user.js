@@ -1,4 +1,4 @@
-let userCounter = 0 
+
 const db = firebase.firestore();
 var userProfileImg ;
 var restaurantId;
@@ -171,8 +171,11 @@ const signOutUser = () => {
 
 // user authentication **************************************************************************************
 
-// get restaurants from database ***************************************************************************
 
+
+// selected restaurant order portal restaurant *******************************************************************************
+
+// get restaurants in user dashboard *************************************************************************
 const getRestaurants = (uid) => {
 
   let currentRestaurantUid = firebase.auth().currentUser.uid
@@ -223,19 +226,13 @@ const getRestaurants = (uid) => {
   });
 
 }
+// get restaurants in user dashboard *************************************************************************
 
 
-// get restaurants from database ***************************************************************************
-
-
-
-
-
-// selected restaurant order portal restaurant *******************************************************************************
-
+// when orderpage will be reloaded or visited by user ********************************************************************
 
 const orderPage = () => {
-  
+
   const selectedRestaurantId = new URLSearchParams(window.location.search).get('restaurantId')
   const selectedRestaurantName = new URLSearchParams(window.location.search).get('restaurantName')
 
@@ -293,40 +290,45 @@ const orderPage = () => {
 
   
 }
+// when orderpage will be reloaded or visited by user ********************************************************************
 
+
+// get the id and restaurant name of restaurant which will be selected by user ***********************************
 const getDataSelectedRestaurant = (getRestaurantId,getRestaurantName) =>{
-
-    window.location.href  = `orderPage.html?restaurantId=${getRestaurantId}&restaurantName=${getRestaurantName}`
-
+  
+  window.location.href  = `orderPage.html?restaurantId=${getRestaurantId}&restaurantName=${getRestaurantName}`
+  
 }
 
+// get the id and restaurant name of restaurant which will be selected by user ***********************************
+
+
+// when user clicks on any restaurant for visit or order ******************************************************
 
 const visitRestaurant = (getRestaurantId,getRestaurantName) => {
-
+  
   getDataSelectedRestaurant(getRestaurantId,getRestaurantName)
   
-     
-}  
-let dishes = ['']
+} 
+// when user clicks on any restaurant for visit or order ******************************************************
 
+
+
+// get dishes from selected restaurant of user ***********************************************************************
 
 const getDishesFromSelectedRestaurant = (getRestaurantId)=>{
-
-
+  
   let selectedRestaurantDishesParent = document.getElementById('selectedRestaurantDishesParent');
-
-    db.collection(`${getRestaurantId}`).get().then((querySnapshot) => {
+  
+  db.collection(`${getRestaurantId}`).get().then((querySnapshot) => {
 
       querySnapshot.forEach((doc) => {
         selectedRestaurantDishesParent.innerHTML += `
-          <div id='dish${doc.id}' class="card h-auto w-72 mt-8 mb-5  border border-teal-700 rounded">
+        <div id='dish${doc.id}' class="card h-auto w-60 mt-8 mb-5  border border-teal-700 rounded">
           <div id='dishImageParent${doc.id}'><img id="DynamicDishImg${doc.id}" class="p-1 w-72 h-44"
               src="${doc.data().imgUrl}" alt=""></div>
           <div class="flex  px-4 mb-3 text-center">
-  
             <h1 class="text-lg font-bold  text-teal-700">${doc.data().dishName.toUpperCase()}</h1>
-  
-  
           </div>
           <hr>
           <div class="flex justify-between px-5 mt-3 pb-2">
@@ -335,8 +337,8 @@ const getDishesFromSelectedRestaurant = (getRestaurantId)=>{
           </div>
           <hr >
           <div class="flex items-center  justify-between ">
-            <div class="flex px-4 mt-3 pb-2 text-center ">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+          <div class="flex px-4 mt-3 pb-2 text-center ">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                 stroke="currentColor" class="w-5 h-5 text-teal-700">
                 <path stroke-linecap="round" stroke-linejoin="round"
                   d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
@@ -346,89 +348,101 @@ const getDishesFromSelectedRestaurant = (getRestaurantId)=>{
             
           </div>
           <hr>
-        
-            <div  class="flex justify-between mt-2 " id="addtoCartBtn">
-              <span class="bg-white border pt-3 text-xl border-t-teal-700 border-r-teal-700 text-teal-700 px-3"> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+          
+          <div  class="flex  mt-2 " id="addtoCartBtn">
+              <span onclick="decreaseItemQuantity('dish${doc.id}',${doc.id})" class="bg-white border pt-3 text-xl border-t-teal-700 border-r-teal-700 text-teal-700 px-3"> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14" />
               </svg>
                 </span>
-              <span  class="addToCartBtn bg-teal-700 text-white p-2 px-14" id='addToCartBtn${doc.id}' >${doc.data().value}</span>
-              <span onclick="addToCart('dish${doc.id}',${doc.id})" class="bg-white border pt-3 text-xl border-t-teal-700 border-l-teal-700 text-teal-700 px-3"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+              <span  class="addToCartBtn bg-teal-700 text-center text-white p-2 w-52" id='itemQuantity${doc.id}' >${doc.data().quantity}</span>
+              <span onclick="reduceItemQuantity('dish${doc.id}',${doc.id})" class="bg-white border pt-3 text-xl border-t-teal-700 border-l-teal-700 text-teal-700 px-3"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
               </svg>
               </span>
             </div>
-  
+            
         </div>
         
-  `
-  db.collection(`${getRestaurantId}`).doc(`${doc.id}`).get().then((doc) => {
+        `
+      getQuantityOfItems(getRestaurantId,doc.id)
+  
+        
+      })
+    })  
+  }
+  
+
+// get dishes from selected restaurant of user ***********************************************************************
+
+
+// get quantity of items from database ******************************************************************
+
+const getQuantityOfItems =(getRestaurantId,id)=>{
+
+  db.collection(`${getRestaurantId}`).doc(`${id}`).get().then((doc) => {
     if (doc.exists) {
-      const currentValue = doc.data().value;
-      quantityCounter(currentValue,`addToCartBtn${doc.id}`);
+      const currentValue = doc.data().quantity;
+      quantityCounter(currentValue,`itemQuantity${id}`);
     } else {
       // Document doesn't exist, set an initial value
-      db.collection(`${getRestaurantId}`).doc(`${doc.id}`).set({ value: 0 });
+      db.collection(`${getRestaurantId}`).doc(`${id}`).set({ quantity: 0 });
       quantityCounter(0);
     }
   });
- dishes.push({id:`dish${doc.id}`,dishName:`${doc.data().dishName}`,quantity:0})
-        
-      })
-    })
-    // console.log(dishes)
+} 
+
+// get quantity of items from database *******************************************************************
+
+
+// setting quantity of order items in span's innerHTML ***************************************************
+
+const quantityCounter = (value,dishIncreaseBtnId)=>{
+  
+  let quantityText = document.getElementById(`${dishIncreaseBtnId}`)
+  quantityText.innerHTML = value
+  
 }
+// setting quantity of order items in span's innerHTML *****************************************************
+  
+// increase quantity of order items **************************************************************************
+  
+const reduceItemQuantity = (id,counter)=>{
 
+  let quantityText = document.getElementById(`itemQuantity${counter}`);
 
-const quantityCounter = (value,dishId)=>{
-
-  let currentDishid = document.getElementById(`${dishId}`)
-  currentDishid.innerHTML = value
-}
-
-
-const addToCart = (id,counter)=>{
+    
   const selectedRestaurantId = new URLSearchParams(window.location.search).get('restaurantId')
-  let addBtnId = document.getElementById(`addToCartBtn${counter}`)
-  const currentValue = parseInt(addBtnId.innerText);
+  let increaseQuantityBtn= document.getElementById(`itemQuantity${counter}`)
+  const currentValue = parseInt(increaseQuantityBtn.innerText);
   const newValue = currentValue + 1;
 
-  // Update the value in Firestore
-  db.collection(`${selectedRestaurantId}`).doc(`${counter}`).update({ value: newValue });
-
-  // Update the displayed value on the page
-  quantityCounter(newValue,`addToCartBtn${counter}`);
-
-  // db.collection(`${selectedRestaurantId}`).doc(`${counter}`).update({
-  //       quantityOfItems:db,
-      
-  //     }).then(() => {
-  //       console.log('added to cart',)
-  //     });
+  db.collection(`${selectedRestaurantId}`).doc(`${counter}`).update({ quantity: newValue });
+  quantityCounter(newValue,`itemQuantity${counter}`);
   
 }
 
-// add to cart ********************************************************************************
+// increase quantity of order items **************************************************************************
 
+// decrease quantity of order items **************************************************************************
 
-const increaseItem = (counter)=>{
-  counter += 1
-  console.log(counter) 
+const decreaseItemQuantity= (id,counter)=>{
   
+  let quantityText = document.getElementById(`itemQuantity${counter}`);
+  
+ 
+  if ( quantityText.innerHTML != 0) {
+    
+    const selectedRestaurantId = new URLSearchParams(window.location.search).get('restaurantId');
+    let decreaseQuantityBtn = document.getElementById(`itemQuantity${counter}`);
+    const currentValue = parseInt(decreaseQuantityBtn.innerText);
+    const newValue = currentValue - 1;
+    
+    db.collection(`${selectedRestaurantId}`).doc(`${counter}`).update({ quantity: newValue });
+    quantityCounter(newValue,`itemQuantity${counter}`);
+    
+  }
 }
-const decreaseItem = (counter)=>{
-  counter -= 1
-  console.log(counter) 
-}
-
-
-// add to cart*********************************************************************************
-
-
-// selected restaurant *******************************************************************************
-
-
-
+// decrease quantity of order items **************************************************************************
 
 
 
@@ -448,25 +462,3 @@ const collapNav = () => {
 
 }
 
-
-
-
-
-
-// let addQuantity = dishes[counter].quantity++
-//   let myquantity = []
-//   let addBtn = document.getElementById(`addToCartBtn${counter}`)
-//   addBtn.innerHTML = `${dishes[counter].quantity}`
-  
-//   myquantity.push(`${addQuantity}`)
-//   db.collection(`${selectedRestaurantId}`).doc(`${counter}`).update({
-//     quantityOfItems:dishes[counter].quantity + 1
-
-    // firebase.firestore.FieldValue.arrayUnion(addQuantity)
-  // }).then(() => {
-  //   console.log('added to cart',)
-    
-  // });
-  // console.log(myquantity)
-  
-    // console.log(dishes[counter].quantity)

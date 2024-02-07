@@ -69,13 +69,14 @@
           </div>
           <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
             <div class="flex flex-shrink-0 items-center">
-              <h1 id="userName" class="text-gray-600 font-bold text-xl ">user Name</h1>
+              <h1 id="userName" class="text-gray-600 font-bold text-xl">user Name</h1>
               <!-- <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company"> -->
             </div>
             <div class="hidden sm:ml-0 sm:block">
               <div class="flex items-center space-x-7 lg:pl-40 md:space-x-7 md:pl-12  sm:space-x-1 ">
                 <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-                <a href="userDashboard.html" class=" hover:text-teal-700  flex items-center rounded-md px-3 py-2 text-sm font-bold"
+                <a href="userDashboard.html"
+                  class=" hover:text-teal-700  flex items-center rounded-md px-3 py-2 text-sm font-bold"
                   aria-current="page">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="w-6 h-6">
@@ -99,11 +100,11 @@
 
 
                   <p id="userPhone" class="ml-1"> </p>
-                  
+
                 </div>
-                
+
                 <!-- add to cart icon  -->
-             
+
 
                 <!-- add to cart icon  -->
                 <!-- <a href="#"
@@ -139,12 +140,15 @@
           </div>
           <div
             class="absolute inset-y-0 right-0 flex space-x-4 items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-            <div class="flex cart items-center border hover:border-teal-700 p-3  cursor-pointer mr-10 rounded-full bg-teal-700">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-white">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+            <div id="web_cartter"
+              class="flex cart items-center border hover:border-teal-700 p-3  cursor-pointer mr-10 rounded-full bg-teal-700">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="w-5 h-5 text-white">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
               </svg>
-              <!-- <p id="cartText" class="ml-1 text-white text-sm "> Cartter</p> -->
-              
+              <p id="cartText" class="ml-1 text-white text-sm "> Cartter</p>
+
             </div>
 
             </button>
@@ -180,6 +184,16 @@
 
             <h1>Home</h1>
           </a>
+          <div id="web_cartter"
+            class="flex cart items-center border hover:border-teal-700 p-3  cursor-pointer mr-10 rounded-full bg-teal-700">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+              stroke="currentColor" class="w-5 h-5 text-white">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+            </svg>
+            <p id="cartText" class="ml-1 text-white text-sm "> Cartter</p>
+
+          </div>
         </div>
       </div>
     </nav>
@@ -193,8 +207,8 @@
     <div class="border bg-slate-100 flex max-sm:justify-center items-center justify-between m-2 p-2 border-slate-200 ">
 
       <h1 id="orderPageRestaurantHeading"
-        class=" flex text-xl max-sm:text-center sm:text-center lg:text-start  font-semibold text-teal-700 underline underline-offset-4 font-sans ">
-        </h1>
+        class=" flex italic text-xl max-sm:text-center sm:text-center lg:text-start  font-semibold text-teal-700 underline underline-offset-4 font-sans ">
+        RestaurantName </h1>
       <button>
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
           class="w-6 h-6 text-gray-600 navBtn-2 hidden">
@@ -214,53 +228,77 @@
     </div>
 
     <!-- cards *********************************************************************************** -->
-    <div id="selectedRestaurantDishesParent" class="card-parent  flex flex-wrap  justify-evenly items-start border w-full bg-gray-50">
-      <!-- <div id='dish${doc.id}' class="card selectedDish h-auto w-72 mt-8 mb-5  border border-teal-700 rounded">
-        <div id='dishImageParent${doc.id}'><img id="DynamicDishImg${doc.id}" class="p-1 w-72 h-44"
-            src="${doc.data().imgUrl}" alt=""></div>
-        <div class="flex  px-4 mb-3 text-center">
-
-          <h1 class="text-lg font-bold  text-teal-700">my dish</h1>
-
-
-        </div>
-        <hr>
-        <div class="flex justify-between px-5 mt-3 pb-2">
-          <h1 class="text-sm text-teal-700">rs 300</h1>
-          <h1 class="text-sm  text-teal-700">Chiness</h1>
-        </div>
-        <hr >
-        <div class="flex items-center  justify-between ">
-          <div class="flex px-4 mt-3 pb-2 text-center ">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-              stroke="currentColor" class="w-5 h-5 text-teal-700">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
-            </svg>
-            <h1 class="text-sm ml-1 text-teal-700">Delivery <span>free</span></h1>
-          </div>
-          
-        </div>
-        <hr>
-      
-          <div  class="flex justify-between mt-2 " id="addtoCartBtn">
-            <span class="bg-white border pt-3 text-xl border-t-teal-700 border-r-teal-700 text-teal-700 px-3"> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14" />
-            </svg>
-             </span>
-            <span class="bg-teal-700 text-white p-2 px-14">Add to Cart</span>
-            <span class="bg-white border pt-3 text-xl border-t-teal-700 border-l-teal-700 text-teal-700 px-3"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-            </svg>
-            </span>
-          </div>
+    <div class="main flex">
+      <div style="width: 76%;" id="selectedRestaurantDishesParent"
+        class="card-parent flex flex-wrap  justify-evenly items-start border bg-gray-50">
 
       </div>
-       -->
 
+      <div id="cartter" class="w-20 h-48 ">
+
+        <div style="height: 418px;"
+          class="main  bg-white w-80 flex text-center flex-col p-6 px-3 bg-center border border-teal-700 rounded">
+          <h1 class="mb-3 text-teal-700 text-start font-bold text-lg">Your Items</h1>
+
+          <div id="cart_dishes" class="h-72 overflow-scroll overflow-x-hidden " >
+            <div class="border cart_dish">
+            <div class="flex items-center mt-2 border border-l-0 border-r-0">
+              <img class="w-20 rounded-sm" src="shrimp.webp" alt="">
+              <h1 class="ml-2 text-md text-start text-teal-700 font-bold">TIKKA PIZZA</h1>
+            </div>
+          
+            <div class="flex items-center justify-between px-2 mt-2">
+              <span class="pt-2 text-sm text-teal-700 font-bold">Rs:190</span>
+
+              <div class="flex mt-2 pb-2 h-9 ">
+                <span class="bg-white border pt-2 text-xl border-teal-700  text-teal-700 px-2"> <svg
+                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="w-4 h-3">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14" />
+                  </svg>
+                </span>
+
+                <span class=" bg-teal-700 text-center text-white p-1 text-sm px-4">1</span>
+                <span class="bg-white border pt-2 text-xl border-teal-700 text-teal-700 px-2"><svg
+                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="w-4 h-3">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                  </svg>
+                </span>
+              </div>
+
+            </div>
+          </div>
+          
+          </div>
+
+
+          <div class="flex mt-4 justify-between">
+            <button onclick="toggle()"
+              class="text-white mt-4 mb-2 rounded-lg font-bold bg-teal-700 p-2 px-4">Close</button>
+
+            <button class="text-white mt-4 px-5 mb-2 rounded-lg font-bold bg-teal-700 p-2 ">Add</button>
+
+          </div>
+
+
+        </div>
+      </div>
 
     </div>
     <!-- cards *********************************************************************************** -->
+
+
+
+
+
+    <!-- restaurant details footer -->
+
+
+
+
+    <!-- restaurant details footer -->
+
 
     <div>
 
@@ -309,34 +347,17 @@
     <!-- </div> -->
     <!-- end div for opacity  -->
   </div>
+  </div>
   <!-- end div for opacity  -->
 
-  <!-- <div id="modal" style="left: 39%;" class="fixed hidden sm:fixed">
+  <!-- <div id="cartter" style="left: 60%;" class="fixed sm:fixed">
 
-    <div
-      class="main  bg-white absolute bottom-32 w-80 flex mt-28 text-center flex-col p-6 px-9 bg-center border border-teal-700 rounded">
+    <div class="main  bg-white absolute bottom-56 w-80 flex mt-28 text-center flex-col p-6 px-9 bg-center border border-teal-700 rounded">
       <h1 class="mb-3 text-teal-700 font-bold text-lg">Add New Dish</h1>
 
       <input id="dishName" class="p-2 mt-2 rounded-md border text-sm border-gray-500 focus:outline-none " type="text"
         placeholder="Item Name">
-      <div class="flex ">
-        <select id="currency" class="p-2 w-16 mt-2 text-sm rounded-md border border-gray-500 focus:outline-none"
-          name="currency">
-          <option value="note"> 💵</option>
-          <option value="₨">₨ </option>
-          <option value="€"> € </option>
-          <option value="₤"> ₤ </option>
-          <option value="﷼"> ﷼ </option>
-          <option value="₠"> ₠</option>
-          <option value="₹"> ₹ </option>
-          <option value="$"> $ </option>
-          <option value="元">元</option>
-          <option value="£"> £ </option>
-          <option value="₽"> ₽ </option>
-        </select>
-        <input id="dishPrice" class="p-2 mt-2 ml-1 rounded-md text-sm border border-gray-500 focus:outline-none "
-          type="text" placeholder="Price">
-      </div>
+      
 
       <select id="category_dropdown" class="p-2 mt-2 text-sm rounded-md border border-gray-500 focus:outline-none"
         name="category">
@@ -375,5 +396,7 @@
 </body>
 <!-- <script src="visitRestaurant.js"></script> -->
 <script src="user.js"></script>
+<script src="order.js"></script>
 <!-- <script src="app.js"></script> -->
+
 </html>

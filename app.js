@@ -1,5 +1,5 @@
 
-let counter = 0
+// let counter = 0
 const currentDate = new Date();
 const db = firebase.firestore();
 let file = document.querySelector('#dishImg');
@@ -141,9 +141,6 @@ const restaurantLogin = () => {
           restaurantCity.innerHTML = `${doc.data().city}`
           restaurantProfilePic.innerHTML = `<img id="${uid}profile" class="rounded-full h-9 w-9" src="${doc.data().restaurantprofileUrl}" alt="Firebase Image">`
 
-          // restaurantProfilePic.setAttribute("src",doc.data().restaurantprofileUrl)
-          
-      // console.log(doc.data().restaurantprofileUrl + "find it")
         }
         
         else {
@@ -200,9 +197,13 @@ const toggle = () => {
 const createDish = (dishName, dishPrice, category_dropdown, deliveryType, currency,imgUrl,dishCounter) => {
 
 
+
+  let currentRestaurantUid = firebase.auth().currentUser.uid
+
   let cardParent = document.getElementById('cardParent')
   let addDishBtn = document.getElementById('addDishBtn');
- let currentRestaurantUid = firebase.auth().currentUser.uid
+//  let counter = parseInt(localStorage.getItem(`${currentRestaurantUid}`)) || 1;
+
 
 
     // Add a new document in collection "cities"
@@ -212,7 +213,8 @@ const createDish = (dishName, dishPrice, category_dropdown, deliveryType, curren
     category_dropdown: category_dropdown,
     deliveryType:deliveryType,
     currency: currency,
-    imgUrl: imgUrl
+    imgUrl: imgUrl,
+    quantity: 0
   })
   .then(() => {
 
@@ -250,8 +252,9 @@ const createDish = (dishName, dishPrice, category_dropdown, deliveryType, curren
     </div>
     
     </div>  
-`
-   
+` 
+ dishCounter++;
+ localStorage.setItem(`${currentRestaurantUid}`, dishCounter.toString());  
     
   })
   .catch((error) => {
@@ -302,8 +305,10 @@ const deleteDish = (dishCardId, idCounter) => {
 
 // adding dish on cards **************************************************************************
 const addDish = () => {
-
   
+    let currentRestaurantUid = firebase.auth().currentUser.uid
+  let counter = parseInt(localStorage.getItem(`${currentRestaurantUid}`)) || 1;
+
   let dishName = document.getElementById('dishName').value;
   let dishPrice = document.getElementById('dishPrice').value;
   let category_dropdown = document.getElementById('category_dropdown');
@@ -341,8 +346,11 @@ const addDish = () => {
     () => {
     
       uploadTask.snapshot.ref.getDownloadURL().then((url) => {
-    counter = counter += 1
+      
+        
          
+
+    
     createDish(dishName, dishPrice, category_dropdown.value, deliveryType.value, currency.value,url,counter)
     toggle()
 
@@ -386,7 +394,7 @@ const getDishData = (uid) => {
       querySnapshot.forEach((doc) => {
           cardParent.innerHTML += `
     
-      <div id='dish${doc.id}' class="card h-auto w-72 mt-8 mb-5  border border-teal-700 rounded">
+      <div id='dish${doc.id}' class="card h-auto w-60 mt-8 mb-5  border border-teal-700 rounded">
       <div id='dishImageParent${doc.id}'><img id="DynamicDishImg${doc.id}" class="p-1 w-72 h-44" src="${doc.data().imgUrl}" alt=""></div>
       <div class="flex  px-4 mb-3 text-center">
       
