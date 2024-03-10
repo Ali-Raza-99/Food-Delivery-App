@@ -2,7 +2,6 @@
 const db = firebase.firestore();
 var userProfileImg ;
 var restaurantId;
-
 const currentDate = new Date();
 
 // user authentication **************************************************************************************
@@ -319,6 +318,7 @@ const visitRestaurant = (getRestaurantId,getRestaurantName) => {
 const getDishesFromSelectedRestaurant = (getRestaurantId)=>{
   
   let selectedRestaurantDishesParent = document.getElementById('selectedRestaurantDishesParent');
+  let currentUserUid = firebase.auth().currentUser.uid
   
   db.collection(`${getRestaurantId}`).get().then((querySnapshot) => {
 
@@ -350,12 +350,12 @@ const getDishesFromSelectedRestaurant = (getRestaurantId)=>{
           <hr>
           
           <div  class="flex  mt-2 " id="addtoCartBtn">
-              <span onclick="decreaseItemQuantity('dish${doc.id}',${doc.id})" class="bg-white border pt-3 text-xl border-t-teal-700 border-r-teal-700 text-teal-700 px-3"> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+              <span onclick="decreaseItemQuantity('dish${doc.id}',${doc.id},'${doc.data().dishName}','${doc.data().imgUrl}','${doc.data().dishPrice}','${doc.data().currency}')" class="bg-white border pt-3 text-xl border-t-teal-700 border-r-teal-700 text-teal-700 px-3"> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14" />
               </svg>
                 </span>
-              <span  class="addToCartBtn bg-teal-700 text-center text-white p-2 w-52" id='itemQuantity${doc.id}' >${doc.data().quantity}</span>
-              <span onclick="reduceItemQuantity('dish${doc.id}',${doc.id})" class="bg-white border pt-3 text-xl border-t-teal-700 border-l-teal-700 text-teal-700 px-3"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+              <span  class="addToCartBtn bg-teal-700 text-center text-white p-2 w-52" id='itemQuantity${doc.id}' >0</span>
+              <span onclick="reduceItemQuantity('dish${doc.id}',${doc.id},'${doc.data().dishName}','${doc.data().imgUrl}','${doc.data().dishPrice}','${doc.data().currency}')" class="bg-white border pt-3 text-xl border-t-teal-700 border-l-teal-700 text-teal-700 px-3"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
               <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
               </svg>
               </span>
@@ -364,29 +364,39 @@ const getDishesFromSelectedRestaurant = (getRestaurantId)=>{
         </div>
         
         `
-      getQuantityOfItems(getRestaurantId,doc.id)
+      getQuantityOfItems(`${currentUserUid}`,doc.id)
+      
+      
+    })
+    getCartDishes()
+    })
   
-        
-      })
-    })  
   }
-  
+
 
 // get dishes from selected restaurant of user ***********************************************************************
 
 
 // get quantity of items from database ******************************************************************
 
-const getQuantityOfItems =(getRestaurantId,id)=>{
+const getQuantityOfItems =(currentUser,id)=>{
+  // console.log(`this:${id}`)
+  const selectedRestaurantId = new URLSearchParams(window.location.search).get('restaurantId')
+  let currentUserUid = firebase.auth().currentUser.uid
+  let cartQuantityText = document.getElementById(`cartItemQuantity${id}`)
+  let quantityText = document.getElementById(`itemQuantity${id}`);
 
-  db.collection(`${getRestaurantId}`).doc(`${id}`).get().then((doc) => {
+
+
+  db.collection(`PendingOrders:${currentUserUid}`).doc(`${selectedRestaurantId}`).collection(`${currentUserUid}`).doc(`${id}`).get().then((doc) => {
     if (doc.exists) {
-      const currentValue = doc.data().quantity;
-      quantityCounter(currentValue,`itemQuantity${id}`);
-    } else {
-      // Document doesn't exist, set an initial value
-      db.collection(`${getRestaurantId}`).doc(`${id}`).set({ quantity: 0 });
-      quantityCounter(0);
+      const currentValue = doc.data().itemsQuantity;
+      console.log('when if doc exist while getting data of quantity')
+      updateCounter(currentValue,`itemQuantity${id}`,id);
+    } 
+    else {
+      console.log('there is no any dish in cart')
+ 
     }
   });
 } 
@@ -396,39 +406,75 @@ const getQuantityOfItems =(getRestaurantId,id)=>{
 
 // setting quantity of order items in span's innerHTML ***************************************************
 
-const quantityCounter = (value,dishIncreaseBtnId)=>{
-  
+const updateCounter = (value,dishIncreaseBtnId,counter)=>{
+
+  let currentUserUid = firebase.auth().currentUser.uid
+  const selectedRestaurantId = new URLSearchParams(window.location.search).get('restaurantId')
+  let cartQuantityText = document.getElementById(`cartItemQuantity${counter}`)
+  let itemsQuantityWhileAdd = document.getElementById(`itemsQuantityWhileAdd${counter}`)
   let quantityText = document.getElementById(`${dishIncreaseBtnId}`)
-  quantityText.innerHTML = value
+  
+  db.collection(`PendingOrders:${currentUserUid}`).doc(`${selectedRestaurantId}`).collection(`${currentUserUid}`).doc(`${counter}`).update({ itemsQuantity: value }).then(()=>{
+   
+   
+    quantityText.innerHTML = value
+
+    itemsQuantityWhileAdd ? itemsQuantityWhileAdd.innerHTML = value : null;
+    cartQuantityText ? cartQuantityText.innerHTML = value : null;
+  
+  })
   
 }
+
 // setting quantity of order items in span's innerHTML *****************************************************
   
 // increase quantity of order items **************************************************************************
   
-const reduceItemQuantity = (id,counter)=>{
+const reduceItemQuantity = (id,counter,cartDishName,cartDishImgUrl,cartDishPrice,cartDishCurrency)=>{
 
   let quantityText = document.getElementById(`itemQuantity${counter}`);
-
-    
+  let currentCartDish = document.getElementById(`cart_dish${counter}`)
+  let cartQuantityText = document.getElementById(`cartItemQuantity${counter}`)
+   
+    let currentUserUid = firebase.auth().currentUser.uid
+  
   const selectedRestaurantId = new URLSearchParams(window.location.search).get('restaurantId')
   let increaseQuantityBtn= document.getElementById(`itemQuantity${counter}`)
   const currentValue = parseInt(increaseQuantityBtn.innerText);
   const newValue = currentValue + 1;
 
-  db.collection(`${selectedRestaurantId}`).doc(`${counter}`).update({ quantity: newValue });
-  quantityCounter(newValue,`itemQuantity${counter}`);
-  
+     if (!currentCartDish) {
+      
+       db.collection(`PendingOrders:${currentUserUid}`).doc(`${selectedRestaurantId}`).collection(`${currentUserUid}`).doc(`${counter}`).set({ itemsQuantity: newValue })
+
+         newValue==1 ? addToCart(id,counter,cartDishName,cartDishImgUrl,cartDishPrice,cartDishCurrency,newValue) : null
+
+        updateCounter(newValue,`itemQuantity${counter}`,`${counter}`);
+    
+      }
+      else {
+        
+        updateCounter(newValue,`itemQuantity${counter}`,`${counter}`);
+ 
+     console.log('else of reduce document ')
+    
+
+      }
+      
 }
 
 // increase quantity of order items **************************************************************************
 
 // decrease quantity of order items **************************************************************************
 
-const decreaseItemQuantity= (id,counter)=>{
+const decreaseItemQuantity= (id,counter,cartDishName,cartDishImgUrl,cartDishPrice,cartDishCurrency)=>{
   
   let quantityText = document.getElementById(`itemQuantity${counter}`);
-  
+  let currentUserUid = firebase.auth().currentUser.uid
+  let currentCartDish = document.getElementById(`cart_dish${counter}`)
+  let cartQuantityText = document.getElementById(`cartItemQuantity${counter}`)
+   
+
  
   if ( quantityText.innerHTML != 0) {
     
@@ -436,13 +482,150 @@ const decreaseItemQuantity= (id,counter)=>{
     let decreaseQuantityBtn = document.getElementById(`itemQuantity${counter}`);
     const currentValue = parseInt(decreaseQuantityBtn.innerText);
     const newValue = currentValue - 1;
+    updateCounter(newValue,`itemQuantity${counter}`,counter)
+    newValue==0 ? removeFromCart(id,counter) : null;
+      
     
-    db.collection(`${selectedRestaurantId}`).doc(`${counter}`).update({ quantity: newValue });
-    quantityCounter(newValue,`itemQuantity${counter}`);
     
   }
 }
 // decrease quantity of order items **************************************************************************
+
+
+// cartter logic *****************************************************************************************
+
+
+const addToCart = (id,counter,cartDishName,cartDishImgUrl,cartDishPrice,cartDishCurrency,cartItemsQuantity)=>{
+
+  const selectedRestaurantId = new URLSearchParams(window.location.search).get('restaurantId');
+  let currentUserUid = firebase.auth().currentUser.uid
+  let cartItemsParent = document.getElementById('cart_dishes');
+
+  db.collection(`PendingOrders:${currentUserUid}`).doc(`${selectedRestaurantId}`).collection(`${currentUserUid}`).doc(`${counter}`).set({
+    dishName: cartDishName,
+    dishImgUrl: cartDishImgUrl,
+    dishPrice:cartDishPrice,
+    currency:cartDishCurrency,
+    itemsQuantity:cartItemsQuantity
+  }
+    )
+    .then(() => {
+    cartItemsParent.innerHTML += `
+    <div id="cart_dish${counter}" class="border cart_dish${counter}">
+          <div class="flex items-center mt-2 border border-l-0 border-r-0">
+            <img class="w-20 rounded-sm" src="${cartDishImgUrl}" alt="">
+            <h1 class="ml-2 text-md text-start text-teal-700 font-bold">${cartDishName}</h1>
+          </div>
+        
+          <div class="flex items-center justify-between px-2 mt-2">
+            <span class="pt-2 text-sm text-teal-700 font-bold">${cartDishCurrency}:${cartDishPrice}</span>
+
+            <div class="flex mt-2 pb-2 h-9 ">
+              <span onclick="decreaseItemQuantityOfCart('dish${counter}',${counter},'${cartDishName}','${cartDishImgUrl}','${cartDishPrice}','${cartDishCurrency}')" class="bg-white border pt-2 text-xl border-teal-700  text-teal-700 px-2"> <svg
+                  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                  stroke="currentColor" class="w-4 h-3">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14" />
+                </svg>
+              </span>
+
+              <span id="itemsQuantityWhileAdd${counter}" class=" bg-teal-700 text-center text-white p-1 text-sm px-4">${cartItemsQuantity}</span>
+              <span onclick="reduceItemQuantityOfCart('dish${counter}',${counter},'${cartDishName}','${cartDishImgUrl}','${cartDishPrice}','${cartDishCurrency}')" class="bg-white border pt-2 text-xl border-teal-700 text-teal-700 px-2"><svg
+                  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                  stroke="currentColor" class="w-4 h-3">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+              </span>
+            </div>
+
+          </div>
+        </div>
+  
+    `
+    console.log(`added cart_dish${counter} successfully`)
+      })
+      .catch((error) => {
+        console.error("Error while adding to cart", error);
+      });
+
+
+}
+
+const removeFromCart = (id,counter)=>{
+
+  const selectedRestaurantId = new URLSearchParams(window.location.search).get('restaurantId');
+  let currentUserUid = firebase.auth().currentUser.uid
+  let cartItemsParent = document.getElementById('cart_dishes');
+  let currentCartDish = document.getElementById(`cart_dish${counter}`)
+  db.collection(`PendingOrders:${currentUserUid}`).doc(`${selectedRestaurantId}`).collection(`${currentUserUid}`).doc(`${counter}`).delete().then(() => {
+    
+    currentCartDish ? currentCartDish.remove() : null;
+    console.log('dish has been deleted from cart')
+
+    }).catch((error) => {
+      console.error("Error removing document: ", error);
+    });
+}
+
+const reduceItemQuantityOfCart = (id,counter,cartDishName,cartDishImgUrl,cartDishPrice,cartDishCurrency)=>{
+
+  
+  reduceItemQuantity(id,counter,cartDishName,cartDishImgUrl,cartDishPrice,cartDishCurrency)
+
+}
+
+const decreaseItemQuantityOfCart = (id,counter,cartDishName,cartDishImgUrl,cartDishPrice,cartDishCurrency)=>{
+
+  decreaseItemQuantity(id,counter,cartDishName,cartDishImgUrl,cartDishPrice,cartDishCurrency)
+
+}
+
+const getCartDishes = ()=>{
+  const selectedRestaurantId = new URLSearchParams(window.location.search).get('restaurantId');
+  let cartItemsParent = document.getElementById('cart_dishes');
+  let currentUserUid = firebase.auth().currentUser.uid
+
+  db.collection(`PendingOrders:${currentUserUid}`).doc(`${selectedRestaurantId}`).collection(`${currentUserUid}`).get().then((querySnapshot) => {
+    querySnapshot.forEach((doc) => {
+      
+      cartItemsParent.innerHTML += `
+      <div id="cart_dish${doc.id}" class="border cart_dish${doc.id}">
+        <div class="flex items-center mt-2 border border-l-0 border-r-0">
+          <img class="w-20 rounded-sm" src="${doc.data().dishImgUrl}" alt="">
+          <h1 class="ml-2 text-md text-start text-teal-700 font-bold">${doc.data().dishName}</h1>
+        </div>
+      
+        <div class="flex items-center justify-between px-2 mt-2">
+          <span class="pt-2 text-sm text-teal-700 font-bold">${doc.data().currency}:${doc.data().dishPrice}</span>
+
+          <div class="flex mt-2 pb-2 h-9 ">
+            <span onclick="decreaseItemQuantityOfCart('dish${doc.id}',${doc.id},'${doc.data().dishName}','${doc.data().imgUrl}','${doc.data().dishPrice}','${doc.data().currency}')" class="bg-white border pt-2 text-xl border-teal-700  text-teal-700 px-2"> <svg
+                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="w-4 h-3">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14" />
+              </svg>
+            </span>
+
+            <span id="cartItemQuantity${doc.id}" class=" bg-teal-700 text-center text-white p-1 text-sm px-4">${doc.data().itemsQuantity}</span>
+
+            <span onclick="reduceItemQuantityOfCart('dish${doc.id}',${doc.id},'${doc.data().dishName}','${doc.data().imgUrl}','${doc.data().dishPrice}','${doc.data().currency}')"  class="bg-white border pt-2 text-xl border-teal-700 text-teal-700 px-2"><svg
+                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="w-4 h-3">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+              </svg>
+            </span>
+          </div>
+
+        </div>
+      </div>
+    
+      `
+     
+    })
+  })
+}
+
+// }
+// cartter logic *****************************************************************************************
 
 
 
