@@ -207,20 +207,22 @@ const createDish = (dishName, dishPrice, category_dropdown, deliveryType, curren
 
 
     // Add a new document in collection "cities"
-  db.collection(`${currentRestaurantUid}`).doc(`${dishCounter}`).set({
+  db.collection(`Dishes`).add({
+    dishId: dishCounter,
     dishName: dishName,
     dishPrice: dishPrice,
     category_dropdown: category_dropdown,
     deliveryType:deliveryType,
     currency: currency,
     imgUrl: imgUrl,
-    quantity: 0
+    restaurantUid: currentRestaurantUid,
+  
+    
   })
-  .then(() => {
-
+  .then((docRef) => {
     cardParent.innerHTML += `
     
-    <div id='dish${dishCounter}' class="card h-auto w-60 mt-8 mb-5  border border-teal-700 rounded">
+    <div id='${docRef.id}' class="card h-auto w-60 mt-8 mb-5  border border-teal-700 rounded">
     <div id='dishImageParent${dishCounter}'><img id="DynamicDishImg${dishCounter}" class="p-1 w-60 h-44" src="${imgUrl}" alt=""></div>
     <div class="flex px-4 mb-3 text-center">
     
@@ -244,7 +246,7 @@ const createDish = (dishName, dishPrice, category_dropdown, deliveryType, curren
           <h1 class="text-sm ml-1 text-teal-700">Delivery <span>${deliveryType}</span></h1>
       </div>
       <div class="pr-4 ">
-        <svg onclick="deleteDish('dish${dishCounter}',${dishCounter})" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class=" hover:text-red-700 w-5 h-5 cursor-pointer text-teal-700">
+        <svg onclick="deleteDish('${docRef.id}',${dishCounter})" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class=" hover:text-red-700 w-5 h-5 cursor-pointer text-teal-700">
           <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
           </svg>
         
@@ -262,13 +264,6 @@ const createDish = (dishName, dishPrice, category_dropdown, deliveryType, curren
   }); 
   
   
-  // getDishData(currentRestaurantUid)
-  
-
-  
-  // let dishImageParent = document.getElementById(`dishImageParent${counter}`)
-
-  // dishImageUpload(dishImageParent)
 
 
 }
@@ -278,8 +273,8 @@ const createDish = (dishName, dishPrice, category_dropdown, deliveryType, curren
 const deleteDish = (dishCardId, idCounter) => {
   let currentRestaurantUid = firebase.auth().currentUser.uid
   let dishCard_parent = document.getElementById(`${dishCardId}`)
-  db.collection(`${currentRestaurantUid}`).doc(`${idCounter}`).delete().then(() => {
-    
+  
+  db.collection(`Dishes`).doc(`${dishCardId}`).delete().then(() => {
     
     let deletetRef = firebase.storage().ref().child(`/restaurants/${currentRestaurantUid}/dish${idCounter}`);
     // let fileRef = firebase.storage().ref().child(`/restaurants/${currentRestaurantUid}/dish${counter}`)
@@ -305,8 +300,20 @@ const deleteDish = (dishCardId, idCounter) => {
 
 // adding dish on cards **************************************************************************
 const addDish = () => {
-  
-    let currentRestaurantUid = firebase.auth().currentUser.uid
+
+  let currentRestaurantUid = firebase.auth().currentUser.uid
+  //   let currentRestaurantName;
+  //   let getCurrentRestaurantName = db.collection("Restaurants").doc(`${currentRestaurantUid}`).get().then((doc) => {
+  //     if (doc.exists) {
+  //         return doc.data().name
+  //     } else {
+  //         // doc.data() will be undefined in this case
+  //         console.log("No restaurants available ");
+  //     }
+  // }).catch((error) => {
+  //     console.log("Error getting document:", error);
+  // });
+
   let counter = parseInt(localStorage.getItem(`${currentRestaurantUid}`)) || 1;
 
   let dishName = document.getElementById('dishName').value;
@@ -347,7 +354,8 @@ const addDish = () => {
     
       uploadTask.snapshot.ref.getDownloadURL().then((url) => {
       
-        
+        // console.log(restaurantName + "this is name")
+        // console.log(getCurrentRestaurantName);
          
 
     
@@ -389,13 +397,13 @@ const getDishData = (uid) => {
   let currentRestaurantUid = firebase.auth().currentUser.uid
   let cardParent = document.getElementById('cardParent')
 
-  db.collection(`${currentRestaurantUid}`).get().then((querySnapshot) => {
+  db.collection("Dishes").where("restaurantUid", "==", `${currentRestaurantUid}`).get().then((querySnapshot) => {
 
       querySnapshot.forEach((doc) => {
           cardParent.innerHTML += `
     
-      <div id='dish${doc.id}' class="card h-auto w-60 mt-8 mb-5  border border-teal-700 rounded">
-      <div id='dishImageParent${doc.id}'><img id="DynamicDishImg${doc.id}" class="p-1 w-72 h-44" src="${doc.data().imgUrl}" alt=""></div>
+      <div id='${doc.id}' class="card h-auto w-60 mt-8 mb-5  border border-teal-700 rounded">
+      <div id='dishImageParent${doc.data().dishId}'><img id="DynamicDishImg${doc.data().dishId}" class="p-1 w-72 h-44" src="${doc.data().imgUrl}" alt=""></div>
       <div class="flex  px-4 mb-3 text-center">
       
       <h1 class="text-lg font-bold  text-teal-700">${doc.data().dishName.toUpperCase()}</h1>
@@ -418,7 +426,7 @@ const getDishData = (uid) => {
             <h1 class="text-sm ml-1 text-teal-700">Delivery <span>${doc.data().deliveryType}</span></h1>
         </div>
         <div class="pr-4 ">
-          <svg onclick="deleteDish('dish${doc.id}',${doc.id})" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class=" hover:text-red-700 w-5 h-5 cursor-pointer text-teal-700">
+          <svg onclick="deleteDish('${doc.id}',${doc.data().dishId})" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class=" hover:text-red-700 w-5 h-5 cursor-pointer text-teal-700">
             <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
             </svg>
           

@@ -320,12 +320,14 @@ const getDishesFromSelectedRestaurant = (getRestaurantId)=>{
   let selectedRestaurantDishesParent = document.getElementById('selectedRestaurantDishesParent');
   let currentUserUid = firebase.auth().currentUser.uid
   
-  db.collection(`${getRestaurantId}`).get().then((querySnapshot) => {
-
+  db.collection("Dishes").where("restaurantUid", "==", `${getRestaurantId}`).get().then((querySnapshot) => {
+    
       querySnapshot.forEach((doc) => {
+        
+        
         selectedRestaurantDishesParent.innerHTML += `
-        <div id='dish${doc.id}' class="card h-auto w-60 mt-8 mb-5  border border-teal-700 rounded">
-          <div id='dishImageParent${doc.id}'><img id="DynamicDishImg${doc.id}" class="p-1 w-72 h-44"
+        <div id='${doc.id}' class="card h-auto w-60 mt-8 mb-5  border border-teal-700 rounded">
+          <div id='dishImageParent${doc.data().dishId}'><img id="DynamicDishImg${doc.data().dishId}" class="p-1 w-72 h-44"
               src="${doc.data().imgUrl}" alt=""></div>
           <div class="flex  px-4 mb-3 text-center">
             <h1 class="text-lg font-bold  text-teal-700">${doc.data().dishName.toUpperCase()}</h1>
@@ -339,7 +341,7 @@ const getDishesFromSelectedRestaurant = (getRestaurantId)=>{
           <div class="flex items-center  justify-between ">
           <div class="flex px-4 mt-3 pb-2 text-center ">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                stroke="currentColor" class="w-5 h-5 text-teal-700">
+          stroke="currentColor" class="w-5 h-5 text-teal-700">
                 <path stroke-linecap="round" stroke-linejoin="round"
                   d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
               </svg>
@@ -350,12 +352,12 @@ const getDishesFromSelectedRestaurant = (getRestaurantId)=>{
           <hr>
           
           <div  class="flex  mt-2 " id="addtoCartBtn">
-              <span onclick="decreaseItemQuantity('dish${doc.id}',${doc.id},'${doc.data().dishName}','${doc.data().imgUrl}','${doc.data().dishPrice}','${doc.data().currency}')" class="bg-white border pt-3 text-xl border-t-teal-700 border-r-teal-700 text-teal-700 px-3"> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+              <span id="decreaseBtnOfDish${doc.data().dishId}" onclick="decreaseItemQuantity('${doc.id}',${doc.data().dishId},'${doc.data().dishName}','${doc.data().imgUrl}','${doc.data().dishPrice}','${doc.data().currency}')" class="decreaseBtnOfDish bg-white border pt-3 text-xl border-t-teal-700 border-r-teal-700 text-teal-700 px-3"> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14" />
               </svg>
                 </span>
-              <span  class="addToCartBtn bg-teal-700 text-center text-white p-2 w-52" id='itemQuantity${doc.id}' >0</span>
-              <span onclick="reduceItemQuantity('dish${doc.id}',${doc.id},'${doc.data().dishName}','${doc.data().imgUrl}','${doc.data().dishPrice}','${doc.data().currency}')" class="bg-white border pt-3 text-xl border-t-teal-700 border-l-teal-700 text-teal-700 px-3"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+              <span  class="addToCartBtn bg-teal-700 text-center text-white p-2 w-52" id='itemQuantity${doc.data().dishId}' >0</span>
+              <span id="reduceBtnOfDish${doc.data().dishId}" onclick="reduceItemQuantity('${doc.id}',${doc.data().dishId},'${doc.data().dishName}','${doc.data().imgUrl}','${doc.data().dishPrice}','${doc.data().currency}')" class="reduceBtnOfDish bg-white border pt-3 text-xl border-t-teal-700 border-l-teal-700 text-teal-700 px-3"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
               <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
               </svg>
               </span>
@@ -364,15 +366,15 @@ const getDishesFromSelectedRestaurant = (getRestaurantId)=>{
         </div>
         
         `
-      getQuantityOfItems(`${currentUserUid}`,doc.id)
+        
+        getQuantityOfItems(`${currentUserUid}`,doc.data().dishId)
+        // console.log(doc.id,doc.data().dishId)
+        // increaseDishesPrice()
       
-      
+      })
+      getCartDishes()
     })
-    getCartDishes()
-    })
-  
   }
-
 
 // get dishes from selected restaurant of user ***********************************************************************
 
@@ -391,11 +393,11 @@ const getQuantityOfItems =(currentUser,id)=>{
   db.collection(`PendingOrders:${currentUserUid}`).doc(`${selectedRestaurantId}`).collection(`${currentUserUid}`).doc(`${id}`).get().then((doc) => {
     if (doc.exists) {
       const currentValue = doc.data().itemsQuantity;
-      console.log('when if doc exist while getting data of quantity')
+      // console.log('when if doc exist while getting data of quantity')
       updateCounter(currentValue,`itemQuantity${id}`,id);
     } 
     else {
-      console.log('there is no any dish in cart')
+      // console.log('there is no any dish in cart')
  
     }
   });
@@ -413,17 +415,22 @@ const updateCounter = (value,dishIncreaseBtnId,counter)=>{
   let cartQuantityText = document.getElementById(`cartItemQuantity${counter}`)
   let itemsQuantityWhileAdd = document.getElementById(`itemsQuantityWhileAdd${counter}`)
   let quantityText = document.getElementById(`${dishIncreaseBtnId}`)
+  let reduceBtnOfDish = document.getElementById(`reduceBtnOfDish${counter}`)
+
   
   db.collection(`PendingOrders:${currentUserUid}`).doc(`${selectedRestaurantId}`).collection(`${currentUserUid}`).doc(`${counter}`).update({ itemsQuantity: value }).then(()=>{
-   
-   
+    
+    
     quantityText.innerHTML = value
-
+    
     itemsQuantityWhileAdd ? itemsQuantityWhileAdd.innerHTML = value : null;
     cartQuantityText ? cartQuantityText.innerHTML = value : null;
-  
+    
+    
   })
-  
+
+    calculateTotalAmount()
+ 
 }
 
 // setting quantity of order items in span's innerHTML *****************************************************
@@ -456,7 +463,7 @@ const reduceItemQuantity = (id,counter,cartDishName,cartDishImgUrl,cartDishPrice
         
         updateCounter(newValue,`itemQuantity${counter}`,`${counter}`);
  
-     console.log('else of reduce document ')
+    //  console.log('else of reduce document ')
     
 
       }
@@ -477,7 +484,7 @@ const decreaseItemQuantity= (id,counter,cartDishName,cartDishImgUrl,cartDishPric
 
  
   if ( quantityText.innerHTML != 0) {
-    
+    // console.log('yaho ')
     const selectedRestaurantId = new URLSearchParams(window.location.search).get('restaurantId');
     let decreaseQuantityBtn = document.getElementById(`itemQuantity${counter}`);
     const currentValue = parseInt(decreaseQuantityBtn.innerText);
@@ -511,13 +518,12 @@ const addToCart = (id,counter,cartDishName,cartDishImgUrl,cartDishPrice,cartDish
     )
     .then(() => {
     cartItemsParent.innerHTML += `
-    <div id="cart_dish${counter}" class="border cart_dish${counter}">
-          <div class="flex items-center mt-2 border border-l-0 border-r-0">
-            <img class="w-20 rounded-sm" src="${cartDishImgUrl}" alt="">
+    <div id="cart_dish${counter}" class="border cartDish cart_dish${counter}">
+          <div class="flex items-center h-12 mt-5 border border-l-0 border-r-0">
+            <img class="w-20 h-12 rounded-sm" src="${cartDishImgUrl}" alt="">
             <h1 class="ml-2 text-md text-start text-teal-700 font-bold">${cartDishName}</h1>
           </div>
-        
-          <div class="flex items-center justify-between px-2 mt-2">
+           <div class="flex items-center justify-between px-2 mt-2">
             <span class="pt-2 text-sm text-teal-700 font-bold">${cartDishCurrency}:${cartDishPrice}</span>
 
             <div class="flex mt-2 pb-2 h-9 ">
@@ -579,23 +585,56 @@ const decreaseItemQuantityOfCart = (id,counter,cartDishName,cartDishImgUrl,cartD
 
 }
 
-const getCartDishes = ()=>{
-  const selectedRestaurantId = new URLSearchParams(window.location.search).get('restaurantId');
-  let cartItemsParent = document.getElementById('cart_dishes');
-  let currentUserUid = firebase.auth().currentUser.uid
 
+const calculateTotalAmount =()=>{
+
+
+  let currentUserUid = firebase.auth().currentUser.uid
+  const selectedRestaurantId = new URLSearchParams(window.location.search).get('restaurantId');
+  let calculateItem = []
+  let totalOfCartItems = document.getElementById('totalOfItems')
+
+  db.collection(`PendingOrders:${currentUserUid}`).doc(`${selectedRestaurantId}`).collection(`${currentUserUid}`).get().then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+          
+          calculateItem.push( doc.data().itemsQuantity * parseInt(doc.data().dishPrice) )
+        
+      })
+  }).then(()=>{
+    let sum =  calculateItem.reduce((PreviousVal,currentVal)=>{
+      return PreviousVal + currentVal
+    },0)
+    totalOfCartItems.innerHTML = sum
+    // console.log(sum)
+  });
+
+
+
+}
+
+
+
+
+const getCartDishes = ()=>{
+  let cartItemsParent = document.getElementById('cart_dishes');
+  let cartDish = document.querySelectorAll('.cartDish')
+  
+  let currentUserUid = firebase.auth().currentUser.uid
+  const selectedRestaurantId = new URLSearchParams(window.location.search).get('restaurantId');
   db.collection(`PendingOrders:${currentUserUid}`).doc(`${selectedRestaurantId}`).collection(`${currentUserUid}`).get().then((querySnapshot) => {
     querySnapshot.forEach((doc) => {
       
       cartItemsParent.innerHTML += `
-      <div id="cart_dish${doc.id}" class="border cart_dish${doc.id}">
-        <div class="flex items-center mt-2 border border-l-0 border-r-0">
-          <img class="w-20 rounded-sm" src="${doc.data().dishImgUrl}" alt="">
-          <h1 class="ml-2 text-md text-start text-teal-700 font-bold">${doc.data().dishName}</h1>
+      <div id="cart_dish${doc.id}" class="border cartDish cart_dish${doc.id}">
+      <div class="flex items-center h-12 mt-5 border border-l-0 border-r-0">
+      <img class="w-20 h-12 rounded-sm" src="${doc.data().dishImgUrl}" alt="">
+      <h1 class="ml-2 text-md text-start text-teal-700 font-bold">${doc.data().dishName}</h1>
+    
+
         </div>
       
         <div class="flex items-center justify-between px-2 mt-2">
-          <span class="pt-2 text-sm text-teal-700 font-bold">${doc.data().currency}:${doc.data().dishPrice}</span>
+          <span class="pt-2 text-sm text-teal-700 font-bold">${doc.data().currency}: <span id='dishPrice${doc.id}' class='dishPrice'>${doc.data().dishPrice}</span></span>
 
           <div class="flex mt-2 pb-2 h-9 ">
             <span onclick="decreaseItemQuantityOfCart('dish${doc.id}',${doc.id},'${doc.data().dishName}','${doc.data().imgUrl}','${doc.data().dishPrice}','${doc.data().currency}')" class="bg-white border pt-2 text-xl border-teal-700  text-teal-700 px-2"> <svg
@@ -619,9 +658,11 @@ const getCartDishes = ()=>{
       </div>
     
       `
-     
+  
     })
+    
   })
+
 }
 
 // }
@@ -645,3 +686,34 @@ const collapNav = () => {
 
 }
 
+
+
+
+// may be work in future
+
+// const countTotalAmount = (dishPrice)=>{
+
+//   let currentDishPrice = document.getElementsByClassName(`dishPrice`)
+//   let cartDish = document.querySelectorAll('.cartDish')
+//   let dishPriceDiv = document.querySelectorAll('.dishPrice')
+  
+//   let AmountArr = []
+//   let amountInNumbers = []
+// Array.from(currentDishPrice).forEach((element,index) => {
+
+//   //  AmountArr.push(element.innerHTML)
+//    AmountArr.push(element)
+    
+// });
+
+//  AmountArr.forEach(element => {
+//   return amountInNumbers.push(parseInt(element.innerHTML))
+// });
+
+//  let sum =  amountInNumbers.reduce((PreviousVal,currentVal)=>{
+//           return PreviousVal + currentVal
+//       },0)
+
+//       return sum
+  
+// }
