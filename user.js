@@ -79,7 +79,7 @@ const userLogin = () => {
   firebase.auth().signInWithEmailAndPassword(userLoginEmail.value, userLoginPassword.value)
   .then((userCredential) => {
       const user = userCredential.user;
-      window.location.href = 'userDashboard.html'
+      window.location.href = 'userHome.html'
       
     })
 
@@ -132,9 +132,16 @@ const userLogin = () => {
       console.log("Error getting document:", error);
     });
 
-  
+
+    if (window.location.pathname === '/userHome.html') {
+      getRestaurants(uid);
+   }
+
+  if(window.location.pathname === '/userDashboard.html'){
+
+    getUserDashboardData()
+  }
       
-        getRestaurants(uid)
       
     
       
@@ -585,14 +592,17 @@ const decreaseItemQuantityOfCart = (id,counter,cartDishName,cartDishImgUrl,cartD
 
 }
 
+var totalAmountOrderedItems;
+var totalQuantityOfOrderedItems;
 
 const calculateTotalAmount =()=>{
 
-
+  let placeOrderBtn = document.getElementById('placeOrderBtn')
   let currentUserUid = firebase.auth().currentUser.uid
   const selectedRestaurantId = new URLSearchParams(window.location.search).get('restaurantId');
   let calculateItem = []
   let totalOfCartItems = document.getElementById('totalOfItems')
+  let totalAmount;
 
   db.collection(`PendingOrders:${currentUserUid}`).doc(`${selectedRestaurantId}`).collection(`${currentUserUid}`).get().then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
@@ -601,18 +611,161 @@ const calculateTotalAmount =()=>{
         
       })
   }).then(()=>{
+    totalQuantityOfOrderedItems = calculateItem.length
     let sum =  calculateItem.reduce((PreviousVal,currentVal)=>{
       return PreviousVal + currentVal
     },0)
     totalOfCartItems.innerHTML = sum
+    totalAmountOrderedItems = sum
     // console.log(sum)
   });
-
-
-
+  // placeOrderBtn.addEventListener('click',function (){
+  //   placeOrder(totalAmount)
+  // })
+  
+ 
 }
 
 
+const placeOrder=()=>{
+  let currentUserUid = firebase.auth().currentUser.uid
+  const selectedRestaurantId = new URLSearchParams(window.location.search).get('restaurantId');
+  const selectedRestaurantName = new URLSearchParams(window.location.search).get('restaurantName')
+  const dbRefOfCart =  db.collection(`PendingOrders:${currentUserUid}`).doc(`${selectedRestaurantId}`).collection(`${currentUserUid}`)
+  let modalOfPlacedOrder = document.getElementById('modalOfPlacedOrder');
+  let cart_dishes = document.getElementById('cart_dishes');
+  let addToCartBtn  = document.getElementsByClassName('addToCartBtn');
+  let totalOfCartItems = document.getElementById('totalOfItems');
+  let restaurantProfileUrl;
+
+  let currentDate = new Date()
+  let fullDate = {
+        day   : currentDate.getDate(),
+        month : currentDate.getMonth() + 1,
+        year  : currentDate.getFullYear()
+
+      }
+      db.collection('Restaurants').doc(`${selectedRestaurantId}`).get().then((doc) => {
+          if (doc.exists) {
+            restaurantProfileUrl = `${doc.data().restaurantprofileUrl}`
+            console.log(doc.data())
+
+          } else {
+              // doc.data() will be undefined in this case
+              console.log("could not get restaurant name");
+          }
+      })
+      .then(()=>{
+        db.collection("placedOrders").add({
+          userUid: currentUserUid,
+          restaurantProfileUrl : restaurantProfileUrl,
+          restaurantUid: selectedRestaurantId,
+          restaurantName:selectedRestaurantName,
+          dishQuantity: totalQuantityOfOrderedItems,
+          totalAmount : totalAmountOrderedItems,
+          process: 'pending',
+          orderDate :`${fullDate.month.toString().padStart(2, '0')}/${fullDate.day.toString().padStart(2, '0')}/${fullDate.year}`
+
+        })
+        .then((docRef) => {
+
+          dbRefOfCart.get().then((querySnapshot) => {
+
+            querySnapshot.forEach((doc) => {
+              dbRefOfCart.doc(`${doc.id}`).delete().then(() => {
+
+
+        //  window.location.href = 'userDashboard.html'
+    
+            
+                cart_dishes.innerHTML = ''
+                totalOfCartItems.innerHTML = '...'
+                Array.from(addToCartBtn).forEach(element => {
+                  element.innerHTML = '0'
+                });            
+            
+                }).catch((error) => {
+                  console.error("Error removing document: ", error);
+                });      
+                // doc.data() is never undefined for query doc snapshots
+                // console.log(doc.id, " => ", doc.data());
+            });
+        });
+
+        
+          toggle()
+          // window.location.href  = `orderPage.html?restaurantId=${getRestaurantId}&restaurantName=${getRestaurantName}`
+          // window.location.href = 
+          // window.location.reload();
+          
+        })
+        .catch((error) => {
+          console.error("Error adding place order: ", error);
+        });
+
+
+        
+      })
+      .catch((error) => {
+          console.log("Error getting document:", error);
+      });
+
+    // Add a new document with a generated id.
+        }
+
+const toggle = () => {
+
+  let blur = document.getElementById('forBlur');
+  blur.classList.toggle('active')
+   let popup = document.getElementById('modalOfPlacedOrder')
+   popup.classList.toggle('hidden')
+  
+ }
+
+
+
+const getUserDashboardData=()=>{
+  let currentUserUid = firebase.auth().currentUser.uid
+  const selectedRestaurantId = new URLSearchParams(window.location.search).get('restaurantId');
+  const selectedRestaurantName = new URLSearchParams(window.location.search).get('restaurantName');
+  let userOrdersList = document.getElementById('userOrdersList');
+  
+  
+      
+  db.collection("placedOrders").where("userUid", "==", currentUserUid)
+    .get()
+    .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+           userOrdersList.innerHTML += `
+           <div id=${doc.id} class="w-5/12 ml-16 userDashboardOrders bg-gray-100 border border-gray-200 rounded h-14 flex items-center mt-3 justify-between">
+          <div id=restaurantProfileUrlOf${doc.id} class="w-12 h-12 rounded-full ml-1 mr-2 ">
+            <img class="h-12 w-12 rounded" src=${doc.data().restaurantProfileUrl}>
+          </div>
+          <div>
+          <p id="orderRestaurantNameOf${doc.id}" class="text-teal-700 font-bold text-md ">
+            ${doc.data().restaurantName}
+          </p>
+          </div>
+          
+          <div class="self-end text-gray-500 text-xs mb-1 flex flex-col mr-8 ">
+            <span >Dishes <span id="userDishesQuantityOf${doc.id}">${doc.data().dishQuantity}</span></span>
+
+            <span class="mt-3"> Total Amount : <span id="userDashboardTotal">${doc.data().totalAmount}</span> </span>
+          </div>
+          <div class="text-xs  flex flex-col pt-1 mr-3">
+            <span id=userOrderProcessOf${doc.id} class="text-yellow-500 italic">${doc.data().process}</span>
+            <span id="userOrderDateOf${doc.id}" class="text-gray-400 mt-3">${doc.data().orderDate}</span>
+          </div>
+        </div>
+           
+           `
+        });
+    })
+    .catch((error) => {
+        console.log("Error getting documents: ", error);
+    });
+
+}
 
 
 const getCartDishes = ()=>{

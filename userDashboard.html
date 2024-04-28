@@ -75,16 +75,27 @@
             <div class="hidden sm:ml-0 sm:block">
               <div class="flex items-center space-x-7 lg:pl-40 md:space-x-7 md:pl-12  sm:space-x-1 ">
                 <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-                <a href="#" class=" text-teal-700  flex items-center rounded-md px-3 py-2 text-sm font-bold"
-                  aria-current="page">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                  stroke="currentColor" class="w-6 h-6">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
+                <a href="userHome.html" class="hover:text-teal-700  flex items-center rounded-md px-3 py-2 text-sm font-bold"
+                aria-current="page">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-5">
+                  <path d="M11.47 3.841a.75.75 0 0 1 1.06 0l8.69 8.69a.75.75 0 1 0 1.06-1.061l-8.689-8.69a2.25 2.25 0 0 0-3.182 0l-8.69 8.69a.75.75 0 1 0 1.061 1.06l8.69-8.689Z" />
+                  <path d="m12 5.432 8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 0 1-.75-.75v-4.5a.75.75 0 0 0-.75-.75h-3a.75.75 0 0 0-.75.75V21a.75.75 0 0 1-.75.75H5.625a1.875 1.875 0 0 1-1.875-1.875v-6.198a2.29 2.29 0 0 0 .091-.086L12 5.432Z" />
                 </svg>
+                
 
-                  <h1>Dashboard</h1>
-                </a>
+                <h1>Home</h1>
+              </a>
+              <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
+              <a href="userDashboard.html" class="text-teal-700 flex items-center rounded-md px-3 py-2 text-sm font-bold"
+                aria-current="page">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
+              </svg>
+
+                <h1>Dashboard</h1>
+              </a>
 
                 <div class="flex items-center">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
@@ -183,81 +194,97 @@
 
 
 
+    <!-- cards *********************************************************************************** -->
     <div class="border bg-slate-100 flex max-sm:justify-center items-center justify-between m-2 p-2 border-slate-200 ">
 
-      <h1 id="user_restaurantsHeading"
-        class="border  flex text-xl max-sm:text-center sm:text-center lg:text-start  font-semibold text-teal-700 underline underline-offset-4 font-sans ">
-        Restaurants</h1>
+      <h1 id="user_restaurantsHeading" class=" flex text-xl max-sm:text-center sm:text-center lg:text-start  font-semibold text-teal-700 underline underline-offset-4 font-sans ">
+        Your Orders</h1>
       <button>
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-          class="w-6 h-6 text-gray-600 navBtn-2 hidden">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-gray-600 navBtn-2 hidden">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
         </svg>
       </button>
 
       <!-- mobile log out button ******************************************************** -->
       <button onclick="signOutUser()">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-          class="w-6 h-6 hover:text-red-800 text-gray-600 navBtn-2 hidden">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M5.636 5.636a9 9 0 1012.728 0M12 3v9" />
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 hover:text-red-800 text-gray-600 navBtn-2 hidden">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5.636 5.636a9 9 0 1012.728 0M12 3v9"></path>
         </svg>
       </button>
 
 
     </div>
 
-    <!-- cards *********************************************************************************** -->
-    <div id="user_restaurantsCardParent" class="userCard-parent flex flex-wrap  justify-evenly items-start border w-full bg-gray-50">
+    <div  id="userOrdersList" class=" userOrders userDashboardCard-parent mt-2 flex flex-wrap  items-center ">
 
-      <!-- <div class="user_restaurantCard h-auto w-96 mt-8 mb-5  border border-teal-700 rounded">
-        <div id="user_restaurantImgParent"> <img class="p-1 img w-96 h-44" src="test.jpg" alt=""></div>
-        <div class="flex items-center justify-between px-4 mb-3 text-center">
-          <h1 id="user_restaurantName" class="text-lg font-bold text-center  text-teal-700">ALINA </h1>
-          <span class="flex mt-1">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-              class="w-4 h-5 text-teal-700">
-              <path fill-rule="evenodd"
-                d="M9.293 2.293a1 1 0 011.414 0l7 7A1 1 0 0117 11h-1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-3a1 1 0 00-1-1H9a1 1 0 00-1 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-6H3a1 1 0 01-.707-1.707l7-7z"
-                clip-rule="evenodd" />
-            </svg>
-
-            <h1 id="user_restaurantCity" class="text-teal-700 pl-1 text-sm">Karachi</h1>
-          </span>
+      <!-- <div id="userOrderData" class="w-5/12   ml-16 bg-gray-100 border mr-6 border-gray-200 rounded h-14 flex items-center justify-between">
+      <div class="w-12 h-12 rounded overflow-hidden ml-1">
+        <img class="h-12 " src="https://firebasestorage.googleapis.com/v0/b/fooddeliveryapp99.appspot.com/o/restaurantsProfile%2FSUYDz64FQUfq38wZONejnPWro0I2%2Fprofile?alt=media&token=c8c14a36-dca9-4baa-8509-2155b9e149ad"
+        >
+      </div>
+      <p id="orderRestaurantName" class="text-gray-700 font-bold text-xl mr-40">
+        United King
+      </p>
       
-        </div>
+      <div class="self-end text-teal-700 text-xs mb-1 flex flex-col mr-8">
+        <span >Dishes <span id="userDishesQuantity">2</span></span>
 
-        <div class="flex  justify-between px-4 mb-3 text-center">
-          <h1 id="user_restaurantEmail" class="text-sm text-center  text-teal-700">alina@gmail.com </h1>
-          
-            <span class="flex">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                class="w-4 h-5 text-teal-700">
-                <path
-                  d="M3.5 2.75a.75.75 0 00-1.5 0v14.5a.75.75 0 001.5 0v-4.392l1.657-.348a6.449 6.449 0 014.271.572 7.948 7.948 0 005.965.524l2.078-.64A.75.75 0 0018 12.25v-8.5a.75.75 0 00-.904-.734l-2.38.501a7.25 7.25 0 01-4.186-.363l-.502-.2a8.75 8.75 0 00-5.053-.439l-1.475.31V2.75z" />
-              </svg>
-              <h1 id="user_restaurantCountry" class="text-teal-700 pl-1 text-sm">Pakistan</h1>
-            </span>
-          
-            
-        </div>
+        <span class="mt-3"> Total Amount : <span id="userDashboardTotal">500</span> </span>
+      </div>
+      <div class="text-xs  flex flex-col pt-1 mr-3">
+        <span>pending</span>
+        <span id="userOrderDate" class="text-teal-700 mt-3">03/02/2003</span>
+      </div>
+    </div>
+    <div id="userOrderData" class="w-5/12 ml-16 bg-slate-200 rounded h-14 flex items-center  justify-between">
+      <div class="w-12 h-12 rounded overflow-hidden ml-1">
+        <img class="h-12" src="https://firebasestorage.googleapis.com/v0/b/fooddeliveryapp99.appspot.com/o/restaurantsProfile%2FSUYDz64FQUfq38wZONejnPWro0I2%2Fprofile?alt=media&token=c8c14a36-dca9-4baa-8509-2155b9e149ad"
+        >
+      </div>
+      <p id="orderRestaurantName" class="text-gray-700 font-bold text-xl mr-40">
+        United King
+      </p>
+      
+      <div class="self-end text-teal-700 text-xs mb-1 flex flex-col mr-8">
+        <span >Dishes <span id="userDishesQuantity">2</span></span>
 
-        <hr class="mx-4">
+        <span class="mt-3"> Total Amount : <span id="userDashboardTotal">500</span> </span>
+      </div>
+      <div class="text-xs  flex flex-col pt-1 mr-3">
+        <span>pending</span>
+        <span id="userOrderDate" class="text-teal-700 mt-3">03/02/2003</span>
+      </div>
+    </div>
+    <div id="userOrderData" class="w-5/12  ml-16 bg-slate-200 mt-3 rounded h-14 flex items-center justify-between">
+      <div class="w-12 h-12 rounded overflow-hidden ml-1">
+        <img class="h-12" src="https://firebasestorage.googleapis.com/v0/b/fooddeliveryapp99.appspot.com/o/restaurantsProfile%2FSUYDz64FQUfq38wZONejnPWro0I2%2Fprofile?alt=media&token=c8c14a36-dca9-4baa-8509-2155b9e149ad"
+        >
+      </div>
+      <p id="orderRestaurantName" class="text-gray-700 font-bold text-xl mr-40">
+        United King
+      </p>
+      
+      <div class="self-end text-teal-700 text-xs mb-1 flex flex-col mr-8">
+        <span >Dishes <span id="userDishesQuantity">2</span></span>
 
-        <hr class="mx-4">
-        <div class="flex items-center justify-between">
-
-        </div>
-
-      </div> -->
+        <span class="mt-3"> Total Amount : <span id="userDashboardTotal">500</span> </span>
+      </div>
+      <div class="text-xs  flex flex-col pt-1 mr-3">
+        <span>pending</span>
+        <span id="userOrderDate" class="text-teal-700 mt-3">03/02/2003</span>
+      </div>
+    </div> -->
 
     </div>
+
+
+
     <!-- cards *********************************************************************************** -->
 
     <div>
 
 
-      <footer
-        class=" py-2 border-t flex flex-wrap   sm:h-auto max-sm:justify-center items-center justify-between px-20 border-slate-300 bg-gray-200 ">
+      <footer class=" py-2 border-t flex fixed bottom-0 w-full flex-wrap sm:h-auto max-sm:justify-center items-center justify-between px-20 border-slate-300 bg-gray-200 ">
         <div class="flex  max-sm:mt-2 ">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-5 text-gray-600">
             <path d="M3 4a2 2 0 00-2 2v1.161l8.441 4.221a1.25 1.25 0 001.118 0L19 7.162V6a2 2 0 00-2-2H3z" />
