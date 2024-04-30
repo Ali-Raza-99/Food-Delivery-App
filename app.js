@@ -151,10 +151,28 @@ const restaurantLogin = () => {
         console.log("Error getting document:", error);
       });
 
-      
-      getDishData()
-      
+      if(window.location.pathname === '/restaurantDashboard.html'){
+        
+        getDishData()
+        loader()
 
+      }
+      if(window.location.pathname === '/pending.html'){
+
+        getPendingOrders()
+        // loader()
+
+      }
+
+      if(window.location.pathname === '/accepted.html'){
+      getAcceptedOrders()
+      loader()
+
+      }
+      if(window.location.pathname === '/delivered.html'){
+        getDeliveredOrders()
+        loader()
+      }
 
       // ...
     } else {
@@ -277,20 +295,18 @@ const deleteDish = (dishCardId, idCounter) => {
   db.collection(`Dishes`).doc(`${dishCardId}`).delete().then(() => {
     
     let deletetRef = firebase.storage().ref().child(`/restaurants/${currentRestaurantUid}/dish${idCounter}`);
-    // let fileRef = firebase.storage().ref().child(`/restaurants/${currentRestaurantUid}/dish${counter}`)
 
     // Delete the file
     deletetRef.delete().then(() => {
       // File deleted successfully
     }).catch((error) => {
-      // Uh-oh, an error occurred!
+      console.log(error)
     });
 
 
     }).catch((error) => {
       console.error("Error removing document: ", error);
     });
-    // console.log(todos_parent)
     dishCard_parent.remove()
 }
 
@@ -302,20 +318,7 @@ const deleteDish = (dishCardId, idCounter) => {
 const addDish = () => {
 
   let currentRestaurantUid = firebase.auth().currentUser.uid
-  //   let currentRestaurantName;
-  //   let getCurrentRestaurantName = db.collection("Restaurants").doc(`${currentRestaurantUid}`).get().then((doc) => {
-  //     if (doc.exists) {
-  //         return doc.data().name
-  //     } else {
-  //         // doc.data() will be undefined in this case
-  //         console.log("No restaurants available ");
-  //     }
-  // }).catch((error) => {
-  //     console.log("Error getting document:", error);
-  // });
-
   let counter = parseInt(localStorage.getItem(`${currentRestaurantUid}`)) || 1;
-
   let dishName = document.getElementById('dishName').value;
   let dishPrice = document.getElementById('dishPrice').value;
   let category_dropdown = document.getElementById('category_dropdown');
@@ -332,16 +335,12 @@ const addDish = () => {
 
   else {
     
-    // let dishCounter = counter
     let currentRestaurantUid = firebase.auth().currentUser.uid
     let fileRef = firebase.storage().ref().child(`/restaurants/${currentRestaurantUid}/dish${counter}`)
-    // console.log(e.target.files)
     let uploadTask = fileRef.put(dishFileImg)
   
     uploadTask.on('state_changed', 
     (snapshot) => { 
-      // Observe state change events such as progress, pause, and resume
-      // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
       var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
       console.log('Upload is ' + progress + '% done');
       if(progress == '100') console.log('uploaded')
@@ -353,11 +352,6 @@ const addDish = () => {
     () => {
     
       uploadTask.snapshot.ref.getDownloadURL().then((url) => {
-      
-        // console.log(restaurantName + "this is name")
-        // console.log(getCurrentRestaurantName);
-         
-
     
     createDish(dishName, dishPrice, category_dropdown.value, deliveryType.value, currency.value,url,counter)
     toggle()
@@ -373,22 +367,166 @@ const addDish = () => {
 
 // restaurant logic******************************************************************
 
-// navbar logic  **********************************************************************
 
-const collapNav = () => {
+const getDeliveredOrders = ()=>{
 
-  let nav_icon = document.getElementById('mobile-menu');
-  let togle = nav_icon.offsetHeight
-  nav_icon.style.display = 'block';
-
-  if (togle === 0) {
-    nav_icon.style.height = '200px';
-  } else {
-    nav_icon.style.height = '0';
-    nav_icon.style.display = 'none'
-  }
+  let currentRestaurantUid = firebase.auth().currentUser.uid
+  let deliveredOrdersParent = document.getElementById('deliveredOrdersParent');
 
 
+  db.collection("placedOrders").where("process", "==", 'delivered').where("restaurantUid", "==", `${currentRestaurantUid}` )
+  .get()
+  .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        deliveredOrdersParent.innerHTML +=`
+        
+        <div id=${doc.id} class="w-5/12 sm:w-full md:w-full  ml-16 userDashboardOrders bg-gray-100 border border-gray-200 rounded  flex items-center mt-3 justify-between">
+          <div id=userprofile${doc.id} class="w-12 h-12 rounded overflow-hidden ml-1 mr-2 ">
+            <img class=" " src=${doc.data().userProfileUrl}>
+          </div>
+          <div>
+          <p id="orderRestaurantNameOf${doc.id}" class="text-teal-700  text-md ">
+            ${doc.data().userName}
+          </p>
+          </div>
+          
+          <div class="self-end text-gray-500 text-xs mb-1 flex flex-col mr-8 ">
+            <span >Dishes : <span id="userDishesQuantityOf${doc.id}">${doc.data().dishQuantity}</span></span>
+
+            <span class="mt-3"> Total Amount : <span id="userDashboardTotal">${doc.data().totalAmount}</span> </span>
+          </div>
+          <div class="text-xs  flex flex-col pt-1 mr-3">
+            <span id=userOrderProcessOf${doc.id} class="  cursor-pointer text-sky-700 p-1 text-xs rounded  text-center italic">Delivered</span>
+            <span id="userOrderDateOf${doc.id}" class="text-gray-400 mt-3">${doc.data().orderDate}</span>
+          </div>
+        </div>
+        
+        ` 
+      });
+  })
+  .catch((error) => {
+      console.log("Error getting documents: ", error);
+  });
+}
+
+const getAcceptedOrders = ()=>{
+
+  let currentRestaurantUid = firebase.auth().currentUser.uid
+  let acceptedOrdersParent = document.getElementById('acceptedOrdersParent');
+
+
+  db.collection("placedOrders").where("process", "==", 'accepted').where("restaurantUid", "==", `${currentRestaurantUid}` )
+  .get()
+  .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        acceptedOrdersParent.innerHTML +=`
+        
+        <div id=${doc.id} class="w-5/12 ml-16 userDashboardOrders bg-gray-100 border border-gray-200 rounded h-14 flex items-center mt-3 justify-between">
+          <div id=userprofile${doc.id} class="w-12 h-12 rounded overflow-hidden ml-1 mr-2 ">
+            <img class=" " src=${doc.data().userProfileUrl}>
+          </div>
+          <div>
+          <p id="orderRestaurantNameOf${doc.id}" class="text-teal-700  text-md ">
+            ${doc.data().userName}
+          </p>
+          </div>
+          
+          <div class="self-end text-gray-500 text-xs mb-1 flex flex-col mr-8 ">
+            <span >Dishes : <span id="userDishesQuantityOf${doc.id}">${doc.data().dishQuantity}</span></span>
+
+            <span class="mt-3"> Total Amount : <span id="userDashboardTotal">${doc.data().totalAmount}</span> </span>
+          </div>
+          <div class="text-xs  flex flex-col pt-1 mr-3">
+            <span onclick="updateAcceptedToDeliveredOrders('${doc.id}')" id=userOrderProcessOf${doc.id} class=" text-white cursor-pointer bg-sky-700 p-1 text-xs rounded  text-center italic">Deliver</span>
+            <span id="userOrderDateOf${doc.id}" class="text-gray-400 mt-3">${doc.data().orderDate}</span>
+          </div>
+        </div>
+        
+        `
+      });
+  })
+  .catch((error) => {
+      console.log("Error getting documents: ", error);
+  });
+}
+
+
+const getPendingOrders = ()=>{
+
+  let currentRestaurantUid = firebase.auth().currentUser.uid
+  let pendingOrdersParent = document.getElementById('pendingOrdersParent');
+
+
+  db.collection("placedOrders").where("process", "==", 'pending').where("restaurantUid", "==", `${currentRestaurantUid}` )
+  .get()
+  .then((querySnapshot) => {
+    loader()
+
+      querySnapshot.forEach((doc) => {
+        pendingOrdersParent.innerHTML +=`
+        
+        <div id=${doc.id} class="w-5/12 ml-16 userDashboardOrders bg-gray-100 border border-gray-200 rounded h-14 flex items-center mt-3 justify-between">
+          <div id=userprofile${doc.id} class="w-12 h-12 rounded overflow-hidden ml-1 mr-2 ">
+            <img class=" " src=${doc.data().userProfileUrl}>
+          </div>
+          <div>
+          <p id="orderRestaurantNameOf${doc.id}" class="text-teal-700  text-md ">
+            ${doc.data().userName}
+          </p>
+          </div>
+          
+          <div class="self-end text-gray-500 text-xs mb-1 flex flex-col mr-8 ">
+            <span >Dishes : <span id="userDishesQuantityOf${doc.id}">${doc.data().dishQuantity}</span></span>
+
+            <span class="mt-3"> Total Amount : <span id="userDashboardTotal">${doc.data().totalAmount}</span> </span>
+          </div>
+          <div class="text-xs  flex flex-col pt-1 mr-3">
+            <span onclick="updatePendingToAcceptedOrders('${doc.id}')" id=userOrderProcessOf${doc.id} class=" text-white cursor-pointer bg-teal-700 p-1 text-xs rounded  text-center italic">Accept</span>
+            <span id="userOrderDateOf${doc.id}" class="text-gray-400 mt-3">${doc.data().orderDate}</span>
+          </div>
+        </div>
+        
+        `
+      });
+  })
+  .catch((error) => {
+      console.log("Error getting documents: ", error);
+  });
+}
+
+
+const updatePendingToAcceptedOrders =(id)=>{
+
+  let currentRestaurantUid = firebase.auth().currentUser.uid
+  let listItem = document.getElementById(`${id}`)
+
+  db.collection("placedOrders").doc(`${id}`).update({process:"accepted"})
+  .then(() => {
+    listItem.remove()
+   
+  })
+  .catch((error) => {
+    console.error('Error updating document: ', error);
+  });
+
+     
+}
+
+const updateAcceptedToDeliveredOrders =(id)=>{
+
+  let currentRestaurantUid = firebase.auth().currentUser.uid
+  let listItem = document.getElementById(`${id}`)
+
+  db.collection("placedOrders").doc(`${id}`).update({process:"delivered"})
+  .then(() => {
+
+    listItem.remove()
+  })
+  .catch((error) => {
+    console.error('Error updating document: ', error);
+  });
+
+     
 }
 
 
@@ -407,7 +545,6 @@ const getDishData = (uid) => {
       <div class="flex  px-4 mb-3 text-center">
       
       <h1 class="text-lg font-bold  text-teal-700">${doc.data().dishName.toUpperCase()}</h1>
-      
   
         </div>
         <hr class="mx-4">
@@ -440,6 +577,35 @@ const getDishData = (uid) => {
   });
 
 }
+
+// navbar logic  **********************************************************************
+
+const collapNav = () => {
+
+  let nav_icon = document.getElementById('mobile-menu');
+  let togle = nav_icon.offsetHeight
+  nav_icon.style.display = 'block';
+
+  if (togle === 0) {
+    nav_icon.style.height = '200px';
+  } else {
+    nav_icon.style.height = '0';
+    nav_icon.style.display = 'none'
+  }
+
+
+}
+
+// navbar logic  **********************************************************************
+
+const loader=()=>{
+  let loader = document.getElementById('loader');
+  loader.style.display = 'none'
+  
+}
+
+
+
 
 
 // helpful function its helps to add image without database ..........................

@@ -626,8 +626,7 @@ const calculateTotalAmount =()=>{
  
 }
 
-
-const placeOrder=()=>{
+async function placeOrder(){
   let currentUserUid = firebase.auth().currentUser.uid
   const selectedRestaurantId = new URLSearchParams(window.location.search).get('restaurantId');
   const selectedRestaurantName = new URLSearchParams(window.location.search).get('restaurantName')
@@ -636,79 +635,163 @@ const placeOrder=()=>{
   let cart_dishes = document.getElementById('cart_dishes');
   let addToCartBtn  = document.getElementsByClassName('addToCartBtn');
   let totalOfCartItems = document.getElementById('totalOfItems');
-  let restaurantProfileUrl;
-
+  let userProfileUrl;
   let currentDate = new Date()
-  let fullDate = {
-        day   : currentDate.getDate(),
-        month : currentDate.getMonth() + 1,
-        year  : currentDate.getFullYear()
-
-      }
-      db.collection('Restaurants').doc(`${selectedRestaurantId}`).get().then((doc) => {
-          if (doc.exists) {
-            restaurantProfileUrl = `${doc.data().restaurantprofileUrl}`
-            console.log(doc.data())
-
-          } else {
-              // doc.data() will be undefined in this case
-              console.log("could not get restaurant name");
-          }
-      })
-      .then(()=>{
-        db.collection("placedOrders").add({
-          userUid: currentUserUid,
-          restaurantProfileUrl : restaurantProfileUrl,
-          restaurantUid: selectedRestaurantId,
-          restaurantName:selectedRestaurantName,
-          dishQuantity: totalQuantityOfOrderedItems,
-          totalAmount : totalAmountOrderedItems,
-          process: 'pending',
-          orderDate :`${fullDate.month.toString().padStart(2, '0')}/${fullDate.day.toString().padStart(2, '0')}/${fullDate.year}`
-
-        })
-        .then((docRef) => {
-
-          dbRefOfCart.get().then((querySnapshot) => {
-
-            querySnapshot.forEach((doc) => {
-              dbRefOfCart.doc(`${doc.id}`).delete().then(() => {
+  let fullDate = { day   : currentDate.getDate(),month : currentDate.getMonth() + 1, year  : currentDate.getFullYear()}
+  let userName;
 
 
-        //  window.location.href = 'userDashboard.html'
+      // try {
+      //   const querySnapshot = await db.collection("Users")
+      //     .where("userid", "==", currentUserUid)
+      //     .get(); 
+      //   querySnapshot.forEach((doc) => {
+      //     userName = doc.data().name;
+      
+      //   });
+      
+      
+      // } catch (error) {
+      //   console.log("Error getting documents: ", error);
+      // }
     
-            
-                cart_dishes.innerHTML = ''
-                totalOfCartItems.innerHTML = '...'
-                Array.from(addToCartBtn).forEach(element => {
-                  element.innerHTML = '0'
-                });            
-            
-                }).catch((error) => {
-                  console.error("Error removing document: ", error);
-                });      
-                // doc.data() is never undefined for query doc snapshots
-                // console.log(doc.id, " => ", doc.data());
-            });
-        });
+    try {
+      const querySnapshot = await db.collection("Users")
+        .where("userid", "==", currentUserUid)
+        .get(); 
+      querySnapshot.forEach((doc) => {
+        userProfileUrl = doc.data().userProfileUrl;
+        userName = doc.data().name;
 
-        
-          toggle()
-          // window.location.href  = `orderPage.html?restaurantId=${getRestaurantId}&restaurantName=${getRestaurantName}`
-          // window.location.href = 
-          // window.location.reload();
-          
-        })
-        .catch((error) => {
-          console.error("Error adding place order: ", error);
-        });
-
-
-        
-      })
-      .catch((error) => {
-          console.log("Error getting document:", error);
+     
       });
+    
+    
+    } catch (error) {
+      console.log("Error getting documents: ", error);
+    }
+
+      try {
+        const doc = await db.collection('Restaurants').doc(selectedRestaurantId).get();
+        let restaurantProfileUrl = '';
+      
+        if (doc.exists) {
+          restaurantProfileUrl = doc.data().restaurantprofileUrl;
+        } else {
+          console.log("Could not get restaurant name");
+        }
+      
+        await db.collection("placedOrders").add({
+          userUid: currentUserUid,
+          restaurantProfileUrl: restaurantProfileUrl,
+          userProfileUrl: userProfileUrl,
+          userName : userName,
+          restaurantUid: selectedRestaurantId,
+          restaurantName: selectedRestaurantName,
+          dishQuantity: totalQuantityOfOrderedItems,
+          totalAmount: totalAmountOrderedItems,
+          process: 'pending',
+          orderDate: `${fullDate.month.toString().padStart(2, '0')}/${fullDate.day.toString().padStart(2, '0')}/${fullDate.year}`
+        });
+      
+        const querySnapshot = await dbRefOfCart.get();
+        querySnapshot.forEach(async (doc) => {
+          await dbRefOfCart.doc(doc.id).delete();
+          cart_dishes.innerHTML = '';
+          totalOfCartItems.innerHTML = '...';
+          Array.from(addToCartBtn).forEach(element => {
+            element.innerHTML = '0';
+          });
+        });
+      
+        toggle();
+      } catch (error) {
+        console.error("Error:", error);
+      }
+      
+
+  // let restaurantProfileUrl;
+  // let userProfileUrl = await db.collection("Users").where("useruid", "==", `${currentUserUid}`)
+  //               .get()
+  //               .then((querySnapshot) => {
+  //                   querySnapshot.forEach((doc) => {
+  //                       // doc.data() is never undefined for query doc snapshots
+                    
+  //                       return console.log(doc.data().userid)
+  //                   });
+  //               })
+  //               .catch((error) => {
+  //                   console.log("Error getting documents: ", error);
+  //               });
+
+
+    //   .then(()=>{
+    //     db.collection("Users").where("userid","==", `${currentUserUid}`).get().then((doc)=>{
+    //       userProfileUrl = `${doc.data().userProfileUrl}`
+    //       console.log(doc.data().name)
+    //     })
+
+    // })
+// console.log(userProfileUrl)
+
+// my old code ========================================================================================
+// db.collection('Restaurants').doc(`${selectedRestaurantId}`).get().then((doc) => {
+//   if (doc.exists) {
+//     restaurantProfileUrl = `${doc.data().restaurantprofileUrl}`
+    
+    
+//   } else {
+//     // doc.data() will be undefined in this case
+//               console.log("could not get restaurant name");
+//           }
+//       })
+      
+//       .then(()=>{
+//         db.collection("placedOrders").add({
+//           userUid: currentUserUid,
+//           restaurantProfileUrl : restaurantProfileUrl,
+//           userProfileUrl : userProfileUrl,
+//           restaurantUid: selectedRestaurantId,
+//           restaurantName:selectedRestaurantName,
+//           dishQuantity: totalQuantityOfOrderedItems,
+//           totalAmount : totalAmountOrderedItems,
+//           process: 'pending',
+//           orderDate :`${fullDate.month.toString().padStart(2, '0')}/${fullDate.day.toString().padStart(2, '0')}/${fullDate.year}`
+
+//         })
+//         .then((docRef) => {
+
+//           dbRefOfCart.get().then((querySnapshot) => {
+
+//             querySnapshot.forEach((doc) => {
+//               dbRefOfCart.doc(`${doc.id}`).delete().then(() => {
+        
+//                 cart_dishes.innerHTML = ''
+//                 totalOfCartItems.innerHTML = '...'
+//                 Array.from(addToCartBtn).forEach(element => {
+//                   element.innerHTML = '0'
+//                 });            
+            
+//                 }).catch((error) => {
+//                   console.error("Error removing document: ", error);
+//                 });      
+          
+//             });
+//         });
+        
+//           toggle()
+//         })
+//         .catch((error) => {
+//           console.error("Error adding place order: ", error);
+//         });
+
+
+        
+//       })
+//       .catch((error) => {
+//           console.log("Error getting document:", error);
+//       });
+// my old code ========================================================================================
 
     // Add a new document with a generated id.
         }
@@ -737,7 +820,7 @@ const getUserDashboardData=()=>{
     .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
            userOrdersList.innerHTML += `
-           <div id=${doc.id} class="w-5/12 ml-16 userDashboardOrders bg-gray-100 border border-gray-200 rounded h-14 flex items-center mt-3 justify-between">
+           <div id=${doc.id} class="w-5/12 userDashboardOrders bg-gray-100 border border-gray-200 rounded h-14 flex items-center mt-3 justify-between">
           <div id=restaurantProfileUrlOf${doc.id} class="w-12 h-12 rounded-full ml-1 mr-2 ">
             <img class="h-12 w-12 rounded" src=${doc.data().restaurantProfileUrl}>
           </div>
