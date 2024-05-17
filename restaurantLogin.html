@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,46 +9,61 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-      <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
-      <script>
-        
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script>
+
         const firebaseConfig = {
-          apiKey: "AIzaSyAy8OQcnOJYyC1XnHWlIl8ZjyIisBW9Oj8",
-          authDomain: "fooddeliveryapp99.firebaseapp.com",
-          projectId: "fooddeliveryapp99",
-          storageBucket: "fooddeliveryapp99.appspot.com",
-          messagingSenderId: "601016450735",
-          appId: "1:601016450735:web:28087cb6df1904de771e5a",
-          measurementId: "G-6839CCKRQ1"
+            apiKey: "AIzaSyAy8OQcnOJYyC1XnHWlIl8ZjyIisBW9Oj8",
+            authDomain: "fooddeliveryapp99.firebaseapp.com",
+            projectId: "fooddeliveryapp99",
+            storageBucket: "fooddeliveryapp99.appspot.com",
+            messagingSenderId: "601016450735",
+            appId: "1:601016450735:web:28087cb6df1904de771e5a",
+            measurementId: "G-6839CCKRQ1"
         };
-    
+
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
-    
-      </script>
+
+    </script>
 </head>
-<body class="bg-cover bg-center" style="background-image: url('new2.avif')" >
-<center>
-<div class="main w-96 flex mt-28 text-center flex-col p-6 px-11 bg-center border border-teal-700 rounded-2xl">
-    <div class="flex justify-between items-center mb-3">
-        <h1 class=" text-teal-700 font-bold text-lg">Login as Restaurant</h1>
-        <a href="index.html" class="text-teal-700 hover:underline">Home</a>
+
+
+<body class="bg-cover h-screen bg-no-repeat bg-center" style="background-image: url('new2.avif')">
+
+    <div class="flex max-sm:justify-center sm:justify-center md:justify-start">
+        <img class="w-36 h-36" src="logo3.0.png" alt="">
     </div>
-    <!-- <h1 class="mb-3 text-teal-700 font-bold text-lg" >Login as Restaurant</h1> -->
-    <input id="restaurantLoginEmail" class="p-2 mt-2 text-gray-600 rounded-md border border-gray-400 focus:outline-none " type="email" placeholder="Email">
-    <input id="restaurantLoginPassword" class="p-2 mt-2 text-gray-600 rounded-md border border-gray-400 focus:outline-none " type="password" placeholder="Password">
-    
-<div class="flex mt-4 justify-between">
-    <a href="restaurantSignup.html"><button class="text-white mt-4 mb-2 rounded-lg font-bold bg-teal-700 p-2 px-3">SingUp</button></a>
-    <button onclick="restaurantLogin()" class="text-white mt-4 mb-2 rounded-lg font-bold bg-teal-700 p-2 px-4">Login</button>
-</div>
-    <hr >
-    <div id="restaurantLogin-error-message" class="mt-3">
-        <!-- <p id="signup-error-message" class="text-red-600 text-sm text-start">this is called error</p> -->
+
+    <div class="flex justify-center max-sm:mt-7  px-5 ">
+        <div
+            class="main w-96 flex mb-28  max-sm:mb-28  text-center h-auto  flex-col p-6 px-11 max-sm:px-6 bg-center border border-teal-700 rounded-2xl">
+            <div class="flex justify-between items-center mb-3">
+                <h1 class=" text-teal-700 font-bold max-sm:text-sm text-lg">Login as Restaurant</h1>
+                <a href="index.html" class="text-teal-700 hover:underline">Home</a>
+            </div>
+            <input id="restaurantLoginEmail"
+                class="p-2 mt-2 focus:shadow-md focus:border-teal-700 rounded-md border border-gray-400 focus:outline-none "
+                type="email" placeholder="Email">
+            <input id="restaurantLoginPassword"
+                class="p-2 mt-2 focus:shadow-md focus:border-teal-700 rounded-md border border-gray-400 focus:outline-none "
+                type="password" placeholder="Password">
+
+            <div class="flex mt-4 justify-between">
+                <a class="text-white mt-4 mb-2 rounded-lg font-bold hover:bg-teal-800 bg-teal-700 p-2 "
+                    href="restaurantSignup.html"><button>SignUp</button></a>
+                <a onclick="restaurantLogin()"
+                    class="text-white mt-4 mb-2 hover:bg-teal-800 rounded-lg font-bold bg-teal-700 p-2 px-4"><button>Login</button></a>
+            </div>
+            <hr>
+            <div id="restaurantLogin-error-message" class="mt-3">
+                <!-- <p id="signup-error-message" class="text-red-600 text-sm text-start">this is called error</p> -->
+            </div>
+
+        </div>
     </div>
-</div>
-</center>
-    
-<script src="app.js"></script>
+
 </body>
+<script src="app.js"></script>
+
 </html>

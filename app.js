@@ -133,7 +133,6 @@ const restaurantLogin = () => {
       // getting signUp data of restaurant
       db.collection(`${`Restaurants`}`).doc(`${uid}`).get().then((doc) => {
         if (doc.exists) {
-          // console.log("Document data:", doc.data());
           restaurantName.innerHTML = `${doc.data().name}`
           restaurantCopyrightYear.innerHTML = `${currentYear}`
           restaurantEmail.innerHTML = `${doc.data().email}`
@@ -144,7 +143,6 @@ const restaurantLogin = () => {
         }
         
         else {
-          // doc.data() will be undefined in this case
           console.log("No such document!");
         }
       }).catch((error) => {
@@ -154,7 +152,7 @@ const restaurantLogin = () => {
       if(window.location.pathname === '/restaurantDashboard.html'){
         
         getDishData()
-        loader()
+        // loader()
 
       }
       if(window.location.pathname === '/pending.html'){
@@ -166,12 +164,12 @@ const restaurantLogin = () => {
 
       if(window.location.pathname === '/accepted.html'){
       getAcceptedOrders()
-      loader()
+      // loader()
 
       }
       if(window.location.pathname === '/delivered.html'){
         getDeliveredOrders()
-        loader()
+        // loader()
       }
 
       // ...
@@ -189,13 +187,7 @@ const restaurantLogin = () => {
 
 
 
-
-
-
-
-
 // restaurant authentication code ************************************************************************
-
 
 
 // popup of create dish  ****************************************************
@@ -380,7 +372,7 @@ const getDeliveredOrders = ()=>{
       querySnapshot.forEach((doc) => {
         deliveredOrdersParent.innerHTML +=`
         
-        <div id=${doc.id} class="w-5/12 sm:w-full md:w-full  ml-16 userDashboardOrders bg-gray-100 border border-gray-200 rounded  flex items-center mt-3 justify-between">
+        <div id=${doc.id} class="w-5/12 md:w-5/12 sm:w-full max-sm:w-full  userDashboardOrders bg-gray-100 border border-gray-200 rounded  flex items-center mt-3 justify-between">
           <div id=userprofile${doc.id} class="w-12 h-12 rounded overflow-hidden ml-1 mr-2 ">
             <img class=" " src=${doc.data().userProfileUrl}>
           </div>
@@ -390,7 +382,7 @@ const getDeliveredOrders = ()=>{
           </p>
           </div>
           
-          <div class="self-end text-gray-500 text-xs mb-1 flex flex-col mr-8 ">
+          <div class="self-end text-gray-500 text-xs mb-1 flex flex-col max-sm:mr-0  mr-8 ">
             <span >Dishes : <span id="userDishesQuantityOf${doc.id}">${doc.data().dishQuantity}</span></span>
 
             <span class="mt-3"> Total Amount : <span id="userDashboardTotal">${doc.data().totalAmount}</span> </span>
@@ -421,7 +413,7 @@ const getAcceptedOrders = ()=>{
       querySnapshot.forEach((doc) => {
         acceptedOrdersParent.innerHTML +=`
         
-        <div id=${doc.id} class="w-5/12 ml-16 userDashboardOrders bg-gray-100 border border-gray-200 rounded h-14 flex items-center mt-3 justify-between">
+        <div id=${doc.id} class="w-5/12 md:w-5/12 sm:w-full max-sm:w-full userDashboardOrders bg-gray-100 border border-gray-200 rounded h-14 flex items-center mt-3 justify-between">
           <div id=userprofile${doc.id} class="w-12 h-12 rounded overflow-hidden ml-1 mr-2 ">
             <img class=" " src=${doc.data().userProfileUrl}>
           </div>
@@ -431,14 +423,14 @@ const getAcceptedOrders = ()=>{
           </p>
           </div>
           
-          <div class="self-end text-gray-500 text-xs mb-1 flex flex-col mr-8 ">
+          <div class="self-end text-gray-500 text-xs mb-1 flex flex-col max-sm:mr-0  mr-4  ">
             <span >Dishes : <span id="userDishesQuantityOf${doc.id}">${doc.data().dishQuantity}</span></span>
 
             <span class="mt-3"> Total Amount : <span id="userDashboardTotal">${doc.data().totalAmount}</span> </span>
           </div>
           <div class="text-xs  flex flex-col pt-1 mr-3">
             <span onclick="updateAcceptedToDeliveredOrders('${doc.id}')" id=userOrderProcessOf${doc.id} class=" text-white cursor-pointer bg-sky-700 p-1 text-xs rounded  text-center italic">Deliver</span>
-            <span id="userOrderDateOf${doc.id}" class="text-gray-400 mt-3">${doc.data().orderDate}</span>
+            <span id="userOrderDateOf${doc.id}" class="text-gray-400 mt-1">${doc.data().orderDate}</span>
           </div>
         </div>
         
@@ -465,7 +457,7 @@ const getPendingOrders = ()=>{
       querySnapshot.forEach((doc) => {
         pendingOrdersParent.innerHTML +=`
         
-        <div id=${doc.id} class="w-5/12 ml-16 userDashboardOrders bg-gray-100 border border-gray-200 rounded h-14 flex items-center mt-3 justify-between">
+        <div id=${doc.id} class="w-5/12 userDashboardOrders bg-gray-100 border border-gray-200 rounded h-14 flex items-center mt-3 justify-between">
           <div id=userprofile${doc.id} class="w-12 h-12 rounded overflow-hidden ml-1 mr-2 ">
             <img class=" " src=${doc.data().userProfileUrl}>
           </div>
@@ -482,7 +474,7 @@ const getPendingOrders = ()=>{
           </div>
           <div class="text-xs  flex flex-col pt-1 mr-3">
             <span onclick="updatePendingToAcceptedOrders('${doc.id}')" id=userOrderProcessOf${doc.id} class=" text-white cursor-pointer bg-teal-700 p-1 text-xs rounded  text-center italic">Accept</span>
-            <span id="userOrderDateOf${doc.id}" class="text-gray-400 mt-3">${doc.data().orderDate}</span>
+            <span id="userOrderDateOf${doc.id}" class="text-gray-400 mt-3 pb-1">${doc.data().orderDate}</span>
           </div>
         </div>
         
@@ -540,7 +532,7 @@ const getDishData = (uid) => {
       querySnapshot.forEach((doc) => {
           cardParent.innerHTML += `
     
-      <div id='${doc.id}' class="card h-auto w-60 mt-8 mb-5  border border-teal-700 rounded">
+      <div id='${doc.id}' class="card h-auto w-60 mt-8 mb-5 shadow-lg  border border-teal-700 rounded">
       <div id='dishImageParent${doc.data().dishId}'><img id="DynamicDishImg${doc.data().dishId}" class="p-1 w-72 h-44" src="${doc.data().imgUrl}" alt=""></div>
       <div class="flex  px-4 mb-3 text-center">
       
@@ -599,8 +591,12 @@ const collapNav = () => {
 // navbar logic  **********************************************************************
 
 const loader=()=>{
+  let forBlur = document.querySelector('.forBlur');
+  forBlur.style.opacity = '1'
+  forBlur.style.filter = 'none'
   let loader = document.getElementById('loader');
   loader.style.display = 'none'
+  
   
 }
 

@@ -641,20 +641,6 @@ async function placeOrder(){
   let userName;
 
 
-      // try {
-      //   const querySnapshot = await db.collection("Users")
-      //     .where("userid", "==", currentUserUid)
-      //     .get(); 
-      //   querySnapshot.forEach((doc) => {
-      //     userName = doc.data().name;
-      
-      //   });
-      
-      
-      // } catch (error) {
-      //   console.log("Error getting documents: ", error);
-      // }
-    
     try {
       const querySnapshot = await db.collection("Users")
         .where("userid", "==", currentUserUid)
@@ -709,92 +695,7 @@ async function placeOrder(){
         console.error("Error:", error);
       }
       
-
-  // let restaurantProfileUrl;
-  // let userProfileUrl = await db.collection("Users").where("useruid", "==", `${currentUserUid}`)
-  //               .get()
-  //               .then((querySnapshot) => {
-  //                   querySnapshot.forEach((doc) => {
-  //                       // doc.data() is never undefined for query doc snapshots
-                    
-  //                       return console.log(doc.data().userid)
-  //                   });
-  //               })
-  //               .catch((error) => {
-  //                   console.log("Error getting documents: ", error);
-  //               });
-
-
-    //   .then(()=>{
-    //     db.collection("Users").where("userid","==", `${currentUserUid}`).get().then((doc)=>{
-    //       userProfileUrl = `${doc.data().userProfileUrl}`
-    //       console.log(doc.data().name)
-    //     })
-
-    // })
-// console.log(userProfileUrl)
-
-// my old code ========================================================================================
-// db.collection('Restaurants').doc(`${selectedRestaurantId}`).get().then((doc) => {
-//   if (doc.exists) {
-//     restaurantProfileUrl = `${doc.data().restaurantprofileUrl}`
-    
-    
-//   } else {
-//     // doc.data() will be undefined in this case
-//               console.log("could not get restaurant name");
-//           }
-//       })
-      
-//       .then(()=>{
-//         db.collection("placedOrders").add({
-//           userUid: currentUserUid,
-//           restaurantProfileUrl : restaurantProfileUrl,
-//           userProfileUrl : userProfileUrl,
-//           restaurantUid: selectedRestaurantId,
-//           restaurantName:selectedRestaurantName,
-//           dishQuantity: totalQuantityOfOrderedItems,
-//           totalAmount : totalAmountOrderedItems,
-//           process: 'pending',
-//           orderDate :`${fullDate.month.toString().padStart(2, '0')}/${fullDate.day.toString().padStart(2, '0')}/${fullDate.year}`
-
-//         })
-//         .then((docRef) => {
-
-//           dbRefOfCart.get().then((querySnapshot) => {
-
-//             querySnapshot.forEach((doc) => {
-//               dbRefOfCart.doc(`${doc.id}`).delete().then(() => {
-        
-//                 cart_dishes.innerHTML = ''
-//                 totalOfCartItems.innerHTML = '...'
-//                 Array.from(addToCartBtn).forEach(element => {
-//                   element.innerHTML = '0'
-//                 });            
-            
-//                 }).catch((error) => {
-//                   console.error("Error removing document: ", error);
-//                 });      
-          
-//             });
-//         });
-        
-//           toggle()
-//         })
-//         .catch((error) => {
-//           console.error("Error adding place order: ", error);
-//         });
-
-
-        
-//       })
-//       .catch((error) => {
-//           console.log("Error getting document:", error);
-//       });
-// my old code ========================================================================================
-
-    // Add a new document with a generated id.
-        }
+  }
 
 const toggle = () => {
 
@@ -921,35 +822,3 @@ const collapNav = () => {
 
 
 }
-
-
-
-
-// may be work in future
-
-// const countTotalAmount = (dishPrice)=>{
-
-//   let currentDishPrice = document.getElementsByClassName(`dishPrice`)
-//   let cartDish = document.querySelectorAll('.cartDish')
-//   let dishPriceDiv = document.querySelectorAll('.dishPrice')
-  
-//   let AmountArr = []
-//   let amountInNumbers = []
-// Array.from(currentDishPrice).forEach((element,index) => {
-
-//   //  AmountArr.push(element.innerHTML)
-//    AmountArr.push(element)
-    
-// });
-
-//  AmountArr.forEach(element => {
-//   return amountInNumbers.push(parseInt(element.innerHTML))
-// });
-
-//  let sum =  amountInNumbers.reduce((PreviousVal,currentVal)=>{
-//           return PreviousVal + currentVal
-//       },0)
-
-//       return sum
-  
-// }

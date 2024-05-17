@@ -8,11 +8,11 @@
     <!-- <script src="https://cdn.tailwindcss.com"></script> -->
     <link rel="stylesheet" href="style.css">
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
 
-    <script >
+    <script>
         // type="module"
         const firebaseConfig = {
             apiKey: "AIzaSyAy8OQcnOJYyC1XnHWlIl8ZjyIisBW9Oj8",
@@ -27,39 +27,53 @@
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
 
-        // console.log( firebase.firestore())
-        // const app = initializeApp(firebaseConfig);
-        // const analytics = getAnalytics(app);
+
     </script>
 </head>
 
-<body class="bg-cover bg-center" style="background-image: url('new2.avif')">
-    <center>
-        <div class="main w-96 flex mt-14 text-center flex-col p-6 px-11 bg-center border border-teal-700 rounded-2xl">
+<body class="bg-cover bg-center bg-no-repeat h-screen" style="background-image: url('new2.avif')">
+
+
+    <div class="flex max-sm:justify-center sm:justify-center md:justify-start">
+        <img class="w-36 h-36" src="logo3.0.png" alt="">
+    </div>
+
+    <div class="flex justify-center items-center px-24">
+        <div
+            class="main max-sm:w-80 w-96 flex text-center md:absolute md:top-12 lg:absolute lg:top-12 flex-col p-6 px-10 bg-center border border-teal-700 rounded-2xl">
             <div class="flex justify-between items-center mb-3">
                 <h1 class=" text-teal-700 font-bold text-lg">SignUp as Restaurant</h1>
                 <a href="index.html" class="text-teal-700 hover:underline">Home</a>
             </div>
-            <input id="restaurantSignupName" class="p-2 mt-2 text-gray-600  rounded-md border border-gray-400 focus:outline-none "
+            <input id="restaurantSignupName"
+                class="p-2 mt-2 text-gray-600 focus:shadow-md focus:border-teal-700 rounded-md border border-gray-400 focus:outline-none "
                 type="text" placeholder="Restaurant Name">
-            <input id="restaurantSignupEmail" class="p-2 mt-2 text-gray-600  rounded-md border border-gray-400 focus:outline-none "
+            <input id="restaurantSignupEmail"
+                class="p-2 mt-2 text-gray-600 focus:shadow-md focus:border-teal-700 rounded-md border border-gray-400 focus:outline-none "
                 type="email" placeholder="Email">
-            <input id="restaurantSignupCountry" class="p-2 mt-2 text-gray-600  rounded-md border border-gray-400 focus:outline-none "
+            <input id="restaurantSignupCountry"
+                class="p-2 mt-2 text-gray-600 focus:shadow-md focus:border-teal-700 rounded-md border border-gray-400 focus:outline-none "
                 type="text" placeholder="Country">
-            <input id="restaurantSignupCity" class="p-2 mt-2 text-gray-600  rounded-md border border-gray-400 focus:outline-none "
+            <input id="restaurantSignupCity"
+                class="p-2 mt-2 text-gray-600 focus:shadow-md focus:border-teal-700 rounded-md border border-gray-400 focus:outline-none "
                 type="text" placeholder="City">
-            <input id="restaurantSignupPassword" class="p-2 mt-2 text-gray-600  rounded-md border border-gray-400 focus:outline-none "
+            <input id="restaurantSignupPassword"
+                class="p-2 mt-2 text-gray-600 focus:shadow-md focus:border-teal-700 rounded-md border border-gray-400 focus:outline-none "
                 type="password" placeholder="Password">
-                <div class="flex items-center">
-                    <label for="restaurantProfileSelect" class="px-3 border border-gray-400 border-r-0 p-2 mt-2">Profile:</label>
-                    <input id="restaurantProfileSelect" onchange="getProfileImg(event)" class="p-2 mt-2 rounded-md border bg-white text-sm border-gray-400 focus:outline-none" type="file" 
+            <div class="flex items-center">
+                <label for="restaurantProfileSelect"
+                    class="px-3 border border-gray-400 border-r-0 p-2 mt-2">Profile:</label>
+                <input id="restaurantProfileSelect" onchange="getProfileImg(event)"
+                    class="p-2 mt-2 rounded-md border bg-white text-sm border-gray-400 focus:outline-none" type="file"
                     name="img" accept="image/*">
-                </div>
+            </div>
             <div class="flex mt-4 justify-between">
 
 
-                <button class="text-white mt-4 mb-2 rounded-lg font-bold bg-teal-700 p-2 px-4"><a href="restaurantLogin.html">Login</a></button>
-                <button onclick="restaurantSignUp()" class="text-white mt-4 mb-2 rounded-lg font-bold bg-teal-700 p-2 px-3">SignUp</button>
+                <button class="text-white mt-4 mb-2 rounded-lg font-bold bg-teal-700 p-2 px-4"><a
+                        href="restaurantLogin.html">Login</a></button>
+                <button onclick="restaurantSignUp()"
+                    class="text-white mt-4 mb-2 rounded-lg font-bold bg-teal-700 p-2 px-3">SignUp</button>
 
             </div>
 
@@ -68,7 +82,7 @@
                 <!-- <p id="signup-error-message" class="text-red-600 text-sm text-start">this is called error</p> -->
             </div>
         </div>
-    </center>
+    </div>
 
 </body>
 <script src="app.js"></script>

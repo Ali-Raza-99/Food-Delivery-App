@@ -31,19 +31,19 @@
   </script>
 </head>
 
-<body onload="currentRestaurant()" class="text-gray-600 ">
+<body onload="currentRestaurant()" class="text-gray-600">
   
 
   <!-- div for opacity  -->
-  <div id="forBlur" class="opac relative ">
-    <!-- div for opacity  -->
-    <nav class="bg-gray-200 border">
+  <div id="forBlur">
+ 
+    <nav class="bg-gray-100  shadow">
       <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <div class="relative flex h-16 items-center justify-between">
-          <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+          <div class="absolute  inset-y-0 left-0 flex items-center sm:hidden">
             <!-- Mobile menu button-->
             <button type="button"
-              class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+              class="relative  inline-flex items-center justify-center rounded-md p-2 text-teal-800 hover:bg-teal-700 hover:text-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
               aria-controls="mobile-menu" aria-expanded="false">
               <span id="navBtn" onclick="collapNav()" class="absolute -inset-0.5"></span>
               <span class="sr-only">Open main menu</span>
@@ -68,14 +68,16 @@
             </button>
           </div>
           <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-            <div class="flex flex-shrink-0 items-center">
-              <h1 id="restaurantName" class="text-gray-600 font-bold text-xl ">Restaurant Name</h1>
+            <div id="logo_and_name" class="flex flex-shrink-0 items-center">
+              <img class="h-16 w-16" src="logo3.0.png" alt="">
+              <h1 id="restaurantName" class="text-teal-800 font-bold text-xl ">........</h1>
               <!-- <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company"> -->
             </div>
-            <div class="hidden sm:ml-0 sm:block">
-              <div class="flex space-x-7 lg:pl-40 md:space-x-7 md:pl-12  sm:space-x-1 ">
+            <div class="hidden  sm:ml-0 sm:block">
+              
+              <div id="dekstop_tabs"  class="flex space-x-7 lg:pl-28 md:space-x-7 md:pl-12 sm:space-x-1 mt-3">
                 <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-                <a href="restaurantDashboard.html" class="text-gray-600  hover:text-teal-700  flex items-center rounded-md px-3 py-2 text-sm font-bold"
+                <a href="#" class=" hover:text-teal-700  flex items-center rounded-md px-3 py-2 text-sm font-bold"
                   aria-current="page">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="w-6 h-6">
@@ -85,7 +87,7 @@
                   <h1>Dashboard</h1>
                 </a>
                 <a href="pending.html"
-                  class=" text-gray-600  hover:text-teal-700 flex items-center rounded-md px-3 py-2 text-sm font-bold">
+                  class="text-gray-600 hover:text-teal-700 flex items-center rounded-md px-3 py-2 text-sm font-bold">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="w-6 h-6">
                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -103,7 +105,7 @@
                   <h1>Accepted</h1>
                 </a>
                 <a href="delivered.html"
-                  class=" text-teal-700 flex items-center rounded-md px-3 py-2 text-sm font-bold">
+                  class="text-teal-700 flex items-center rounded-md px-3 py-2 text-sm font-bold">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="w-6 h-6">
                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -113,45 +115,39 @@
                 </a>
                 <!-- <a href="#" class="text-gray-600  hover:text-teal-700 rounded-md px-24 py-2 text-sm font-bold">Add food</a> -->
               </div>
+  
             </div>
+  
           </div>
-          <div
-            class="absolute inset-y-0 right-0 flex space-x-4 items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-            <button onclick="toggle()" id="addDishes_btn" type="button"
-              class="relative rounded-full bg-gray-200 p-1 text-gray-600 hover:text-teal-700 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-              <span class="absolute -inset-1.5"></span>
-              <span class="sr-only">addDishes</span>
-
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                stroke="currentColor" class="w-6 h-6">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                  d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-
-            </button>
+  
+          <div class="absolute inset-y-0 right-0 flex space-x-4 items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+            
             <!-- log out button **************************************************** -->
-            <button onclick="signOutRestaurant()" class="text-gray-600 hover:text-red-700">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                stroke="currentColor" class="w-6 h-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M5.636 5.636a9 9 0 1012.728 0M12 3v9" />
-              </svg>
-            </button>
-
+            <button onclick="signOutRestaurant()" class="text-gray-600 hidden lg:block xl:block 2xl:block hover:text-red-700">
+              <abbr title="Logout">
+  
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                  stroke="currentColor" class="w-6 h-6">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5.636 5.636a9 9 0 1012.728 0M12 3v9" />
+                </svg>
+            </button> </abbr>
+  
+  
             <!-- profile of restaurant ********************************************************* -->
             <div id="restaurantProfilePic" class="w-9 h-9  rounded-full">
               <!-- <img src="" alt="Firebase Image"> -->
             </div>
-
+  
           </div>
         </div>
       </div>
-
-
+  
+  
       <!-- Mobile menu, show/hide based on menu state. -->
       <div class=" sm:hidden max-sm:hidden " id="mobile-menu">
         <div id="mobile-nav-link" class="space-y-1 px-2 pb-3 pt-2 ">
           <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-          <a href="#" class=" text-slate-200 bg-teal-700 flex items-center rounded-md px-3 py-2 text-sm font-bold"
+          <a href="restaurantDashboard.html" class="text-gray-600 hover:text-slate-200 hover:bg-teal-700 flex items-center rounded-md px-3 py-2 text-sm font-bold"
             aria-current="page">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
               stroke="currentColor" class="w-6 h-6">
@@ -160,15 +156,15 @@
             </svg>
             <h1>Dashboard</h1>
           </a>
-          <a href="#"
-            class="text-gray-600  hover:bg-teal-700 hover:text-slate-200 flex items-center rounded-md px-3 py-2 text-sm font-bold">
+          <a href="pending.html"
+            class="  hover:bg-teal-700 text-gray-600 hover:text-slate-200 flex items-center rounded-md px-3 py-2 text-sm font-bold">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
               stroke="currentColor" class="w-6 h-6">
               <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <h1>Pending</h1>
           </a>
-          <a href="#"
+          <a href="accepted.html"
             class="text-gray-600  hover:bg-teal-700 hover:text-slate-200 flex items-center rounded-md px-3 py-2 text-sm font-bold">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
               stroke="currentColor" class="w-6 h-6">
@@ -177,8 +173,8 @@
             </svg>
             <h1>Accepted</h1>
           </a>
-          <a href="#"
-            class="text-gray-600  hover:bg-teal-700 hover:text-slate-200 flex items-center rounded-md px-3 py-2 text-sm font-bold">
+          <a href="delivered.html"
+            class="bg-teal-700 text-slate-200  hover:bg-teal-700 hover:text-slate-200 flex items-center rounded-md px-3 py-2 text-sm font-bold">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
               stroke="currentColor" class="w-6 h-6">
               <path stroke-linecap="round" stroke-linejoin="round"
@@ -189,40 +185,86 @@
         </div>
       </div>
     </nav>
-
-
+  
+  
+    <div id="dekstop_down_tabs"   class="hidden">
+    <div class=" bg-gray-100 justify-center flex space-x-7  md:space-x-7 sm:space-x-1 mt-3">
+      <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
+      <a href="restaurantDashboard.html" class=" hover:text-teal-700  flex items-center rounded-md px-3 py-2 text-sm font-bold"
+        aria-current="page">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+          stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
+        </svg>
+        <h1>Dashboard</h1>
+      </a>
+      <a href="pending.html"
+        class="  text-gray-600  hover:text-teal-700 flex items-center rounded-md px-3 py-2 text-sm font-bold">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+          stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <h1>Pending</h1>
+      </a>
+      <a href="accepted.html"
+        class="text-gray-600  hover:text-teal-700 flex items-center rounded-md px-3 py-2 text-sm font-bold">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+          stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M6.633 10.5c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 012.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 00.322-1.672V3a.75.75 0 01.75-.75A2.25 2.25 0 0116.5 4.5c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 01-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 00-1.423-.23H5.904M14.25 9h2.25M5.904 18.75c.083.205.173.405.27.602.197.4-.078.898-.523.898h-.908c-.889 0-1.713-.518-1.972-1.368a12 12 0 01-.521-3.507c0-1.553.295-3.036.831-4.398C3.387 10.203 4.167 9.75 5 9.75h1.053c.472 0 .745.556.5.96a8.958 8.958 0 00-1.302 4.665c0 1.194.232 2.333.654 3.375z" />
+        </svg>
+        <h1>Accepted</h1>
+      </a>
+      <a href="delivered.html"
+        class="text-teal-700 flex items-center rounded-md px-3 py-2 text-sm font-bold">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+          stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <h1>Delivered</h1>
+      </a>
+      <!-- <a href="#" class="text-gray-600  hover:text-teal-700 rounded-md px-24 py-2 text-sm font-bold">Add food</a> -->
+    </div>
+  </div>
     <!-- finish nav start main -->
-
-
-
-
-    <div class="border bg-slate-100 flex max-sm:justify-center items-center justify-between m-2 p-2 border-slate-200 ">
-
+  
+  
+    <!-- <div > -->
+  
+  
+    <div class=" bg-teal-700 flex items-center justify-between p-3 ">
+  
       <h1 id="restaurant_dishesHeading"
-        class="border  flex text-xl max-sm:text-center sm:text-center lg:text-start  font-semibold text-teal-700 underline underline-offset-4 font-sans ">
+        class=" text-slate-100  flex text-xl  font-semibold  font-sans ">
         Delivered Orders</h1>
-      <button>
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-        class="w-6 h-6 text-gray-600 navBtn-2 hidden">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-      </svg>
-    </button>
-
-      <!-- mobile log out button ******************************************************** -->
+  
+         <!-- mobile log out button ******************************************************** -->
       <button onclick="signOutRestaurant()">
-      <svg  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-        class="w-6 h-6 hover:text-red-800 text-gray-600 navBtn-2 hidden">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M5.636 5.636a9 9 0 1012.728 0M12 3v9" />
-      </svg>
-    </button>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+          class="w-6 h-6 hover:text-red-800 text-slate-100 navBtn-2 lg:hidden  xl:hidden 2xl:hidden">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5.636 5.636a9 9 0 1012.728 0M12 3v9" />
+        </svg>
+      </button>
+  
+  
+    </div>
+  
   
 
+
+
+
+
+    <div >
+      <div id="loader" class="absolute  loader lds-roller text-teal-700 top-20"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
     </div>
-
+  
     <!-- cards *********************************************************************************** -->
-    <div id="deliveredOrdersParent" class="flex flex-wrap  justify-evenly items-start  w-full ">
-      <div id="loader" class="absolute loader lds-roller text-teal-700 top-20"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
-
+    <div id="deliveredOrdersParent" class="flex flex-wrap px-3 justify-evenly items-start  w-full ">
+      
        <!-- <div class="card h-auto w-60 mt-8 mb-5  border border-teal-700 rounded-xl"> 
        <div id="dishImgParent"> <img class="p-2 img w-60 h-44" src="us.jpg" alt=""></div>
         <div class="flex justify-center px-4 mb-3 text-center">
@@ -263,7 +305,7 @@
 
 
       <footer
-        class=" py-2 flex flex-wrap fixed bottom-0 w-full  sm:h-auto max-sm:justify-center items-center justify-between px-20  bg-gray-200 ">
+        class=" py-2 flex flex-wrap  sm:h-auto max-sm:justify-center items-center justify-between px-20  bg-gray-200 fixed bottom-0 w-full">
         <div class="flex  max-sm:mt-2 ">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-5 text-gray-600">
             <path d="M3 4a2 2 0 00-2 2v1.161l8.441 4.221a1.25 1.25 0 001.118 0L19 7.162V6a2 2 0 00-2-2H3z" />
