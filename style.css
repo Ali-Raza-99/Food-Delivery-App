@@ -20,6 +20,7 @@
 /* input{ */
   /* background: black !important; */
 /* } */
+
 #forBlur.active{
   filter: blur(2px);
   pointer-events: none;
@@ -44,6 +45,17 @@
     /* } */
   /* } */
 
+   /* @media screen and (max-width: 1036px) and (min-width: 641px) {
+    #cartter{
+      display: none !important;
+    } */
+
+   /* } */
+   @media screen and (min-width: 1024px)  {
+      #modalOfCartter{
+        display: none !important;
+      }
+   }
    @media screen and (max-width: 880px) and (min-width: 641px) {
 
     #dekstop_down_tabs{
@@ -52,8 +64,17 @@
     #dekstop_tabs{
       display: none !important;
     }
+    
 
   }
+  @media screen and (min-width: 641px) {
+
+    #mobile-menu{
+      display: none !important;
+    }
+
+  }
+
 
   
   /* #collapNavBtn{

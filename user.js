@@ -107,6 +107,7 @@ const userLogin = () => {
     let userCopyrightYear = document.getElementById('user-copyright-year')
     let userCountry = document.getElementById('userCountry');
     let userPhone = document.getElementById('userPhone')
+    let userPhone_mobile = document.getElementById('userPhone_mobile')
     let userCity = document.getElementById('userCity');
     let userProfilePic = document.getElementById('userProfilePic')
     const currentYear = currentDate.getFullYear();
@@ -122,6 +123,7 @@ const userLogin = () => {
         userCity.innerHTML = `${doc.data().city}`
         userProfilePic.innerHTML = `<img id="${uid}profile" class="" src="${doc.data().userProfileUrl}" alt="Firebase Image">`
         userPhone.innerHTML = `${doc.data().phone}`
+        userPhone_mobile.innerHTML = `${doc.data().phone}`
       }
       
       else {
@@ -191,7 +193,7 @@ const getRestaurants = (uid) => {
 
       querySnapshot.forEach((doc) => {
         user_restaurantCardParent.innerHTML += `
-          <div id="${doc.id}" onclick="visitRestaurant('${doc.id}','${doc.data().name}')" class="cursor-pointer user_restaurantCard h-auto w-96 mt-8 mb-5  border border-teal-700 rounded">
+          <div id="${doc.id}" onclick="visitRestaurant('${doc.id}','${doc.data().name}')" class="cursor-pointer shadow-md user_restaurantCard h-auto w-96 mt-8 mb-5  border border-teal-700 rounded">
         <div id="user_restaurantImgParent"> <img class="p-1 img w-96 h-44" src="${doc.data().restaurantprofileUrl}" alt=""></div>
         <div class="flex items-center justify-between px-4 mb-3 text-center">
           <h1 id="user_restaurantName" class="text-lg font-bold text-center  text-teal-700">${doc.data().name}</h1>
@@ -333,7 +335,7 @@ const getDishesFromSelectedRestaurant = (getRestaurantId)=>{
         
         
         selectedRestaurantDishesParent.innerHTML += `
-        <div id='${doc.id}' class="card h-auto w-60 mt-8 mb-5  border border-teal-700 rounded">
+        <div id='${doc.id}' class="card h-auto w-60 mt-8 mb-5 mx-1 border border-teal-700 rounded">
           <div id='dishImageParent${doc.data().dishId}'><img id="DynamicDishImg${doc.data().dishId}" class="p-1 w-72 h-44"
               src="${doc.data().imgUrl}" alt=""></div>
           <div class="flex  px-4 mb-3 text-center">
@@ -514,6 +516,7 @@ const addToCart = (id,counter,cartDishName,cartDishImgUrl,cartDishPrice,cartDish
   const selectedRestaurantId = new URLSearchParams(window.location.search).get('restaurantId');
   let currentUserUid = firebase.auth().currentUser.uid
   let cartItemsParent = document.getElementById('cart_dishes');
+  let modal_cart_dishes = document.getElementById('modal_cart_dishes');
 
   db.collection(`PendingOrders:${currentUserUid}`).doc(`${selectedRestaurantId}`).collection(`${currentUserUid}`).doc(`${counter}`).set({
     dishName: cartDishName,
@@ -525,6 +528,37 @@ const addToCart = (id,counter,cartDishName,cartDishImgUrl,cartDishPrice,cartDish
     )
     .then(() => {
     cartItemsParent.innerHTML += `
+    <div id="cart_dish${counter}" class="border cartDish cart_dish${counter}">
+          <div class="flex items-center h-12 mt-5 border border-l-0 border-r-0">
+            <img class="w-20 h-12 rounded-sm" src="${cartDishImgUrl}" alt="">
+            <h1 class="ml-2 text-md text-start text-teal-700 font-bold">${cartDishName}</h1>
+          </div>
+           <div class="flex items-center justify-between px-2 mt-2">
+            <span class="pt-2 text-sm text-teal-700 font-bold">${cartDishCurrency}:${cartDishPrice}</span>
+
+            <div class="flex mt-2 pb-2 h-9 ">
+              <span onclick="decreaseItemQuantityOfCart('dish${counter}',${counter},'${cartDishName}','${cartDishImgUrl}','${cartDishPrice}','${cartDishCurrency}')" class="bg-white border pt-2 text-xl border-teal-700  text-teal-700 px-2"> <svg
+                  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                  stroke="currentColor" class="w-4 h-3">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14" />
+                </svg>
+              </span>
+
+              <span id="itemsQuantityWhileAdd${counter}" class=" bg-teal-700 text-center text-white p-1 text-sm px-4">${cartItemsQuantity}</span>
+              <span onclick="reduceItemQuantityOfCart('dish${counter}',${counter},'${cartDishName}','${cartDishImgUrl}','${cartDishPrice}','${cartDishCurrency}')" class="bg-white border pt-2 text-xl border-teal-700 text-teal-700 px-2"><svg
+                  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                  stroke="currentColor" class="w-4 h-3">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+              </span>
+            </div>
+
+          </div>
+        </div>
+  
+    `
+
+    modal_cart_dishes.innerHTML += `
     <div id="cart_dish${counter}" class="border cartDish cart_dish${counter}">
           <div class="flex items-center h-12 mt-5 border border-l-0 border-r-0">
             <img class="w-20 h-12 rounded-sm" src="${cartDishImgUrl}" alt="">
@@ -569,9 +603,11 @@ const removeFromCart = (id,counter)=>{
   let currentUserUid = firebase.auth().currentUser.uid
   let cartItemsParent = document.getElementById('cart_dishes');
   let currentCartDish = document.getElementById(`cart_dish${counter}`)
+  let modal_currentCartDish = document.getElementById(`modal_cart_dish${counter}`)
   db.collection(`PendingOrders:${currentUserUid}`).doc(`${selectedRestaurantId}`).collection(`${currentUserUid}`).doc(`${counter}`).delete().then(() => {
     
     currentCartDish ? currentCartDish.remove() : null;
+    modal_currentCartDish ? modal_currentCartDish.remove() : null;
     console.log('dish has been deleted from cart')
 
     }).catch((error) => {
@@ -602,6 +638,7 @@ const calculateTotalAmount =()=>{
   const selectedRestaurantId = new URLSearchParams(window.location.search).get('restaurantId');
   let calculateItem = []
   let totalOfCartItems = document.getElementById('totalOfItems')
+  let modal_totalOfCartItems = document.getElementById('modal_totalOfItems')
   let totalAmount;
 
   db.collection(`PendingOrders:${currentUserUid}`).doc(`${selectedRestaurantId}`).collection(`${currentUserUid}`).get().then((querySnapshot) => {
@@ -616,6 +653,7 @@ const calculateTotalAmount =()=>{
       return PreviousVal + currentVal
     },0)
     totalOfCartItems.innerHTML = sum
+    modal_totalOfCartItems.innerHTML = sum
     totalAmountOrderedItems = sum
     // console.log(sum)
   });
@@ -633,8 +671,10 @@ async function placeOrder(){
   const dbRefOfCart =  db.collection(`PendingOrders:${currentUserUid}`).doc(`${selectedRestaurantId}`).collection(`${currentUserUid}`)
   let modalOfPlacedOrder = document.getElementById('modalOfPlacedOrder');
   let cart_dishes = document.getElementById('cart_dishes');
+  let modal_cart_dishes = document.getElementById('modal_cart_dishes');
   let addToCartBtn  = document.getElementsByClassName('addToCartBtn');
   let totalOfCartItems = document.getElementById('totalOfItems');
+  let modal_totalOfCartItems = document.getElementById('modal_totalOfItems');
   let userProfileUrl;
   let currentDate = new Date()
   let fullDate = { day   : currentDate.getDate(),month : currentDate.getMonth() + 1, year  : currentDate.getFullYear()}
@@ -684,12 +724,13 @@ async function placeOrder(){
         querySnapshot.forEach(async (doc) => {
           await dbRefOfCart.doc(doc.id).delete();
           cart_dishes.innerHTML = '';
+          modal_cart_dishes.innerHTML = '';
           totalOfCartItems.innerHTML = '...';
           Array.from(addToCartBtn).forEach(element => {
             element.innerHTML = '0';
           });
         });
-      
+      closeCart()
         toggle();
       } catch (error) {
         console.error("Error:", error);
@@ -708,6 +749,7 @@ const toggle = () => {
 
 
 
+
 const getUserDashboardData=()=>{
   let currentUserUid = firebase.auth().currentUser.uid
   const selectedRestaurantId = new URLSearchParams(window.location.search).get('restaurantId');
@@ -721,7 +763,7 @@ const getUserDashboardData=()=>{
     .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
            userOrdersList.innerHTML += `
-           <div id=${doc.id} class="w-5/12 userDashboardOrders bg-gray-100 border border-gray-200 rounded h-14 flex items-center mt-3 justify-between">
+           <div id=${doc.id} class=" lg:w-5/12 md:w-full sm:w-full max-sm:w-full  userDashboardOrders bg-gray-100 border border-gray-200 rounded h-14 flex items-center mt-3 justify-between">
           <div id=restaurantProfileUrlOf${doc.id} class="w-12 h-12 rounded-full ml-1 mr-2 ">
             <img class="h-12 w-12 rounded" src=${doc.data().restaurantProfileUrl}>
           </div>
@@ -731,10 +773,10 @@ const getUserDashboardData=()=>{
           </p>
           </div>
           
-          <div class="self-end text-gray-500 text-xs mb-1 flex flex-col mr-8 ">
+          <div class="self-end text-gray-500 text-xs mb-1 flex flex-col max-sm:mr-0  mr-8">
             <span >Dishes <span id="userDishesQuantityOf${doc.id}">${doc.data().dishQuantity}</span></span>
 
-            <span class="mt-3"> Total Amount : <span id="userDashboardTotal">${doc.data().totalAmount}</span> </span>
+            <span class="mt-3"> Total : <span id="userDashboardTotal">${doc.data().totalAmount}</span> </span>
           </div>
           <div class="text-xs  flex flex-col pt-1 mr-3">
             <span id=userOrderProcessOf${doc.id} class="text-yellow-500 italic">${doc.data().process}</span>
@@ -754,10 +796,13 @@ const getUserDashboardData=()=>{
 
 const getCartDishes = ()=>{
   let cartItemsParent = document.getElementById('cart_dishes');
+  let modal_cart_dishes = document.getElementById('modal_cart_dishes');
   let cartDish = document.querySelectorAll('.cartDish')
   
   let currentUserUid = firebase.auth().currentUser.uid
   const selectedRestaurantId = new URLSearchParams(window.location.search).get('restaurantId');
+  modal_cart_dishes.innerHTML = ''
+  cart_dishes.innerHTML = ''
   db.collection(`PendingOrders:${currentUserUid}`).doc(`${selectedRestaurantId}`).collection(`${currentUserUid}`).get().then((querySnapshot) => {
     querySnapshot.forEach((doc) => {
       
@@ -796,6 +841,40 @@ const getCartDishes = ()=>{
     
       `
   
+      modal_cart_dishes.innerHTML += `
+      <div id="cart_dish${doc.id}" class="border cartDish cart_dish${doc.id}">
+      <div class="flex items-center h-12 mt-5 border border-l-0 border-r-0">
+      <img class="w-20 h-12 rounded-sm" src="${doc.data().dishImgUrl}" alt="">
+      <h1 class="ml-2 text-md text-start text-teal-700 font-bold">${doc.data().dishName}</h1>
+    
+
+        </div>
+      
+        <div class="flex items-center justify-between px-2 mt-2">
+          <span class="pt-2 text-sm text-teal-700 font-bold">${doc.data().currency}: <span id='dishPrice${doc.id}' class='dishPrice'>${doc.data().dishPrice}</span></span>
+
+          <div class="flex mt-2 pb-2 h-9 ">
+            <span onclick="decreaseItemQuantityOfCart('dish${doc.id}',${doc.id},'${doc.data().dishName}','${doc.data().imgUrl}','${doc.data().dishPrice}','${doc.data().currency}')" class="bg-white border pt-2 text-xl border-teal-700  text-teal-700 px-2"> <svg
+                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="w-4 h-3">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14" />
+              </svg>
+            </span>
+
+            <span id="cartItemQuantity${doc.id}" class=" bg-teal-700 text-center text-white p-1 text-sm px-4">${doc.data().itemsQuantity}</span>
+
+            <span onclick="reduceItemQuantityOfCart('dish${doc.id}',${doc.id},'${doc.data().dishName}','${doc.data().imgUrl}','${doc.data().dishPrice}','${doc.data().currency}')"  class="bg-white border pt-2 text-xl border-teal-700 text-teal-700 px-2"><svg
+                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="w-4 h-3">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+              </svg>
+            </span>
+          </div>
+
+        </div>
+      </div>
+    
+      `
     })
     
   })
@@ -821,4 +900,15 @@ const collapNav = () => {
   }
 
 
+}
+const showCart = () => {
+
+  let cartterModal = document.getElementById('modalOfCartter');
+    cartterModal.style.display = 'block'
+  
+}
+const closeCart =()=>{
+  let cartterModal = document.getElementById('modalOfCartter');
+  cartterModal.style.display = 'none'
+  
 }

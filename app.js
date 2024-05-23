@@ -232,7 +232,7 @@ const createDish = (dishName, dishPrice, category_dropdown, deliveryType, curren
   .then((docRef) => {
     cardParent.innerHTML += `
     
-    <div id='${docRef.id}' class="card h-auto w-60 mt-8 mb-5  border border-teal-700 rounded">
+    <div id='${docRef.id}' class="card h-auto w-60 mt-8 mb-5 border border-teal-700 rounded">
     <div id='dishImageParent${dishCounter}'><img id="DynamicDishImg${dishCounter}" class="p-1 w-60 h-44" src="${imgUrl}" alt=""></div>
     <div class="flex px-4 mb-3 text-center">
     
@@ -457,7 +457,7 @@ const getPendingOrders = ()=>{
       querySnapshot.forEach((doc) => {
         pendingOrdersParent.innerHTML +=`
         
-        <div id=${doc.id} class="w-5/12 userDashboardOrders bg-gray-100 border border-gray-200 rounded h-14 flex items-center mt-3 justify-between">
+        <div id=${doc.id} class="w-5/12 md:w-5/12 sm:w-full max-sm:w-full userDashboardOrders bg-gray-100 border border-gray-200 rounded h-14 flex items-center mt-3 justify-between">
           <div id=userprofile${doc.id} class="w-12 h-12 rounded overflow-hidden ml-1 mr-2 ">
             <img class=" " src=${doc.data().userProfileUrl}>
           </div>
@@ -467,7 +467,7 @@ const getPendingOrders = ()=>{
           </p>
           </div>
           
-          <div class="self-end text-gray-500 text-xs mb-1 flex flex-col mr-8 ">
+          <div class="self-end text-gray-500 text-xs mb-1 flex flex-col max-sm:mr-0  mr-4  ">
             <span >Dishes : <span id="userDishesQuantityOf${doc.id}">${doc.data().dishQuantity}</span></span>
 
             <span class="mt-3"> Total Amount : <span id="userDashboardTotal">${doc.data().totalAmount}</span> </span>
