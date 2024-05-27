@@ -377,8 +377,7 @@ const getDishesFromSelectedRestaurant = (getRestaurantId)=>{
         `
         
         getQuantityOfItems(`${currentUserUid}`,doc.data().dishId)
-        // console.log(doc.id,doc.data().dishId)
-        // increaseDishesPrice()
+    
       
       })
       getCartDishes()
@@ -421,20 +420,25 @@ const updateCounter = (value,dishIncreaseBtnId,counter)=>{
 
   let currentUserUid = firebase.auth().currentUser.uid
   const selectedRestaurantId = new URLSearchParams(window.location.search).get('restaurantId')
-  let cartQuantityText = document.getElementById(`cartItemQuantity${counter}`)
+  let cartQuantityText = document.getElementById(`cartItemQuantity${counter}`);
   let itemsQuantityWhileAdd = document.getElementById(`itemsQuantityWhileAdd${counter}`)
+  let modal_itemsQuantityWhileAdd = document.getElementById(`moodal_itemsQuantityWhileAdd${counter}`)
   let quantityText = document.getElementById(`${dishIncreaseBtnId}`)
-  let reduceBtnOfDish = document.getElementById(`reduceBtnOfDish${counter}`)
-
+  
+  let itemsQuantityWhileAddAll = document.querySelectorAll(`.itemsQuantityWhileAdd${counter}`)
   
   db.collection(`PendingOrders:${currentUserUid}`).doc(`${selectedRestaurantId}`).collection(`${currentUserUid}`).doc(`${counter}`).update({ itemsQuantity: value }).then(()=>{
     
     
     quantityText.innerHTML = value
-    
+    itemsQuantityWhileAddAll.forEach(dish => {
+
+       dish ? dish.innerHTML = value : null;
+ 
+    });
+   
     itemsQuantityWhileAdd ? itemsQuantityWhileAdd.innerHTML = value : null;
     cartQuantityText ? cartQuantityText.innerHTML = value : null;
-    
     
   })
 
@@ -450,6 +454,7 @@ const reduceItemQuantity = (id,counter,cartDishName,cartDishImgUrl,cartDishPrice
 
   let quantityText = document.getElementById(`itemQuantity${counter}`);
   let currentCartDish = document.getElementById(`cart_dish${counter}`)
+  let modal_currentCartDish = document.getElementById(`modal_cart_dish${counter}`)
   let cartQuantityText = document.getElementById(`cartItemQuantity${counter}`)
    
     let currentUserUid = firebase.auth().currentUser.uid
@@ -489,6 +494,7 @@ const decreaseItemQuantity= (id,counter,cartDishName,cartDishImgUrl,cartDishPric
   let currentUserUid = firebase.auth().currentUser.uid
   let currentCartDish = document.getElementById(`cart_dish${counter}`)
   let cartQuantityText = document.getElementById(`cartItemQuantity${counter}`)
+  let modal_cartQuantityText = document.getElementById(`modal_cartItemQuantity${counter}`)
    
 
  
@@ -544,7 +550,7 @@ const addToCart = (id,counter,cartDishName,cartDishImgUrl,cartDishPrice,cartDish
                 </svg>
               </span>
 
-              <span id="itemsQuantityWhileAdd${counter}" class=" bg-teal-700 text-center text-white p-1 text-sm px-4">${cartItemsQuantity}</span>
+              <span id="itemsQuantityWhileAdd${counter}" class="itemsQuantityWhileAdd${counter} bg-teal-700 text-center text-white p-1 text-sm px-4">${cartItemsQuantity}</span>
               <span onclick="reduceItemQuantityOfCart('dish${counter}',${counter},'${cartDishName}','${cartDishImgUrl}','${cartDishPrice}','${cartDishCurrency}')" class="bg-white border pt-2 text-xl border-teal-700 text-teal-700 px-2"><svg
                   xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                   stroke="currentColor" class="w-4 h-3">
@@ -559,7 +565,7 @@ const addToCart = (id,counter,cartDishName,cartDishImgUrl,cartDishPrice,cartDish
     `
 
     modal_cart_dishes.innerHTML += `
-    <div id="cart_dish${counter}" class="border cartDish cart_dish${counter}">
+    <div id="modal_cart_dish${counter}" class="border cartDish cart_dish${counter}">
           <div class="flex items-center h-12 mt-5 border border-l-0 border-r-0">
             <img class="w-20 h-12 rounded-sm" src="${cartDishImgUrl}" alt="">
             <h1 class="ml-2 text-md text-start text-teal-700 font-bold">${cartDishName}</h1>
@@ -575,7 +581,7 @@ const addToCart = (id,counter,cartDishName,cartDishImgUrl,cartDishPrice,cartDish
                 </svg>
               </span>
 
-              <span id="itemsQuantityWhileAdd${counter}" class=" bg-teal-700 text-center text-white p-1 text-sm px-4">${cartItemsQuantity}</span>
+              <span id="modal_itemsQuantityWhileAdd${counter}" class="itemsQuantityWhileAdd${counter} bg-teal-700 text-center text-white p-1 text-sm px-4">${cartItemsQuantity}</span>
               <span onclick="reduceItemQuantityOfCart('dish${counter}',${counter},'${cartDishName}','${cartDishImgUrl}','${cartDishPrice}','${cartDishCurrency}')" class="bg-white border pt-2 text-xl border-teal-700 text-teal-700 px-2"><svg
                   xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                   stroke="currentColor" class="w-4 h-3">
@@ -602,12 +608,18 @@ const removeFromCart = (id,counter)=>{
   const selectedRestaurantId = new URLSearchParams(window.location.search).get('restaurantId');
   let currentUserUid = firebase.auth().currentUser.uid
   let cartItemsParent = document.getElementById('cart_dishes');
-  let currentCartDish = document.getElementById(`cart_dish${counter}`)
-  let modal_currentCartDish = document.getElementById(`modal_cart_dish${counter}`)
+  let currentCartDish = document.querySelectorAll(`.cart_dish${counter}`)
+  console.log(currentCartDish)
+  // let modal_currentCartDish = document.getElementById(`modal_cart_dish${counter}`)
   db.collection(`PendingOrders:${currentUserUid}`).doc(`${selectedRestaurantId}`).collection(`${currentUserUid}`).doc(`${counter}`).delete().then(() => {
     
-    currentCartDish ? currentCartDish.remove() : null;
-    modal_currentCartDish ? modal_currentCartDish.remove() : null;
+    // currentCartDish ? currentCartDish.remove() : null;
+    if (currentCartDish) {
+      currentCartDish.forEach(dish => {
+        dish.remove()
+      });
+    }
+    // modal_currentCartDish ? modal_currentCartDish.remove() : null;
     console.log('dish has been deleted from cart')
 
     }).catch((error) => {
@@ -801,10 +813,13 @@ const getCartDishes = ()=>{
   
   let currentUserUid = firebase.auth().currentUser.uid
   const selectedRestaurantId = new URLSearchParams(window.location.search).get('restaurantId');
+
+  
   modal_cart_dishes.innerHTML = ''
   cart_dishes.innerHTML = ''
   db.collection(`PendingOrders:${currentUserUid}`).doc(`${selectedRestaurantId}`).collection(`${currentUserUid}`).get().then((querySnapshot) => {
     querySnapshot.forEach((doc) => {
+
       
       cartItemsParent.innerHTML += `
       <div id="cart_dish${doc.id}" class="border cartDish cart_dish${doc.id}">
@@ -826,7 +841,7 @@ const getCartDishes = ()=>{
               </svg>
             </span>
 
-            <span id="cartItemQuantity${doc.id}" class=" bg-teal-700 text-center text-white p-1 text-sm px-4">${doc.data().itemsQuantity}</span>
+            <span id="itemsQuantityWhileAdd${doc.id}" class="itemsQuantityWhileAdd${doc.id} bg-teal-700 text-center text-white p-1 text-sm px-4">${doc.data().itemsQuantity}</span>
 
             <span onclick="reduceItemQuantityOfCart('dish${doc.id}',${doc.id},'${doc.data().dishName}','${doc.data().imgUrl}','${doc.data().dishPrice}','${doc.data().currency}')"  class="bg-white border pt-2 text-xl border-teal-700 text-teal-700 px-2"><svg
                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -842,7 +857,7 @@ const getCartDishes = ()=>{
       `
   
       modal_cart_dishes.innerHTML += `
-      <div id="cart_dish${doc.id}" class="border cartDish cart_dish${doc.id}">
+      <div id="modal_cart_dish${doc.id}" class="border cartDish cart_dish${doc.id}">
       <div class="flex items-center h-12 mt-5 border border-l-0 border-r-0">
       <img class="w-20 h-12 rounded-sm" src="${doc.data().dishImgUrl}" alt="">
       <h1 class="ml-2 text-md text-start text-teal-700 font-bold">${doc.data().dishName}</h1>
@@ -861,7 +876,7 @@ const getCartDishes = ()=>{
               </svg>
             </span>
 
-            <span id="cartItemQuantity${doc.id}" class=" bg-teal-700 text-center text-white p-1 text-sm px-4">${doc.data().itemsQuantity}</span>
+            <span id="modal_itemsQuantityWhileAdd${doc.id}" class="itemsQuantityWhileAdd${doc.id} bg-teal-700 text-center text-white p-1 text-sm px-4">${doc.data().itemsQuantity}</span>
 
             <span onclick="reduceItemQuantityOfCart('dish${doc.id}',${doc.id},'${doc.data().dishName}','${doc.data().imgUrl}','${doc.data().dishPrice}','${doc.data().currency}')"  class="bg-white border pt-2 text-xl border-teal-700 text-teal-700 px-2"><svg
                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -875,6 +890,8 @@ const getCartDishes = ()=>{
       </div>
     
       `
+  
+
     })
     
   })

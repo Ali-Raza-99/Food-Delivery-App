@@ -3,23 +3,9 @@
 @tailwind utilities;
 
 
-
-
-/* #modal{
-  padding-left: 37.4% !important;
-  padding-right: 37.4% !important;
-} */
-
 .forBlur {
   filter: blur(2px);
-  
 }
-/* #modal{ */
-  /* display: none !important; */
-/* } */
-/* input{ */
-  /* background: black !important; */
-/* } */
 
 #forBlur.active{
   filter: blur(2px);
@@ -38,19 +24,6 @@
   overflow-x: hidden;
 }
 
-
-/* @media (min-width: 640px) { */
-    /* #mobile-menu{ */
-        /* display: none !important; */
-    /* } */
-  /* } */
-
-   /* @media screen and (max-width: 1036px) and (min-width: 641px) {
-    #cartter{
-      display: none !important;
-    } */
-
-   /* } */
    @media screen and (min-width: 1024px)  {
       #modalOfCartter{
         display: none !important;
@@ -76,29 +49,10 @@
   }
 
 
-  
-  /* #collapNavBtn{
-    display: block !important;
-    color: aqua !important;
-    background-color: black !important;
-  } */
-  /* @media screen and (max-width: 860px) and (min-width: 640px) {
-    #restaurant_logout_btn{
-      display: none;
-    }
-    #restaurant_addDishes_btn{
-      display: none;
-    }
-    .navBtn-2{
-      display: block;
-    }
-  }    */
-
-
 /* loader ************************************************ */
 
 
-/* .lds-roller,
+.lds-roller,
 .lds-roller div,
 .lds-roller div:after {
   box-sizing: border-box;
@@ -178,13 +132,12 @@
 .lds-roller div:nth-child(8):after {
   top: 56px;
   left: 12.28719px;
-} */
-/* @keyframes lds-roller {
+}
+@keyframes lds-roller {
   0% {
     transform: rotate(0deg);
   }
   100% {
     transform: rotate(360deg);
-  } */
-/* } */
-
+  }
+}

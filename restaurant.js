@@ -128,6 +128,8 @@ const restaurantLogin = () => {
       let restaurantCity = document.getElementById('restaurantCity');
       let restaurantProfilePic = document.getElementById('restaurantProfilePic')
       const currentYear = currentDate.getFullYear();
+      const path = window.location.pathname;
+
 
 
       // getting signUp data of restaurant
@@ -149,29 +151,13 @@ const restaurantLogin = () => {
         console.log("Error getting document:", error);
       });
 
-      if(window.location.pathname === '/restaurantDashboard.html'){
-        
-        getDishData()
-        // loader()
+      path === '/restaurantDashboard.html' ? getDishData() :
+      path === '/pending.html' ? getPendingOrders() :
+      path === '/accepted.html' ? getAcceptedOrders() :
+      path === '/delivered.html' ? getDeliveredOrders() : null;
 
-      }
-      if(window.location.pathname === '/pending.html'){
-
-        getPendingOrders()
-        // loader()
-
-      }
-
-      if(window.location.pathname === '/accepted.html'){
-      getAcceptedOrders()
-      // loader()
-
-      }
-      if(window.location.pathname === '/delivered.html'){
-        getDeliveredOrders()
-        // loader()
-      }
-
+      // for here i will have apply asnyc
+      stopLoader()
       // ...
     } else {
       console.log('not working yet')
@@ -590,11 +576,11 @@ const collapNav = () => {
 
 // navbar logic  **********************************************************************
 
-const loader=()=>{
-  let forBlur = document.querySelector('.forBlur');
+const stopLoader=()=>{
+  let forBlur = document.getElementById('forBlur');
   forBlur.style.opacity = '1'
   forBlur.style.filter = 'none'
-  let loader = document.getElementById('loader');
+  let loader = document.getElementById('loader_parent');
   loader.style.display = 'none'
   
   
