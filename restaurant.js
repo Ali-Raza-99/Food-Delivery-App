@@ -167,60 +167,6 @@ const restaurantLogin = () => {
   
 
 
-//   const currentRestaurant = () => {
-
-//     firebase.auth().onAuthStateChanged((user) => {
-//       if (user) {
-
-//       let uid = user.uid;
-//       let email = user.email;
-//       let restaurantName = document.getElementById('restaurantName');
-//       let restaurantEmail = document.getElementById('restaurantEmail');
-//       let restaurantCopyrightYear = document.getElementById('restaurant-copyright-year')
-//       let restaurantCountry = document.getElementById('restaurantCountry');
-//       let restaurantCity = document.getElementById('restaurantCity');
-//       let restaurantProfilePic = document.getElementById('restaurantProfilePic')
-//       const currentYear = currentDate.getFullYear();
-//       const path = window.location.pathname;
-
-
-
-//       db.collection(`${`Restaurants`}`).doc(`${uid}`).get().then((doc) => {
-//         if (doc.exists) {
-//           restaurantName.innerHTML = `${doc.data().name}`
-//           restaurantCopyrightYear.innerHTML = `${currentYear}`
-//           restaurantEmail.innerHTML = `${doc.data().email}`
-//           restaurantCountry.innerHTML = `${doc.data().country}`
-//           restaurantCity.innerHTML = `${doc.data().city}`
-//           restaurantProfilePic.innerHTML = `<img id="${uid}profile" class="rounded-full h-9 w-9" src="${doc.data().restaurantprofileUrl}" alt="Firebase Image">`
-
-//         }
-        
-//         else {
-//           console.log("No such document!");
-//         }
-//       }).catch((error) => {
-//         console.log("Error getting document:", error);
-//       });
-
-//       stopLoader()
-
-
-//       path === '/restaurantDashboard.html' ? getDishData() :
-//       path === '/pending.html' ? getPendingOrders() :
-//       path === '/accepted.html' ? getAcceptedOrders() :
-//       path === '/delivered.html' ? getDeliveredOrders() : null;
-
-//     } else {
-//       console.log('not working yet')
-      
-//     }
-//   });
-
-
-  
-// }
-
 
 
 // restaurant authentication code ************************************************************************
@@ -242,17 +188,10 @@ const toggle = () => {
 //function for creating dish's information
 const createDish = (dishName, dishPrice, category_dropdown, deliveryType, currency,imgUrl,dishCounter) => {
 
-
-
   let currentRestaurantUid = firebase.auth().currentUser.uid
-
   let cardParent = document.getElementById('cardParent')
   let addDishBtn = document.getElementById('addDishBtn');
-//  let counter = parseInt(localStorage.getItem(`${currentRestaurantUid}`)) || 1;
-
-
-
-    // Add a new document in collection "cities"
+  
   db.collection(`Dishes`).add({
     dishId: dishCounter,
     dishName: dishName,
@@ -627,7 +566,7 @@ const collapNav = () => {
 // navbar logic  **********************************************************************
 
 const stopLoader=()=>{
-  
+
   let forBlur = document.querySelectorAll('.forBlur')
   let deliveredOrdersParent = document.querySelectorAll('.card-parent-height')
   deliveredOrdersParent.forEach(element => {
@@ -647,23 +586,3 @@ const stopLoader=()=>{
   
 }
 
-
-
-
-
-// helpful function its helps to add image without database ..........................
-
-// function for uploading dish image ************************************************************
-
-
-// const dishImageUpload = (currentImageId) => {
-//   let file = document.getElementById('dishImg').files[0];
-//   let reader = new FileReader();
-//   reader.onload = function (e) {
-
-//     currentImageId.innerHTML = `<img id="DynamicDishImg${currentImageId}" class="p-2 w-60 h-44" src="${e.target.result}" alt="">`
-//     // console.log(e.target.files)
-//   }
-  
-//   reader.readAsDataURL(file);
-// }
