@@ -114,62 +114,112 @@ const restaurantLogin = () => {
   // Login as restaurant ********************************************************
   
   
-  const currentRestaurant = () => {
-
-    firebase.auth().onAuthStateChanged((user) => {
+  const currentRestaurant = async () => {
+    firebase.auth().onAuthStateChanged(async (user) => {
       if (user) {
-
-      let uid = user.uid;
-      let email = user.email;
-      let restaurantName = document.getElementById('restaurantName');
-      let restaurantEmail = document.getElementById('restaurantEmail');
-      let restaurantCopyrightYear = document.getElementById('restaurant-copyright-year')
-      let restaurantCountry = document.getElementById('restaurantCountry');
-      let restaurantCity = document.getElementById('restaurantCity');
-      let restaurantProfilePic = document.getElementById('restaurantProfilePic')
-      const currentYear = currentDate.getFullYear();
-      const path = window.location.pathname;
-
-
-
-      // getting signUp data of restaurant
-      db.collection(`${`Restaurants`}`).doc(`${uid}`).get().then((doc) => {
-        if (doc.exists) {
-          restaurantName.innerHTML = `${doc.data().name}`
-          restaurantCopyrightYear.innerHTML = `${currentYear}`
-          restaurantEmail.innerHTML = `${doc.data().email}`
-          restaurantCountry.innerHTML = `${doc.data().country}`
-          restaurantCity.innerHTML = `${doc.data().city}`
-          restaurantProfilePic.innerHTML = `<img id="${uid}profile" class="rounded-full h-9 w-9" src="${doc.data().restaurantprofileUrl}" alt="Firebase Image">`
-
+        let uid = user.uid;
+        let email = user.email;
+        let restaurantName = document.getElementById('restaurantName');
+        let restaurantEmail = document.getElementById('restaurantEmail');
+        let restaurantCopyrightYear = document.getElementById('restaurant-copyright-year');
+        let restaurantCountry = document.getElementById('restaurantCountry');
+        let restaurantCity = document.getElementById('restaurantCity');
+        let restaurantProfilePic = document.getElementById('restaurantProfilePic');
+        const currentYear = new Date().getFullYear();
+        const path = window.location.pathname;
+  
+        try {
+          // getting signUp data of restaurant
+          let doc = await db.collection('Restaurants').doc(uid).get();
+          if (doc.exists) {
+            let data = doc.data();
+            restaurantName.innerHTML = data.name;
+            restaurantCopyrightYear.innerHTML = currentYear;
+            restaurantEmail.innerHTML = data.email;
+            restaurantCountry.innerHTML = data.country;
+            restaurantCity.innerHTML = data.city;
+            restaurantProfilePic.innerHTML = `<img id="${uid}profile" class="rounded-full h-9 w-9" src="${data.restaurantprofileUrl}" alt="Firebase Image">`;
+          } else {
+            console.log("No such document!");
+          }
+        } catch (error) {
+          console.log("Error getting document:", error);
         }
+  
         
-        else {
-          console.log("No such document!");
-        }
-      }).catch((error) => {
-        console.log("Error getting document:", error);
-      });
+        
+        await (
+          path === '/restaurantDashboard.html' ? getDishData() :
+          path === '/pending.html' ? getPendingOrders() :
+          path === '/accepted.html' ? getAcceptedOrders() :
+          path === '/delivered.html' ? getDeliveredOrders() :
+          Promise.resolve()
+          
+        );
+        
+        stopLoader()
 
-      path === '/restaurantDashboard.html' ? getDishData() :
-      path === '/pending.html' ? getPendingOrders() :
-      path === '/accepted.html' ? getAcceptedOrders() :
-      path === '/delivered.html' ? getDeliveredOrders() : null;
+      } else {
+        console.log('not working yet');
+      }
+    });
+  };
+  
 
-      // for here i will have apply asnyc
-      stopLoader()
-      // ...
-    } else {
-      console.log('not working yet')
-      // signOutUser()
-      // User is signed out
-      // ...
-    }
-  });
+
+//   const currentRestaurant = () => {
+
+//     firebase.auth().onAuthStateChanged((user) => {
+//       if (user) {
+
+//       let uid = user.uid;
+//       let email = user.email;
+//       let restaurantName = document.getElementById('restaurantName');
+//       let restaurantEmail = document.getElementById('restaurantEmail');
+//       let restaurantCopyrightYear = document.getElementById('restaurant-copyright-year')
+//       let restaurantCountry = document.getElementById('restaurantCountry');
+//       let restaurantCity = document.getElementById('restaurantCity');
+//       let restaurantProfilePic = document.getElementById('restaurantProfilePic')
+//       const currentYear = currentDate.getFullYear();
+//       const path = window.location.pathname;
+
+
+
+//       db.collection(`${`Restaurants`}`).doc(`${uid}`).get().then((doc) => {
+//         if (doc.exists) {
+//           restaurantName.innerHTML = `${doc.data().name}`
+//           restaurantCopyrightYear.innerHTML = `${currentYear}`
+//           restaurantEmail.innerHTML = `${doc.data().email}`
+//           restaurantCountry.innerHTML = `${doc.data().country}`
+//           restaurantCity.innerHTML = `${doc.data().city}`
+//           restaurantProfilePic.innerHTML = `<img id="${uid}profile" class="rounded-full h-9 w-9" src="${doc.data().restaurantprofileUrl}" alt="Firebase Image">`
+
+//         }
+        
+//         else {
+//           console.log("No such document!");
+//         }
+//       }).catch((error) => {
+//         console.log("Error getting document:", error);
+//       });
+
+//       stopLoader()
+
+
+//       path === '/restaurantDashboard.html' ? getDishData() :
+//       path === '/pending.html' ? getPendingOrders() :
+//       path === '/accepted.html' ? getAcceptedOrders() :
+//       path === '/delivered.html' ? getDeliveredOrders() : null;
+
+//     } else {
+//       console.log('not working yet')
+      
+//     }
+//   });
 
 
   
-}
+// }
 
 
 
@@ -577,9 +627,20 @@ const collapNav = () => {
 // navbar logic  **********************************************************************
 
 const stopLoader=()=>{
-  let forBlur = document.getElementById('forBlur');
-  forBlur.style.opacity = '1'
-  forBlur.style.filter = 'none'
+  
+  let forBlur = document.querySelectorAll('.forBlur')
+  let deliveredOrdersParent = document.querySelectorAll('.card-parent-height')
+  deliveredOrdersParent.forEach(element => {
+    
+    element.style.height = 'auto'
+  });
+  forBlur.forEach(element => {
+    element.style.opacity = '1'
+    element.style.filter = 'none'
+    
+  });
+
+
   let loader = document.getElementById('loader_parent');
   loader.style.display = 'none'
   

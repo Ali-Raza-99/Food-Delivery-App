@@ -6,7 +6,9 @@
 .forBlur {
   filter: blur(2px);
 }
-
+.card-parent-height {
+  height: 490px ;
+}
 #forBlur.active{
   filter: blur(2px);
   pointer-events: none;
@@ -23,6 +25,11 @@
   overflow: scroll;
   overflow-x: hidden;
 }
+/* .delivered-card-parent{ */
+  /* /* height: 420px; */
+  /* overflow: scroll; */
+  /* overflow-x: hidden; */ 
+/* } */
 
    @media screen and (min-width: 1024px)  {
       #modalOfCartter{

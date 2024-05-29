@@ -95,72 +95,69 @@ const userLogin = () => {
 
   // login user *********************************************************************************
 
-  const currentUser = () => {
+  const currentUser = async () => {
+    firebase.auth().onAuthStateChanged(async (user) => {
+      if (user) {
+        let uid = user.uid;
+        let email = user.email;
+        let userName = document.getElementById('userName');
+        let userEmail = document.getElementById('userEmail');
+        let userCopyrightYear = document.getElementById('user-copyright-year');
+        let userCountry = document.getElementById('userCountry');
+        let userPhone = document.getElementById('userPhone');
+        let userPhone_mobile = document.getElementById('userPhone_mobile');
+        let userCity = document.getElementById('userCity');
+        let userProfilePic = document.getElementById('userProfilePic');
+        const currentYear = new Date().getFullYear();
+        const path = window.location.pathname;
+        
+        try {
+          const doc = await db.collection('Users').doc(uid).get();
+          if (doc.exists) {
+            const data = doc.data();
+            userName.innerHTML = data.name;
+            userCopyrightYear.innerHTML = currentYear;
+            userEmail.innerHTML = data.email;
+            userCountry.innerHTML = data.country;
+            userCity.innerHTML = data.city;
+            userProfilePic.innerHTML = `<img id="${uid}profile" class="" src="${data.userProfileUrl}" alt="Firebase Image">`;
+            userPhone.innerHTML = data.phone;
+            userPhone_mobile.innerHTML = data.phone;
+          } else {
+            console.log("No such document!");
+          }
+          stopLoader(); // Call stopLoader only after data fetching is complete
+        } catch (error) {
+          console.log("Error getting document:", error);
 
-  firebase.auth().onAuthStateChanged((user) => {
-    if (user) {
-
-    let uid = user.uid;
-    let email = user.email;
-    let userName = document.getElementById('userName');
-    let userEmail = document.getElementById('userEmail');
-    let userCopyrightYear = document.getElementById('user-copyright-year')
-    let userCountry = document.getElementById('userCountry');
-    let userPhone = document.getElementById('userPhone')
-    let userPhone_mobile = document.getElementById('userPhone_mobile')
-    let userCity = document.getElementById('userCity');
-    let userProfilePic = document.getElementById('userProfilePic')
-    const currentYear = currentDate.getFullYear();
-
-    // getting signUp data of user
-    db.collection(`${`Users`}`).doc(`${uid}`).get().then((doc) => {
-      if (doc.exists) {
-        // console.log("Document data:", doc.data());
-        userName.innerHTML = `${doc.data().name}`
-        userCopyrightYear.innerHTML = `${currentYear}`
-        userEmail.innerHTML = `${doc.data().email}`
-        userCountry.innerHTML = `${doc.data().country}`
-        userCity.innerHTML = `${doc.data().city}`
-        userProfilePic.innerHTML = `<img id="${uid}profile" class="" src="${doc.data().userProfileUrl}" alt="Firebase Image">`
-        userPhone.innerHTML = `${doc.data().phone}`
-        userPhone_mobile.innerHTML = `${doc.data().phone}`
-      }
       
-      else {
-        // doc.data() will be undefined in this case
-        console.log("No such document!");
-      }
-    }).catch((error) => {
-      console.log("Error getting document:", error);
-    });
+        }
 
-
-    if (window.location.pathname === '/userHome.html') {
-      getRestaurants(uid);
-   }
-
-  if(window.location.pathname === '/userDashboard.html'){
-
-    getUserDashboardData()
-  }
-      
-      
-    
-      
-
-
-      // ...
-    } else {
-      console.log('not working yet')
-      // signOutUser()
-      // User is signed out
-      // ...
-    }
-  });
-
-
+        
+        await (
+          path === '/userHome.html' ? getRestaurants(uid) :
+          path === '/userDashboard.html' ? getUserDashboardData() :
+          
+          Promise.resolve()
+          
+        );
+        
+        stopLoader()
   
-}
+        // if (window.location.pathname === '/userHome.html') {
+        //   getRestaurants(uid);
+        // }
+  
+        // if (window.location.pathname === '/userDashboard.html') {
+        //   getUserDashboardData();
+        // }
+  
+      } else {
+        console.log('not working yet');
+      }
+    });
+  };
+  
 
 const signOutUser = () => {
   firebase.auth().signOut().then(() => {
@@ -927,5 +924,26 @@ const showCart = () => {
 const closeCart =()=>{
   let cartterModal = document.getElementById('modalOfCartter');
   cartterModal.style.display = 'none'
+  
+}
+
+const stopLoader=()=>{
+  
+  let forBlur = document.querySelectorAll('.forBlur')
+  let deliveredOrdersParent = document.querySelectorAll('.card-parent-height')
+  deliveredOrdersParent.forEach(element => {
+    
+    element.style.height = 'auto'
+  });
+  forBlur.forEach(element => {
+    element.style.opacity = '1'
+    element.style.filter = 'none'
+    
+  });
+
+
+  let loader = document.getElementById('loader_parent');
+  loader.style.display = 'none'
+  
   
 }

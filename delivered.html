@@ -34,8 +34,12 @@
 <body onload="currentRestaurant()" class="text-gray-600">
   
 
+  <div id="loader_parent" class="w-full flex justify-center items-center absolute z-30 top-52">  
+    <div id="loader" class="absolute loader lds-roller text-teal-700 "><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+  </div>
+
   <!-- div for opacity  -->
-  <div id="forBlur">
+  <div id="forBlur" class="forBlur">
  
     <nav class="bg-gray-100  shadow">
       <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -228,7 +232,7 @@
       </a>
       <!-- <a href="#" class="text-gray-600  hover:text-teal-700 rounded-md px-24 py-2 text-sm font-bold">Add food</a> -->
     </div>
-  </div>
+    </div>
     <!-- finish nav start main -->
   
   
@@ -252,71 +256,32 @@
   
     </div>
   
-  
 
-
-
-
-
-    <div >
-      <div id="loader" class="absolute  loader lds-roller text-teal-700 top-20"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
-    </div>
-  
     <!-- cards *********************************************************************************** -->
-    <div id="deliveredOrdersParent" class="flex flex-wrap px-3 justify-evenly items-start  w-full ">
+    <div  id="deliveredOrdersParent" class="card-parent-height flex flex-wrap px-3 justify-evenly items-start  w-full ">
       
-       <!-- <div class="card h-auto w-60 mt-8 mb-5  border border-teal-700 rounded-xl"> 
-       <div id="dishImgParent"> <img class="p-2 img w-60 h-44" src="us.jpg" alt=""></div>
-        <div class="flex justify-center px-4 mb-3 text-center">
-
-          <h1 class="text-md text-center  text-teal-700">Pasta with great pup</h1>
-
-
-        </div>
-        <hr class="mx-4">
-        <div class="flex justify-between px-5 mt-3 pb-2">
-          <h1 class="text-sm text-red-700">Rs:100</h1>
-          <h1 class="text-sm  text-gray-700">chiness</h1>
-        </div>
-        <hr class="mx-4">
-        <div class="flex items-center  justify-between ">
-        <div class="flex px-4 mt-3 pb-2 text-center ">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-            stroke="currentColor" class="w-5 h-5 text-gray-700">
-            <path stroke-linecap="round" stroke-linejoin="round"
-              d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
-          </svg>
-          <h1 class="text-sm ml-1 text-gray-700">Delivery <span>free</span></h1>
-        </div>
-        <div class="pr-4 ">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class=" hover:text-red-700 w-5 h-5 cursor-pointer text-gray-700">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
-          </svg>
-          
-        </div>
-      </div>
-
-      </div>  -->
+      <!-- dynamic data  -->
 
     </div>
     <!-- cards *********************************************************************************** -->
 
+   
     <div>
 
 
-      <footer
-        class=" py-2 flex flex-wrap  sm:h-auto max-sm:justify-center items-center justify-between px-20  bg-gray-200 fixed bottom-0 w-full">
+      <footer class=" py-2 border-t flex flex-wrap fixed bottom-0 w-full sm:h-auto max-sm:justify-center items-center justify-between px-20  border-slate-300 bg-gray-100 ">
         <div class="flex  max-sm:mt-2 ">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-5 text-gray-600">
             <path d="M3 4a2 2 0 00-2 2v1.161l8.441 4.221a1.25 1.25 0 001.118 0L19 7.162V6a2 2 0 00-2-2H3z" />
             <path d="M19 8.839l-7.77 3.885a2.75 2.75 0 01-2.46 0L1 8.839V14a2 2 0 002 2h14a2 2 0 002-2V8.839z" />
           </svg>
 
-          <h1 id="restaurantEmail" class="text-gray-600  pl-1 text-sm">ardeveloper@gmail.com</h1>
+          <h1 id="restaurantEmail" class="text-gray-600  pl-1 text-sm">......@gmail.com</h1>
         </div>
         <div class="text-center max-sm:mt-2 ">
 
-          <h1 class="text-gray-600 text-sm pr-24 max-sm:pr-0"> © <span id="restaurant-copyright-year"></span> flavour fleet. All
+          <h1 class="text-gray-600 text-sm pr-24 max-sm:pr-0"> © <span id="restaurant-copyright-year"></span> flavour
+            fleet. All
             rights
             reserved.</h1>
 
@@ -328,7 +293,7 @@
               <path
                 d="M3.5 2.75a.75.75 0 00-1.5 0v14.5a.75.75 0 001.5 0v-4.392l1.657-.348a6.449 6.449 0 014.271.572 7.948 7.948 0 005.965.524l2.078-.64A.75.75 0 0018 12.25v-8.5a.75.75 0 00-.904-.734l-2.38.501a7.25 7.25 0 01-4.186-.363l-.502-.2a8.75 8.75 0 00-5.053-.439l-1.475.31V2.75z" />
             </svg>
-            <h1 id="restaurantCountry" class="text-gray-600 pl-1 text-sm">Pakistan</h1>
+            <h1 id="restaurantCountry" class="text-gray-600 pl-1 text-sm">........</h1>
           </span>
 
           <span class="flex mt-1">
@@ -339,83 +304,17 @@
                 clip-rule="evenodd" />
             </svg>
 
-            <h1 id="restaurantCity" class="text-gray-600 pl-1 text-sm">Karachi</h1>
+            <h1 id="restaurantCity" class="text-gray-600 pl-1 text-sm">........</h1>
           </span>
         </div>
       </footer>
 
     </div>
-    <!-- </div> -->
-    <!-- end div for opacity  -->
-  </div>
-  <!-- end div for opacity  -->
-
-  <div id="modal" style="left: 39%;" class="fixed hidden sm:fixed">
-
-    <div
-      class="main  bg-white absolute bottom-32 w-80 flex mt-28 text-center flex-col p-6 px-9 bg-center border border-teal-700 rounded">
-      <h1 class="mb-3 text-teal-700 font-bold text-lg">Add New Dish</h1>
-
-      <input id="dishName" class="p-2 mt-2 rounded-md border text-sm border-gray-500 focus:outline-none " type="text"
-        placeholder="Item Name">
-      <div class="flex ">
-        <select id="currency" class="p-2 w-16 mt-2 text-sm rounded-md border border-gray-500 focus:outline-none"
-          name="currency">
-          <option value="note"> 💵</option>
-          <option value="₨">₨ </option>
-          <!-- <option value="€"> € </option>
-          <option value="₤"> ₤ </option>
-          <option value="﷼"> ﷼ </option>
-          <option value="₠"> ₠</option>
-          <option value="₹"> ₹ </option>
-          <option value="$"> $ </option>
-          <option value="元">元</option>
-          <option value="£"> £ </option>
-          <option value="₽"> ₽ </option> -->
-        </select>
-        <!-- <input id="currency" class="p-2 mt-2 w-16 rounded-md text-sm border border-gray-500 focus:outline-none" type="text" placeholder="$Type"> -->
-        <input id="dishPrice" class="p-2 mt-2 ml-1 rounded-md text-sm border border-gray-500 focus:outline-none "
-          type="text" placeholder="Price">
-      </div>
-
-      <select id="category_dropdown" class="p-2 mt-2 text-sm rounded-md border border-gray-500 focus:outline-none"
-        name="category">
-        <option value="Select Category">Select Category</option>
-        <option value="Chiness">Chiness</option>
-        <option value="Sea Food">Sea Food</option>
-        <option value="Fast Food">Fast Food</option>
-        <option value="Meat Dishes">Meat Dishes</option>
-        <option value="Rice">Rice</option>
-        <option value="Dessert">Dessert</option>
-        <option value="Other">Other</option>
-      </select>
-
-      <!-- <label for="img">Select image:</label> -->
-      <select id="deliveryType" class="p-2 mt-2 rounded-md border text-sm border-gray-500 focus:outline-none"
-        name="delivery">
-        <option value="Select Delivery Type">Select Delivery Type</option>
-        <option value="Free"> Free</option>
-        <option value="Paid">Paid</option>
-      </select>
-
-      <input id="dishImg" onchange="getDishImg(event)" class="p-2 mt-2 rounded-md border text-sm border-gray-500 focus:outline-none" type="file" 
-        name="img" accept="image/*">
-      <div class="flex mt-4 justify-between">
-        <button onclick="toggle()"
-          class="text-white mt-4 mb-2 rounded-lg font-bold bg-teal-700 p-2 px-4">Close</button>
-          
-       <button id="addDishBtn" onclick="addDish()"
-          class="text-white mt-4 px-5 mb-2 rounded-lg font-bold bg-teal-700 p-2 ">Add</button>
-    
-      </div>
-
 
     </div>
 
-</div>
 
-
-    <script src="restaurant.js"></script>
+ <script src="restaurant.js"></script>
 </body>
 
 </html>
