@@ -2,7 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-
+*{
+  /* display: none; */
+}
 .forBlur {
   filter: blur(2px);
 }
@@ -24,7 +26,12 @@
   height: 420px;
   overflow: scroll;
   overflow-x: hidden;
+  
 }
+.userCard-parent img{
+  object-fit: cover;
+}
+
 
    @media screen and (min-width: 1024px)  {
       #modalOfCartter{
@@ -143,3 +150,53 @@
     transform: rotate(360deg);
   }
 }
+
+
+/* HTML: <div class="loader"></div> */
+/* HTML: <div class="loader"></div> */
+/* .loader {
+  width: 45px;
+  aspect-ratio: .75;
+  --c: no-repeat linear-gradient(#F9C510 0 0);
+  background:
+    var(--c) 0% 50%,
+    var(--c) 50% 50%,
+    var(--c) 100% 50%;
+  background-size: 20% 50%;
+  animation: l6 1s infinite linear;
+}
+
+@keyframes l6 {
+  20% {
+    background-position: 0% 0%, 50% 50%, 100% 50%
+  }
+
+  40% {
+    background-position: 0% 100%, 50% 0%, 100% 50%
+  }
+
+  60% {
+    background-position: 0% 50%, 50% 100%, 100% 0%
+  }
+
+  80% {
+    background-position: 0% 50%, 50% 50%, 100% 100%
+  }
+}
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999999999;
+}
+
+.loading-overlay>* {
+  pointer-events: none;
+} */

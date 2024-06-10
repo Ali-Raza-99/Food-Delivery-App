@@ -344,6 +344,14 @@ const getDeliveredOrders = ()=>{
   db.collection("placedOrders").where("process", "==", 'delivered').where("restaurantUid", "==", `${currentRestaurantUid}` )
   .get()
   .then((querySnapshot) => {
+
+    if (querySnapshot.empty) {
+      deliveredOrdersParent.innerHTML = `
+      <div>
+          <h1 class="text-2xl mt-20 text-gray-600 "> No Delivered Orders</h1>
+        </div>`
+    }
+    else{
       querySnapshot.forEach((doc) => {
         deliveredOrdersParent.innerHTML +=`
         
@@ -370,6 +378,7 @@ const getDeliveredOrders = ()=>{
         
         ` 
       });
+    }
   })
   .catch((error) => {
       console.log("Error getting documents: ", error);
@@ -385,6 +394,15 @@ const getAcceptedOrders = ()=>{
   db.collection("placedOrders").where("process", "==", 'accepted').where("restaurantUid", "==", `${currentRestaurantUid}` )
   .get()
   .then((querySnapshot) => {
+
+    if (querySnapshot.empty) {
+      acceptedOrdersParent.innerHTML = `
+      <div>
+          <h1 class="text-2xl mt-20 text-gray-600 "> No Accepted Orders</h1>
+        </div>`
+      
+    }
+    else{
       querySnapshot.forEach((doc) => {
         acceptedOrdersParent.innerHTML +=`
         
@@ -411,6 +429,7 @@ const getAcceptedOrders = ()=>{
         
         `
       });
+    }
   })
   .catch((error) => {
       console.log("Error getting documents: ", error);
@@ -427,7 +446,16 @@ const getPendingOrders = ()=>{
   db.collection("placedOrders").where("process", "==", 'pending').where("restaurantUid", "==", `${currentRestaurantUid}` )
   .get()
   .then((querySnapshot) => {
-    loader()
+   
+
+    if (querySnapshot.empty) {
+      pendingOrdersParent.innerHTML = `
+      <div>
+          <h1 class="text-2xl mt-20 text-gray-600 "> No Pending Orders</h1>
+        </div>`
+      
+    }
+    else{
 
       querySnapshot.forEach((doc) => {
         pendingOrdersParent.innerHTML +=`
@@ -455,6 +483,8 @@ const getPendingOrders = ()=>{
         
         `
       });
+    }
+      
   })
   .catch((error) => {
       console.log("Error getting documents: ", error);
@@ -503,8 +533,17 @@ const getDishData = (uid) => {
   let cardParent = document.getElementById('cardParent')
 
   db.collection("Dishes").where("restaurantUid", "==", `${currentRestaurantUid}`).get().then((querySnapshot) => {
-
+    
+    if (querySnapshot.empty) {
+      cardParent  .innerHTML = `
+      <div>
+          <h1 class="text-2xl mt-20 text-gray-600 "> No Dish Exists</h1>
+        </div>`
+      
+    }
+else{
       querySnapshot.forEach((doc) => {
+
           cardParent.innerHTML += `
     
       <div id='${doc.id}' class="card h-auto w-60 mt-8 mb-5 shadow-lg  border border-teal-700 rounded">
@@ -541,6 +580,7 @@ const getDishData = (uid) => {
   `
       
       });
+    }
   });
 
 }
@@ -576,6 +616,7 @@ const stopLoader=()=>{
   forBlur.forEach(element => {
     element.style.opacity = '1'
     element.style.filter = 'none'
+    // document.body.style.backgroundColor = "white";
     
   });
 

@@ -770,6 +770,15 @@ const getUserDashboardData=()=>{
   db.collection("placedOrders").where("userUid", "==", currentUserUid)
     .get()
     .then((querySnapshot) => {
+      
+    if (querySnapshot.empty) {
+      userOrdersList.innerHTML = `
+      <div>
+          <h1 class="text-2xl mt-20 text-gray-600 "> No User Orders</h1>
+        </div>`
+      
+    }
+    else{
         querySnapshot.forEach((doc) => {
            userOrdersList.innerHTML += `
            <div id=${doc.id} class=" lg:w-5/12 md:w-full sm:w-full max-sm:w-full  userDashboardOrders bg-gray-100 border border-gray-200 rounded h-14 flex items-center mt-3 justify-between">
@@ -795,7 +804,9 @@ const getUserDashboardData=()=>{
            
            `
         });
+      }
     })
+
     .catch((error) => {
         console.log("Error getting documents: ", error);
     });
