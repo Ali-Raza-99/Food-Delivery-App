@@ -2,9 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-*{
-  /* display: none; */
-}
 .forBlur {
   filter: blur(2px);
 }
