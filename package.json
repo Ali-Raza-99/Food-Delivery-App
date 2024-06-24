@@ -1,18 +1,20 @@
 {
-  "name": "food-delivery-application",
+  "name": "food-devlivery-app-orignal",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "vite",
-    "build": "vite build"
+    "start": "vite"
   },
+  "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "autoprefixer": "^10.4.19",
-    "postcss": "^8.4.38",
-    "tailwindcss": "^3.4.4",
-    "vite": "^5.2.13"
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.31",
+    "tailwindcss": "^3.3.5"
+  },
+  "dependencies": {
+    "vite": "^5.0.2"
   }
 }

@@ -5,8 +5,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>user Dashboard</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="/style.css">
+  <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha384-hVEkW3jbYbhz7U5x58lZR5aYXVdFO0Mx7qe3VwoU6k2oY6d7p6Pssf2K1Za9l0eW" crossorigin="anonymous"> -->
+  <link rel="stylesheet" href="style.css">
 
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
@@ -32,8 +33,8 @@
 
 <body onload="currentUser()" class="text-gray-600 ">
 
-  <div id="loader_parent" class="w-full flex justify-center items-center absolute z-30 top-52">
-    <div id="loader" class="absolute loader lds-roller text-teal-700 ">
+  <div id="loader_parent" class="w-full flex justify-center items-center absolute z-30 top-56">
+    <div id="loader" class="absolute loader lds-roller text-teal-700 max-sm:top-32">
       <div></div>
       <div></div>
       <div></div>
@@ -77,52 +78,59 @@
               </svg>
             </button>
           </div>
-          <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+          <div class="flex flex-1 items-center max-sm:mr-5 justify-center sm:items-stretch sm:justify-start">
             <div class="flex flex-shrink-0 items-center">
-              <img class="h-16 w-16" src="logo3.0.png" alt="">
-              <h1 id="userName" class="text-teal-800 font-bold text-xl">........</h1>
+              <img class="h-16 w-16 max-sm:h-12 max-sm:w-12" src="logo3.0.png" alt="">
+              <h1 id="userName" class="text-teal-800 font-bold text-xl max-sm:text-lg">........</h1>
             </div>
             <div class="hidden sm:ml-6 sm:block mt-3 ">
               <div class="flex items-center space-x-7 lg:pl-40 md:space-x-7 md:pl-12  sm:space-x-1 ">
 
-                <a href="userHome.html" class=" hover:text-teal-700  flex items-center rounded-md px-3 py-2 text-sm font-bold"
+                <a href="userHome.html"
+                  class=" hover:text-teal-700  flex items-center rounded-md px-3 py-2 text-sm font-bold"
                   aria-current="page">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-5">
-                    <path d="M11.47 3.841a.75.75 0 0 1 1.06 0l8.69 8.69a.75.75 0 1 0 1.06-1.061l-8.689-8.69a2.25 2.25 0 0 0-3.182 0l-8.69 8.69a.75.75 0 1 0 1.061 1.06l8.69-8.689Z" />
-                    <path d="m12 5.432 8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 0 1-.75-.75v-4.5a.75.75 0 0 0-.75-.75h-3a.75.75 0 0 0-.75.75V21a.75.75 0 0 1-.75.75H5.625a1.875 1.875 0 0 1-1.875-1.875v-6.198a2.29 2.29 0 0 0 .091-.086L12 5.432Z" />
+                    <path
+                      d="M11.47 3.841a.75.75 0 0 1 1.06 0l8.69 8.69a.75.75 0 1 0 1.06-1.061l-8.689-8.69a2.25 2.25 0 0 0-3.182 0l-8.69 8.69a.75.75 0 1 0 1.061 1.06l8.69-8.689Z" />
+                    <path
+                      d="m12 5.432 8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 0 1-.75-.75v-4.5a.75.75 0 0 0-.75-.75h-3a.75.75 0 0 0-.75.75V21a.75.75 0 0 1-.75.75H5.625a1.875 1.875 0 0 1-1.875-1.875v-6.198a2.29 2.29 0 0 0 .091-.086L12 5.432Z" />
                   </svg>
-                  
+
 
                   <h1>Home</h1>
                 </a>
-                <a href="userDashboard.html" class="text-teal-700 flex items-center rounded-md px-3 py-2 text-sm font-bold"
-                  aria-current="page">
+                <a href="userDashboard.html"
+                  class="text-teal-700 flex items-center rounded-md px-3 py-2 text-sm font-bold" aria-current="page">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                  stroke="currentColor" class="w-6 h-6">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
-                </svg>
+                    stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
+                  </svg>
 
                   <h1>Dashboard</h1>
                 </a>
 
                 <div class="flex items-center">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
-                    <path fill-rule="evenodd" d="M15 3.75a.75.75 0 0 1 .75-.75h4.5a.75.75 0 0 1 .75.75v4.5a.75.75 0 0 1-1.5 0V5.56l-4.72 4.72a.75.75 0 1 1-1.06-1.06l4.72-4.72h-2.69a.75.75 0 0 1-.75-.75Z" clip-rule="evenodd" />
-                    <path fill-rule="evenodd" d="M1.5 4.5a3 3 0 0 1 3-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 0 1-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 0 0 6.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 0 1 1.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 0 1-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5Z" clip-rule="evenodd" />
-                  </svg> 
-                  
-                  
-                  
+                    <path fill-rule="evenodd"
+                      d="M15 3.75a.75.75 0 0 1 .75-.75h4.5a.75.75 0 0 1 .75.75v4.5a.75.75 0 0 1-1.5 0V5.56l-4.72 4.72a.75.75 0 1 1-1.06-1.06l4.72-4.72h-2.69a.75.75 0 0 1-.75-.75Z"
+                      clip-rule="evenodd" />
+                    <path fill-rule="evenodd"
+                      d="M1.5 4.5a3 3 0 0 1 3-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 0 1-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 0 0 6.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 0 1 1.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 0 1-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5Z"
+                      clip-rule="evenodd" />
+                  </svg>
+
+
+
                   <p id="userPhone" class="ml-1 "> </p>
                 </div>
-                
+
               </div>
             </div>
           </div>
           <div
             class="absolute inset-y-0 right-0 flex space-x-4 items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-            
+
 
             </button>
             <!-- log out button **************************************************** -->
@@ -156,25 +164,29 @@
             <h1>Home</h1>
           </a>
           <a href="userDashboard.html" class=" text-teal-700 flex items-center rounded-md px-3 py-2 text-sm font-bold"
-                  aria-current="page">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                  stroke="currentColor" class="w-6 h-6">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
-                </svg>
+            aria-current="page">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+              stroke="currentColor" class="w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
+            </svg>
 
-                  <h1>Dashboard</h1>
-                </a>
-                <div class="flex items-center max-sm:mt-4 max-sm:ml-3 ">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
-                    <path fill-rule="evenodd" d="M15 3.75a.75.75 0 0 1 .75-.75h4.5a.75.75 0 0 1 .75.75v4.5a.75.75 0 0 1-1.5 0V5.56l-4.72 4.72a.75.75 0 1 1-1.06-1.06l4.72-4.72h-2.69a.75.75 0 0 1-.75-.75Z" clip-rule="evenodd" />
-                    <path fill-rule="evenodd" d="M1.5 4.5a3 3 0 0 1 3-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 0 1-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 0 0 6.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 0 1 1.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 0 1-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5Z" clip-rule="evenodd" />
-                  </svg> 
-                  
-                  
-                  
-                  <p id="userPhone_mobile" class=""> </p>
-                </div>
+            <h1>Dashboard</h1>
+          </a>
+          <div class="flex items-center max-sm:mt-4 max-sm:ml-3 ">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
+              <path fill-rule="evenodd"
+                d="M15 3.75a.75.75 0 0 1 .75-.75h4.5a.75.75 0 0 1 .75.75v4.5a.75.75 0 0 1-1.5 0V5.56l-4.72 4.72a.75.75 0 1 1-1.06-1.06l4.72-4.72h-2.69a.75.75 0 0 1-.75-.75Z"
+                clip-rule="evenodd" />
+              <path fill-rule="evenodd"
+                d="M1.5 4.5a3 3 0 0 1 3-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 0 1-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 0 0 6.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 0 1 1.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 0 1-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5Z"
+                clip-rule="evenodd" />
+            </svg>
+
+
+
+            <p id="userPhone_mobile" class=""> </p>
+          </div>
         </div>
       </div>
     </nav>
@@ -185,31 +197,34 @@
 
 
     <!-- cards *********************************************************************************** -->
-        <div class=" bg-teal-700 flex md:justify-start lg:justify-start max-sm:justify-between sm:justify-between items-center p-3 ">
+    <div
+      class=" bg-teal-700 flex md:justify-start lg:justify-start max-sm:justify-between sm:justify-between items-center p-3 ">
 
-      <h1 id="restaurant_dishesHeading"
-        class=" text-slate-100  flex text-xl  font-semibold  font-sans ">
+      <h1 id="restaurant_dishesHeading" class=" text-slate-100  flex text-xl  font-semibold  font-sans max-sm:text-sm">
         Your Orders</h1>
 
-        <button onclick="signOutUser()" class="text-gray-100 sm:hidden lg:hidden md:hidden hover:text-red-700">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-            stroke="currentColor" class="w-6 h-6">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M5.636 5.636a9 9 0 1012.728 0M12 3v9" />
-          </svg>
-        </button>
+      <button onclick="signOutUser()" class="text-gray-100 sm:hidden lg:hidden md:hidden hover:text-red-700">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+          class="w-6 h-6 max-sm:w-5 max-sm:h-5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5.636 5.636a9 9 0 1012.728 0M12 3v9" />
+        </svg>
+      </button>
 
 
-  
-  
-    </div>
 
-
-    <div  id="userOrdersList" class="card-parent-height userOrders userDashboardCard-parent mt-2 flex flex-wrap px-3 justify-evenly items-start mb-2  w-full ">
-
-      <!-- dynamic data  -->
 
     </div>
 
+    <div class="card-main">
+
+
+      <div id="userOrdersList"
+        class="card-parent-height userOrders userDashboardCard-parent mt-2 flex flex-wrap px-3 justify-evenly items-start mb-2  w-full ">
+
+        <!-- dynamic data  -->
+
+      </div>
+    </div>
 
 
     <!-- cards *********************************************************************************** -->
@@ -217,18 +232,19 @@
     <div>
 
 
-      <footer class=" py-2 border-t flex fixed bottom-0 w-full flex-wrap sm:h-auto max-sm:justify-center items-center justify-between px-20 border-slate-300 bg-gray-200 ">
+      <footer
+        class=" py-2 border-t flex fixed bottom-0 w-full flex-wrap sm:h-auto max-sm:justify-center items-center justify-between px-20 border-slate-300 bg-gray-200 ">
         <div class="flex  max-sm:mt-2 ">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-5 text-gray-600">
             <path d="M3 4a2 2 0 00-2 2v1.161l8.441 4.221a1.25 1.25 0 001.118 0L19 7.162V6a2 2 0 00-2-2H3z" />
             <path d="M19 8.839l-7.77 3.885a2.75 2.75 0 01-2.46 0L1 8.839V14a2 2 0 002 2h14a2 2 0 002-2V8.839z" />
           </svg>
 
-          <h1 id="userEmail" class="text-gray-600  pl-1 text-sm">.....@gmail.com</h1>
+          <h1 id="userEmail" class="text-gray-600  pl-1 text-sm">............@gmail.com</h1>
         </div>
         <div id="userCopyrightLine" class="text-center max-sm:mt-2 ">
 
-          <h1 class="text-gray-600 text-sm pr-24 max-sm:pr-0"> © <span id="user-copyright-year"></span> flavour fleet.
+          <h1 class="text-gray-600 text-sm pr-24 max-sm:pr-0"> © <span id="user-copyright-year">...........</span> flavour fleet.
             All
             rights
             reserved.</h1>
@@ -240,7 +256,7 @@
               <path
                 d="M3.5 2.75a.75.75 0 00-1.5 0v14.5a.75.75 0 001.5 0v-4.392l1.657-.348a6.449 6.449 0 014.271.572 7.948 7.948 0 005.965.524l2.078-.64A.75.75 0 0018 12.25v-8.5a.75.75 0 00-.904-.734l-2.38.501a7.25 7.25 0 01-4.186-.363l-.502-.2a8.75 8.75 0 00-5.053-.439l-1.475.31V2.75z" />
             </svg>
-            <h1 id="userCountry" class="text-gray-600 pl-1 text-sm">........</h1>
+            <h1 id="userCountry" class="text-gray-600 pl-1 text-sm">............</h1>
           </span>
 
           <span class="flex mt-1">
@@ -251,7 +267,7 @@
                 clip-rule="evenodd" />
             </svg>
 
-            <h1 id="userCity" class="text-gray-600 pl-1 text-sm">........</h1>
+            <h1 id="userCity" class="text-gray-600 pl-1 text-sm">............</h1>
           </span>
         </div>
       </footer>

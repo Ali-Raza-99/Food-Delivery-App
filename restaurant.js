@@ -344,14 +344,6 @@ const getDeliveredOrders = ()=>{
   db.collection("placedOrders").where("process", "==", 'delivered').where("restaurantUid", "==", `${currentRestaurantUid}` )
   .get()
   .then((querySnapshot) => {
-
-    if (querySnapshot.empty) {
-      deliveredOrdersParent.innerHTML = `
-      <div>
-          <h1 class="text-2xl mt-20 text-gray-600 "> No Delivered Orders</h1>
-        </div>`
-    }
-    else{
       querySnapshot.forEach((doc) => {
         deliveredOrdersParent.innerHTML +=`
         
@@ -360,7 +352,7 @@ const getDeliveredOrders = ()=>{
             <img class=" " src=${doc.data().userProfileUrl}>
           </div>
           <div>
-          <p id="orderRestaurantNameOf${doc.id}" class="text-teal-700  text-md ">
+          <p id="orderRestaurantNameOf${doc.id}" class="text-teal-700  text-md max-sm:text-sm">
             ${doc.data().userName}
           </p>
           </div>
@@ -368,7 +360,7 @@ const getDeliveredOrders = ()=>{
           <div class="self-end text-gray-500 text-xs mb-1 flex flex-col max-sm:mr-0  mr-8 ">
             <span >Dishes : <span id="userDishesQuantityOf${doc.id}">${doc.data().dishQuantity}</span></span>
 
-            <span class="mt-3"> Total Amount : <span id="userDashboardTotal">${doc.data().totalAmount}</span> </span>
+            <span class="mt-3"> Total:<span id="userDashboardTotal">${doc.data().totalAmount}</span> </span>
           </div>
           <div class="text-xs  flex flex-col pt-1 mr-3">
             <span id=userOrderProcessOf${doc.id} class="  cursor-pointer text-sky-700 p-1 text-xs rounded  text-center italic">Delivered</span>
@@ -378,7 +370,6 @@ const getDeliveredOrders = ()=>{
         
         ` 
       });
-    }
   })
   .catch((error) => {
       console.log("Error getting documents: ", error);
@@ -394,15 +385,6 @@ const getAcceptedOrders = ()=>{
   db.collection("placedOrders").where("process", "==", 'accepted').where("restaurantUid", "==", `${currentRestaurantUid}` )
   .get()
   .then((querySnapshot) => {
-
-    if (querySnapshot.empty) {
-      acceptedOrdersParent.innerHTML = `
-      <div>
-          <h1 class="text-2xl mt-20 text-gray-600 "> No Accepted Orders</h1>
-        </div>`
-      
-    }
-    else{
       querySnapshot.forEach((doc) => {
         acceptedOrdersParent.innerHTML +=`
         
@@ -411,7 +393,7 @@ const getAcceptedOrders = ()=>{
             <img class=" " src=${doc.data().userProfileUrl}>
           </div>
           <div>
-          <p id="orderRestaurantNameOf${doc.id}" class="text-teal-700  text-md ">
+          <p id="orderRestaurantNameOf${doc.id}" class="text-teal-700  text-md max-sm:text-sm">
             ${doc.data().userName}
           </p>
           </div>
@@ -419,7 +401,7 @@ const getAcceptedOrders = ()=>{
           <div class="self-end text-gray-500 text-xs mb-1 flex flex-col max-sm:mr-0  mr-4  ">
             <span >Dishes : <span id="userDishesQuantityOf${doc.id}">${doc.data().dishQuantity}</span></span>
 
-            <span class="mt-3"> Total Amount : <span id="userDashboardTotal">${doc.data().totalAmount}</span> </span>
+            <span class="mt-3"> Total:<span id="userDashboardTotal">${doc.data().totalAmount}</span> </span>
           </div>
           <div class="text-xs  flex flex-col pt-1 mr-3">
             <span onclick="updateAcceptedToDeliveredOrders('${doc.id}')" id=userOrderProcessOf${doc.id} class=" text-white cursor-pointer bg-sky-700 p-1 text-xs rounded  text-center italic">Deliver</span>
@@ -429,7 +411,6 @@ const getAcceptedOrders = ()=>{
         
         `
       });
-    }
   })
   .catch((error) => {
       console.log("Error getting documents: ", error);
@@ -446,26 +427,17 @@ const getPendingOrders = ()=>{
   db.collection("placedOrders").where("process", "==", 'pending').where("restaurantUid", "==", `${currentRestaurantUid}` )
   .get()
   .then((querySnapshot) => {
-   
-
-    if (querySnapshot.empty) {
-      pendingOrdersParent.innerHTML = `
-      <div>
-          <h1 class="text-2xl mt-20 text-gray-600 "> No Pending Orders</h1>
-        </div>`
-      
-    }
-    else{
+    // loader()
 
       querySnapshot.forEach((doc) => {
         pendingOrdersParent.innerHTML +=`
         
-        <div id=${doc.id} class="w-5/12 md:w-5/12 sm:w-full max-sm:w-full userDashboardOrders bg-gray-100 border border-gray-200 rounded h-14 flex items-center mt-3 justify-between">
-          <div id=userprofile${doc.id} class="w-12 h-12 rounded overflow-hidden ml-1 mr-2 ">
-            <img class=" " src=${doc.data().userProfileUrl}>
+        <div id=${doc.id} class="w-5/12 md:w-5/12 sm:w-full max-sm:w-full userDashboardOrders bg-gray-100 border border-gray-200 rounded h-14 max-sm:h-auto flex items-center mt-3 justify-between">
+          <div id=userprofile${doc.id} class="w-12 h-12  rounded overflow-hidden ml-1 mr-2 ">
+            <img class="" src=${doc.data().userProfileUrl}>
           </div>
           <div>
-          <p id="orderRestaurantNameOf${doc.id}" class="text-teal-700  text-md ">
+          <p id="orderRestaurantNameOf${doc.id}" class="text-teal-700  text-md max-sm:text-sm">
             ${doc.data().userName}
           </p>
           </div>
@@ -473,7 +445,7 @@ const getPendingOrders = ()=>{
           <div class="self-end text-gray-500 text-xs mb-1 flex flex-col max-sm:mr-0  mr-4  ">
             <span >Dishes : <span id="userDishesQuantityOf${doc.id}">${doc.data().dishQuantity}</span></span>
 
-            <span class="mt-3"> Total Amount : <span id="userDashboardTotal">${doc.data().totalAmount}</span> </span>
+            <span class="mt-3"> Total:<span id="userDashboardTotal">${doc.data().totalAmount}</span> </span>
           </div>
           <div class="text-xs  flex flex-col pt-1 mr-3">
             <span onclick="updatePendingToAcceptedOrders('${doc.id}')" id=userOrderProcessOf${doc.id} class=" text-white cursor-pointer bg-teal-700 p-1 text-xs rounded  text-center italic">Accept</span>
@@ -483,8 +455,6 @@ const getPendingOrders = ()=>{
         
         `
       });
-    }
-      
   })
   .catch((error) => {
       console.log("Error getting documents: ", error);
@@ -533,17 +503,8 @@ const getDishData = (uid) => {
   let cardParent = document.getElementById('cardParent')
 
   db.collection("Dishes").where("restaurantUid", "==", `${currentRestaurantUid}`).get().then((querySnapshot) => {
-    
-    if (querySnapshot.empty) {
-      cardParent  .innerHTML = `
-      <div>
-          <h1 class="text-2xl mt-20 text-gray-600 "> No Dish Exists</h1>
-        </div>`
-      
-    }
-else{
-      querySnapshot.forEach((doc) => {
 
+      querySnapshot.forEach((doc) => {
           cardParent.innerHTML += `
     
       <div id='${doc.id}' class="card h-auto w-60 mt-8 mb-5 shadow-lg  border border-teal-700 rounded">
@@ -580,7 +541,6 @@ else{
   `
       
       });
-    }
   });
 
 }
@@ -616,7 +576,6 @@ const stopLoader=()=>{
   forBlur.forEach(element => {
     element.style.opacity = '1'
     element.style.filter = 'none'
-    // document.body.style.backgroundColor = "white";
     
   });
 
