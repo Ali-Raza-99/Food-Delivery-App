@@ -236,65 +236,58 @@ const getRestaurants = (uid) => {
 
 // when orderpage will be reloaded or visited by user ********************************************************************
 
-const orderPage = () => {
+const orderPage = async () => {
+  const selectedRestaurantId = new URLSearchParams(window.location.search).get('restaurantId');
+  const selectedRestaurantName = new URLSearchParams(window.location.search).get('restaurantName');
 
-  const selectedRestaurantId = new URLSearchParams(window.location.search).get('restaurantId')
-  const selectedRestaurantName = new URLSearchParams(window.location.search).get('restaurantName')
-
-  firebase.auth().onAuthStateChanged((user) => {
+  firebase.auth().onAuthStateChanged(async (user) => {
     if (user) {
-      
+      let uid = user.uid;
+      let email = user.email;
+      let userName = document.getElementById('userName');
+      let userEmail = document.getElementById('userEmail');
+      let userCopyrightYear = document.getElementById('user-copyright-year');
+      let userCountry = document.getElementById('userCountry');
+      let userPhone = document.querySelectorAll('.userPhone');
+      let userCity = document.getElementById('userCity');
+      let userProfilePic = document.getElementById('userProfilePic');
+      const currentYear = new Date().getFullYear();  // Corrected currentDate to new Date()
+      let orderPageRestaurantHeading = document.getElementById('orderPageRestaurantHeading');
 
-    let uid = user.uid;
-    let email = user.email;
-    let userName = document.getElementById('userName');
-    let userEmail = document.getElementById('userEmail');
-    let userCopyrightYear = document.getElementById('user-copyright-year')
-    let userCountry = document.getElementById('userCountry');
-    let userPhone = document.getElementById('userPhone')
-    let userCity = document.getElementById('userCity');
-    let userProfilePic = document.getElementById('userProfilePic')
-    const currentYear = currentDate.getFullYear();
-    let orderPageRestaurantHeading = document.getElementById('orderPageRestaurantHeading');
+      orderPageRestaurantHeading.innerHTML = `${selectedRestaurantName}`;
 
-    orderPageRestaurantHeading.innerHTML = `${selectedRestaurantName}`
+      getDishesFromSelectedRestaurant(selectedRestaurantId);  // Assuming this function is defined elsewhere
 
-    getDishesFromSelectedRestaurant(selectedRestaurantId)
-    // getting signUp data of user
-    db.collection(`${`Users`}`).doc(`${uid}`).get().then((doc) => {
-      if (doc.exists) {
-      
-        userName.innerHTML = `${doc.data().name}`
-        userCopyrightYear.innerHTML = `${currentYear}`
-        userEmail.innerHTML = `${doc.data().email}`
-        userCountry.innerHTML = `${doc.data().country}`
-        userCity.innerHTML = `${doc.data().city}`
-        userProfilePic.innerHTML = `<img id="${uid}profile" class="" src="${doc.data().userProfileUrl}" alt="Firebase Image">`
-        userPhone.innerHTML = `${doc.data().phone}`
-        
+      try {
+        const doc = await db.collection('Users').doc(uid).get();
+        if (doc.exists) {
+          userName.innerHTML = `${doc.data().name}`;
+          userCopyrightYear.innerHTML = `${currentYear}`;
+          userEmail.innerHTML = `${doc.data().email}`;
+          userCountry.innerHTML = `${doc.data().country}`;
+          userCity.innerHTML = `${doc.data().city}`;
+          userProfilePic.innerHTML = `<img id="${uid}profile" class="" src="${doc.data().userProfileUrl}" alt="Firebase Image">`;
+          userPhone.forEach(element => {
+            element.innerHTML = `${doc.data().phone}`;
+          });
+        } else {
+          console.log("No such document!");
+        }
+      } catch (error) {
+        console.log("Error getting document:", error);
       }
       
-      else {
-        // doc.data() will be undefined in this case
-        console.log("No such document!");
-      }
-    }).catch((error) => {
-      console.log("Error getting document:", error);
-    });
+      
+      
+      stopLoader()
 
-
-      // ...
     } else {
-      console.log('not working yet')
-      // signOutUser()
-      // User is signed out
-      // ...
+      console.log('not working yet');
+      // signOutUser()  // Uncomment if you have a signOutUser function
     }
   });
+};
 
-
-  
-}
 // when orderpage will be reloaded or visited by user ********************************************************************
 
 
@@ -777,13 +770,13 @@ const getUserDashboardData=()=>{
             <img class="h-12 w-12 rounded" src=${doc.data().restaurantProfileUrl}>
           </div>
           <div>
-          <p id="orderRestaurantNameOf${doc.id}" class="text-teal-700 lg:font-bold xl:font-bold text-md max-sm:text-sm">
+          <p id="orderRestaurantNameOf${doc.id}" class="text-teal-700 lg:font-bold xl:font-bold text-md max-sm:text-xs">
             ${doc.data().restaurantName}
           </p>
           </div>
           
           <div class="self-end text-gray-500 text-xs mb-1 flex flex-col max-sm:mr-0  mr-8">
-            <span >Dishes <span id="userDishesQuantityOf${doc.id}">${doc.data().dishQuantity}</span></span>
+            <span class="max-sm:text-xs">Dishes <span id="userDishesQuantityOf${doc.id}">${doc.data().dishQuantity}</span></span>
 
             <span class="mt-3"> Total : <span id="userDashboardTotal">${doc.data().totalAmount}</span> </span>
           </div>

@@ -11,12 +11,11 @@
 .forBlur {
   filter: blur(2px);
 }
-.card-parent-height {
-  /* height: 100vh !important; */
-  /* overflow: scroll; */
-}
+
 .card-main{
+  /* margin-bottom: 20px; */
   height: 100vh !important;
+  /* overflow: scroll; */
 }
 #forBlur.active{
   filter: blur(2px);
@@ -29,11 +28,27 @@
   opacity: 1;
   transform: 0.5s;
 }
-.card-parent,.userCard-parent{
+.restaurantDashboardDishes{
   height: 100vh !important;
   overflow: scroll;
   overflow-x: hidden;
+
+  /* height: ; */
 }
+.orderPage-card-parent{
+  overflow: scroll;
+  overflow-x: hidden;
+  /* height: 420px; */
+  /* height: 100vh; */
+ 
+  
+}
+.userCard-parent{
+  /* height: 420px; */
+  /* overflow: scroll; */
+  /* overflow-x: hidden; */
+  
+} 
 
    @media screen and (min-width: 1024px)  {
       #modalOfCartter{
