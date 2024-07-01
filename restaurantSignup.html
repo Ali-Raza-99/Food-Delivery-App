@@ -7,7 +7,8 @@
     <title>SignUp as Restaurant</title>
     <!-- <script src="https://cdn.tailwindcss.com"></script> -->
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="tailwindstyle.css">
+    <link rel="stylesheet" href="tailwind_style.css">
+
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
@@ -37,6 +38,19 @@
 
     <div class="flex max-sm:justify-center sm:justify-center md:justify-start">
         <img class="w-36 h-36" src="logo3.0.png" alt="">
+    </div>
+
+    <div id="loader_parent" class="w-full hidden  top-0 justify-center items-center absolute z-30 ">
+        <div id="loader" class="absolute loader max-md:mt-20  lds-roller text-teal-700 max-md:top-28 top-8">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
     </div>
 
     <div class="flex justify-center items-center px-24">

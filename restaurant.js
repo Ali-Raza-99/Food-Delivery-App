@@ -72,7 +72,8 @@ const restaurantSignUp = () => {
                 userid: currentRestaurantUid,
                 restaurantprofileUrl: url
               }).then(() => {
-                console.log('Restaurant added successfully');
+                // console.log('Restaurant added successfully');
+              showLoader()
                 location.replace('restaurantLogin.html');
               });
             });
@@ -94,9 +95,9 @@ const restaurantSignUp = () => {
 const restaurantLogin = () => {
   let restaurantLoginEmail = document.getElementById('restaurantLoginEmail');
   let restaurantLoginPassword = document.getElementById('restaurantLoginPassword')
-
   firebase.auth().signInWithEmailAndPassword(restaurantLoginEmail.value, restaurantLoginPassword.value)
   .then((userCredential) => {
+    showLoader()
       const user = userCredential.user;
       window.location.href = 'restaurantDashboard.html'
       
@@ -205,6 +206,7 @@ const createDish = (dishName, dishPrice, category_dropdown, deliveryType, curren
     
   })
   .then((docRef) => {
+
     cardParent.innerHTML += `
     
     <div id='${docRef.id}' class="card h-auto w-60 mt-8 mb-5 border border-teal-700 rounded">
@@ -323,6 +325,7 @@ const addDish = () => {
     createDish(dishName, dishPrice, category_dropdown.value, deliveryType.value, currency.value,url,counter)
     toggle()
 
+
       });
     }
   );
@@ -360,7 +363,7 @@ const getDeliveredOrders = ()=>{
           <div class="self-end text-gray-500 text-xs mb-1 flex flex-col max-sm:mr-0  mr-8 ">
             <span >Dishes : <span id="userDishesQuantityOf${doc.id}">${doc.data().dishQuantity}</span></span>
 
-            <span class="mt-3"> Total:<span id="userDashboardTotal">${doc.data().totalAmount}</span> </span>
+            <span class="mt-3"> Total : <span id="userDashboardTotal">${doc.data().totalAmount}</span> </span>
           </div>
           <div class="text-xs  flex flex-col pt-1 mr-3">
             <span id=userOrderProcessOf${doc.id} class="  cursor-pointer text-sky-700 p-1 text-xs rounded  text-center italic">Delivered</span>
@@ -401,7 +404,7 @@ const getAcceptedOrders = ()=>{
           <div class="self-end text-gray-500 text-xs mb-1 flex flex-col max-sm:mr-0  mr-4  ">
             <span >Dishes : <span id="userDishesQuantityOf${doc.id}">${doc.data().dishQuantity}</span></span>
 
-            <span class="mt-3"> Total:<span id="userDashboardTotal">${doc.data().totalAmount}</span> </span>
+            <span class="mt-3"> Total : <span id="userDashboardTotal">${doc.data().totalAmount}</span> </span>
           </div>
           <div class="text-xs  flex flex-col pt-1 mr-3">
             <span onclick="updateAcceptedToDeliveredOrders('${doc.id}')" id=userOrderProcessOf${doc.id} class=" text-white cursor-pointer bg-sky-700 p-1 text-xs rounded  text-center italic">Deliver</span>
@@ -445,7 +448,7 @@ const getPendingOrders = ()=>{
           <div class="self-end text-gray-500 text-xs mb-1 flex flex-col max-sm:mr-0  mr-4  ">
             <span >Dishes : <span id="userDishesQuantityOf${doc.id}">${doc.data().dishQuantity}</span></span>
 
-            <span class="mt-3"> Total:<span id="userDashboardTotal">${doc.data().totalAmount}</span> </span>
+            <span class="mt-3"> Total : <span id="userDashboardTotal">${doc.data().totalAmount}</span> </span>
           </div>
           <div class="text-xs  flex flex-col pt-1 mr-3">
             <span onclick="updatePendingToAcceptedOrders('${doc.id}')" id=userOrderProcessOf${doc.id} class=" text-white cursor-pointer bg-teal-700 p-1 text-xs rounded  text-center italic">Accept</span>
@@ -582,6 +585,15 @@ const stopLoader=()=>{
 
   let loader = document.getElementById('loader_parent');
   loader.style.display = 'none'
+  
+  
+}
+
+const showLoader=()=>{
+
+
+  let loader = document.getElementById('loader_parent');
+  loader.style.display = 'flex'
   
   
 }

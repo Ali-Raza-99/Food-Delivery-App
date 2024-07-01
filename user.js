@@ -51,7 +51,8 @@ const getUserProfileImg =(e)=>{
             userid: currentUserUid,
             userProfileUrl: url
           }).then(() => {
-            console.log('User added successfully');
+            // console.log('User added successfully');
+            showLoader()
             location.replace('userLogin.html');
           });
         });
@@ -75,9 +76,9 @@ const getUserProfileImg =(e)=>{
 const userLogin = () => {
   let userLoginEmail = document.getElementById('userLoginEmail');
   let userLoginPassword = document.getElementById('userLoginPassword')
-
   firebase.auth().signInWithEmailAndPassword(userLoginEmail.value, userLoginPassword.value)
   .then((userCredential) => {
+    showLoader()
       const user = userCredential.user;
       window.location.href = 'userHome.html'
       
@@ -937,6 +938,15 @@ const stopLoader=()=>{
 
   let loader = document.getElementById('loader_parent');
   loader.style.display = 'none'
+  
+  
+}
+
+const showLoader=()=>{
+
+
+  let loader = document.getElementById('loader_parent');
+  loader.style.display = 'flex'
   
   
 }
