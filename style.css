@@ -3,19 +3,12 @@
 @tailwind utilities;
 
 
-
-/* .fix-size {
-  height: 560px !important;
-
-} */
 .forBlur {
   filter: blur(2px);
 }
 
 .card-main{
-  /* margin-bottom: 20px; */
   height: 100vh !important;
-  /* overflow: scroll; */
 }
 #forBlur.active{
   filter: blur(2px);
@@ -33,22 +26,11 @@
   overflow: scroll;
   overflow-x: hidden;
 
-  /* height: ; */
 }
 .orderPage-card-parent{
   overflow: scroll;
-  overflow-x: hidden;
-  /* height: 420px; */
-  /* height: 100vh; */
- 
-  
+  overflow-x: hidden;  
 }
-.userCard-parent{
-  /* height: 420px; */
-  /* overflow: scroll; */
-  /* overflow-x: hidden; */
-  
-} 
 
    @media screen and (min-width: 1024px)  {
       #modalOfCartter{
@@ -73,7 +55,16 @@
     }
 
   }
-
+  @media screen and (min-width: 772px)  {
+    .restaurantSignUpBox,.userSignUpBox{
+      margin-top: 80px !important;
+    }
+ }
+ @media screen and (max-width: 772px)  {
+  .auth_loader{
+    top: 130px !important;
+  }
+}
 
 /* loader ************************************************ */
 
