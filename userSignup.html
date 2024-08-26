@@ -6,14 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SignUp as User/Customer</title>
     <!-- <script src="https://cdn.tailwindcss.com"></script> -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/style.css">
     <link rel="stylesheet" href="tailwind_style.css">
-
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
-
+ 
     <script>
         // type="module"
         const firebaseConfig = {
@@ -31,31 +30,17 @@
     </script>
 </head>
 
-<body class="bg-cover bg-center  bg-no-repeat h-screen" style="background-image: url('new2.avif')">
+<body class="bg-cover bg-center bg-no-repeat h-screen" style="background-image: url('new2.avif')">
 
 
-    <div class="flex max-sm:justify-center sm:justify-center  md:justify-start">
+    <div class="flex max-sm:justify-center sm:justify-center md:justify-start">
         <img class="w-36 h-36" src="logo3.0.png" alt="">
     </div>
 
-    <div id="loader_parent" class="w-full hidden  top-0 justify-center items-center absolute z-30 ">
-        <div id="loader" class="absolute loader auth_loader  lds-roller text-teal-700 max-md:top-28 top-8">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
-    </div>
-
-    <!-- <div class="check"> -->
-    <div class="flex justify-center max-md:mt-20 items-center px-24">
+    <div class="flex justify-center items-center px-24">
 
         <div
-            class="main userSignUpBox max-sm:w-80 w-96 flex text-center md:absolute md:top-12 lg:absolute lg:top-12 flex-col p-6 px-10 bg-center border border-teal-700 rounded-2xl">
+            class="main max-sm:w-80 w-96 flex text-center md:absolute md:top-12 lg:absolute lg:top-12 flex-col p-6 px-10 bg-center border border-teal-700 rounded-2xl">
 
             <div class="flex justify-between items-center mb-3">
                 <h1 class=" text-teal-700 font-bold max-sm:text-sm text-lg">SignUp as User / Customer</h1>
@@ -98,7 +83,6 @@
             </div>
         </div>
     </div>
-<!-- </div> -->
 
     <script src="user.js"></script>
 </body>
