@@ -28,7 +28,7 @@
 
 }
 #userProfileSelect{
-  width: 229px !important;
+  min-width: 0px;
 }
 .orderPage-card-parent{
   overflow: scroll;
